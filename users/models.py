@@ -10,7 +10,7 @@ class Doctor(models.Model):
         ('Male', 'Male'),
         ('Female', 'Female'),
     )
-    doctor_user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    doctor_user = models.OneToOneField(User, on_delete=models.CASCADE)
     experience = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     image = models.ImageField(upload_to="media/doctor_images", blank=True)

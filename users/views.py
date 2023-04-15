@@ -1,12 +1,15 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
-from models import Wallet
 import re
 import base64
 import hashlib
 from Crypto.Cipher import AES
 from Crypto import Random
+from django.views.decorators.csrf import csrf_exempt
+
+from users.models import Wallet
 
 BS = 16
 pad = lambda s: bytes(s + (BS - len(s) % BS) * chr(BS - len(s) % BS), 'utf-8')
@@ -112,15 +115,16 @@ def get_user_email(user):
     return user_email
 
 
+@csrf_exempt
 def register(request):
     if request.method == "POST":
         print("here")
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        username = request.POST['username']
-        password1 = request.POST['password1']
-        password2 = request.POST['password2']
-        email = request.POST['email']
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        username = request.POST.get('username', '')
+        password1 = request.POST.get('password1', '')
+        password2 = request.POST.get('password1', '')
+        email = request.POST.get('email', '')
 
         value = {
             'first_name': first_name,
@@ -211,17 +215,22 @@ def crypto(request):
     user.email = (encrypt(user.id, user.email, user.username)).decode('ascii')
     user.first_name = (encrypt(user.id, user.first_name, user.username)).decode('ascii')
     user.last_name = (encrypt(user.id, user.last_name, user.username)).decode('ascii')
+    user.password = (encrypt(user.id, hashlib.sha256("admin".encode('ascii')).hexdigest(), user.username)).decode(
+        'ascii')
     print(user.id, user.username, user.password, user.first_name, user.last_name, user.email)
     user.save()
     return redirect('/')
 
 
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get("username", '')
+        password = request.POST.get("password", '')
+
         user = None
         try:
+            print("here")
             user = User.objects.get(username=username)
         except():
             user = None
@@ -244,7 +253,7 @@ def login(request):
                     message = "Hello, " + first_name
                     messages.success(request, message)
                     return redirect('/')
-                except:
+                except():
                     messages.warning(request, 'Invalid password')
                     return redirect('/users/login', value)
             else:
@@ -254,4 +263,4 @@ def login(request):
             messages.info(request, 'This user is not exists')
             return redirect('/users/login', value)
     else:
-        return render(request, 'users/login.html')
+        return HttpResponse("Error")

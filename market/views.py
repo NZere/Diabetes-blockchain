@@ -1,12 +1,22 @@
+from django.utils import timezone
+from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
+from django.views.generic import DetailView
 
-from market.models import Product
-from users.views import get_user_first_name
+from market.forms import CouponForm
+from market.models import Product, CartItem, Cart, Coupon
+from users.models import Wallet
+from users.views import get_user_first_name, get_user_money, encrypt, get_user_email, get_user_last_name
+
+from django.contrib import messages
+
+from django.contrib.auth.models import User
 
 
 def product(request, slug):
@@ -25,40 +35,38 @@ def product(request, slug):
 
 @login_required
 def add_to_cart(request, slug):
-    product = get_object_or_404(Clothes, slug=slug)
-    order_item, created = CartItemP.objects.get_or_create(
-        product=product,
+    product_to_add = get_object_or_404(Product, slug=slug)
+    order_item, created = CartItem.objects.get_or_create(
+        product=product_to_add,
         user=request.user,
-        ordered=False,
-        shop=product.shop
+        ordered=False
     )
-    order_qs = CartP.objects.filter(user=request.user, ordered=False)
+    order_qs = Cart.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
-        if order.items.filter(product__slug=product.slug).exists():
+        if order.items.filter(product__slug=product_to_add.slug).exists():
             order_item.quantity += 1
             order_item.save()
             messages.info(request, "This item quantity was updated.")
-            messages.info(request, "This item quantity was updated.")
-            return redirect("clothesL:order-summary")
+            return redirect("market:order-summary")
         else:
             order.items.add(order_item)
             messages.info(request, "This item was added to your cart.")
-            return redirect("clothesL:order-summary")
+            return redirect("market:order-summary")
     else:
-        ordered_date = timezone.now()
-        order = CartP.objects.create(
+        ordered_date = timezone
+        order = Cart.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
         messages.info(request, "This item was added to your cart.")
-        return redirect("clothesL:order-summary")
+        return redirect("market:order-summary")
 
 
 @login_required
 def remove_from_cart_p(request, slug):
-    item = get_object_or_404(Clothes, slug=slug)
-    order_qs = CartP.objects.filter(
+    item = get_object_or_404(Product, slug=slug)
+    order_qs = Cart.objects.filter(
         user=request.user,
         ordered=False
     )
@@ -66,38 +74,37 @@ def remove_from_cart_p(request, slug):
         order = order_qs[0]
         # check if the order item is in the order
         if order.items.filter(product__slug=item.slug).exists():
-            order_item = CartItemP.objects.filter(
+            order_item = CartItem.objects.filter(
                 product=item,
                 user=request.user,
                 ordered=False
             )[0]
             order.items.remove(order_item)
             messages.info(request, "This item was removed from your cart.")
-            return redirect("clothesL:order-summary")
+            return redirect("market:order-summary")
         else:
             messages.info(request, "This item was not in your cart")
-            return redirect("clothesL:order-summary", slug=slug)
+            return redirect("market:order-summary", slug=slug)
     else:
         messages.info(request, "You do not have an active order")
-        return redirect("clothesL:order-summary", slug=slug)
+        return redirect("market:order-summary", slug=slug)
 
 
 @login_required
 def remove_single_item_from_cart_p(request, slug):
-    product = get_object_or_404(Clothes, slug=slug)
-    order_qs = CartP.objects.filter(
+    product_to_remove = get_object_or_404(Product, slug=slug)
+    order_qs = Cart.objects.filter(
         user=request.user,
         ordered=False
     )
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
-        if order.items.filter(product__slug=product.slug).exists():
-            order_item = CartItemP.objects.filter(
-                product=product,
+        if order.items.filter(product__slug=product_to_remove.slug).exists():
+            order_item = CartItem.objects.filter(
+                product=product_to_remove,
                 user=request.user,
-                ordered=False,
-                shop=product.shop
+                ordered=False
             )[0]
             if order_item.quantity > 1:
                 order_item.quantity -= 1
@@ -105,13 +112,13 @@ def remove_single_item_from_cart_p(request, slug):
             else:
                 order.items.remove(order_item)
             messages.info(request, "This item quantity was updated.")
-            return redirect("clothesL:order-summary")
+            return redirect("market:order-summary")
         else:
             messages.info(request, "This item was not in your cart")
-            return redirect("clothesL:order-summary", slug=slug)
+            return redirect("market:order-summary", slug=slug)
     else:
         messages.info(request, "You do not have an active order")
-        return redirect("clothesL:order-summary", slug=slug)
+        return redirect("market:order-summary", slug=slug)
 
 
 @login_required
@@ -125,53 +132,34 @@ def comment(request, slug):
         a.commentary_set.create(author=request.user, text=text1, clothes_id=a.id)
     return HttpResponseRedirect(reverse('market:product', args=(a.slug,)))
 
-#
-# class OrderSummaryView(LoginRequiredMixin, View):
-#     def get(self, *args, **kwargs):
-#         user_first_name = None
-#         if self.request.user.is_authenticated:
-#             user_first_name = get_user_first_name(self.request.user)
-#         try:
-#             order = Cart.objects.get(user=self.request.user, ordered=False)
-#             context = {
-#                 'object': order,
-#                 'couponform': CouponForm(),
-#                 'DISPLAY_COUPON_FORM': True,
-#                 'user_first_name': user_first_name
-#             }
-#             return render(self.request, 'market/order_summary.html', context)
-#         except ObjectDoesNotExist:
-#             messages.warning(self.request, "You do not have an active order")
-#             print("You do not have an active order")
-#             return redirect("/")
+
+class OrderSummaryView(LoginRequiredMixin, View):
+    def get(self, *args, **kwargs):
+        user_first_name = None
+        if self.request.user.is_authenticated:
+            user_first_name = get_user_first_name(self.request.user)
+        try:
+            order = Cart.objects.get(user=self.request.user, ordered=False)
+            context = {
+                'object': order,
+                'couponform': CouponForm(),
+                'DISPLAY_COUPON_FORM': True,
+                'user_first_name': user_first_name
+            }
+            return render(self.request, 'market/order_summary.html', context)
+        except ObjectDoesNotExist:
+            messages.warning(self.request, "You do not have an active order")
+            print("You do not have an active order")
+            return redirect("/")
 
 
-# def get_coupon(request, code):
-#     try:
-#         coupon = Coupon.objects.get(code=code)
-#         return coupon
-#     except ObjectDoesNotExist:
-#         messages.info(request, "This coupon does not exist")
-#         return redirect("core:checkout")
-
-
-# class CheckSales(LoginRequiredMixin, View):
-#     def get(self, request):
-#         user_first_name = None
-#         if self.request.user.is_authenticated:
-#             user_first_name = get_user_first_name(self.request.user)
-#         user = self.request.user
-#         shoptouser = ShopToUser.objects.get(user=user.id)
-#         shop_id = shoptouser.shop.id
-#         shop = Shops.objects.get(id=shop_id)
-#
-#         all = CartItemP.objects.all()
-#         not_all = []
-#         for al in all:
-#             if al.shop.id == shop_id:
-#                 not_all.append(al)
-#         return render(request, 'clothesL/checksales.html',
-#                       {'all': not_all, 'shop': shop, 'user_first_name': user_first_name})
+def get_coupon(request, code):
+    try:
+        coupon = Coupon.objects.get(code=code)
+        return coupon
+    except ObjectDoesNotExist:
+        messages.info(request, "This coupon does not exist")
+        return redirect("core:checkout")
 
 
 class PaymentView(LoginRequiredMixin, View):
@@ -180,94 +168,45 @@ class PaymentView(LoginRequiredMixin, View):
         if self.request.user.is_authenticated:
             user_first_name = get_user_first_name(self.request.user)
         try:
-            print("kirdi")
-            order = CartP.objects.get(user=self.request.user, ordered=False)
-            shop_order = {}
-            # shops= set()
-            # for i in range order
-            print("in try")
-            print(order)
+            order = Cart.objects.get(user=self.request.user, ordered=False)
             order_items = order.items.all()
-            print('order.get_totl()', order.get_total())
-
             user = None
             if self.request.user.is_authenticated:
                 user = self.request.user
             print(user.id)
-            user_purse = Purse.get_purse_by_userid(user.id)
-            shop1 = ShopToUser.get_purse_by_shop_id(1)
-            shop2 = ShopToUser.get_purse_by_shop_id(2)
-            print(shop1.user.id)
-            shop1_purse = Purse.get_purse_by_userid(shop1.user.id)
-            shop2_purse = Purse.get_purse_by_userid(shop2.user.id)
-            print(shop1_purse, 'shop1')
-            print(shop2_purse, 'shop2')
+            user_wallet = Wallet.get_purse_by_userid(user.id)
+            purchase = 0
+            main_admin = User.objects.get(user=1)
+            main_admin_wallet = Wallet.get_purse_by_userid(1)
 
-            shop1_money = get_user_money(shop1.user)
-            print(shop2.user.username)
-            shop2_money = get_user_money(shop2.user)
-
-            added_money_shop1 = 0
-            added_money_shop2 = 0
-            error_message = None
-            print('error', 'hello')
             with transaction.atomic():
                 if user:
                     with transaction.atomic():
                         money = get_user_money(user)
-                        print('shop1 money', shop1_money)
-                        print('shop2 money', shop2_money)
-                        print('user money', money)
-                        print('money', money)
-                        print('total:', order.get_total())
                         if money >= order.get_total():
                             with transaction.atomic():
-                                print(order_items)
                                 for order_item in order_items:
-                                    # print(order_item.toString())
                                     money = money - order_item.get_final_price()
                                     print('order_item.get_final_price()', order_item.get_final_price())
                                     money_enc = (encrypt(user.id, str(money), user.username)).decode('ascii')
-                                    user_purse.money = money_enc
-                                    user_purse.save()
+                                    user_wallet.money = money_enc
+                                    user_wallet.save()
                             with transaction.atomic():
                                 for order_item in order_items:
-                                    if order_item.shop.id == 1:
-                                        added_money_shop1 += order_item.get_final_price()
-                                        shop1_money += order_item.get_final_price()
-                                        print('updated shop 1', shop1_money)
-                                        shop1_purse.money = (
-                                            encrypt(shop1.user.id, str(shop1_money), shop1.user.username)).decode(
-                                            'ascii')
-                                        shop1_purse.save()
-                                    elif order_item.shop.id == 2:
-                                        added_money_shop2 += order_item.get_final_price()
-                                        shop2_money = shop2_money + order_item.get_final_price()
-                                        print('updated shop 2', shop2_money)
-                                        shop2_purse.money = (
-                                            encrypt(shop2.user.id, str(shop2_money), shop2.user.username)).decode(
-                                            'ascii')
-
-                                        shop2_purse.save()
-                            error_message = 'Successfully transfered !!'
+                                    purchase += order_item.get_final_price()
+                                    main_admin_wallet.money = (
+                                        encrypt(main_admin.id, str(main_admin_wallet.money), main_admin.username)).\
+                                        decode('ascii')
+                                    main_admin_wallet.save()
                         else:
                             error_message = 'Not enough money !!'
                             messages.warning(self.request, error_message)
                             return redirect("/", {'user_first_name': user_first_name})
-
-                else:
-                    error_message = 'There is no user with this email !!'
-
-                print(error_message)
-
             messages.success(self.request, "Your order was successful!")
             return redirect("/main/block/transactions/new",
-                            {'user_first_name': user_first_name, 'added_money_shop1': added_money_shop1,
-                             'added_money_shop2': added_money_shop2})
-            # return redirect("block:transactions", {'order': order})
-        except:
-            print("oshibka")
-            messages.warning(self.request, "Yoshiibka")
+                            {'user_first_name': user_first_name, 'market': purchase})
+        except():
+            messages.warning(self.request, "Error")
             return redirect("/", {'user_first_name': user_first_name})
 
 
@@ -277,7 +216,7 @@ class AddCouponView(View):
         if form.is_valid():
             try:
                 code = form.cleaned_data.get('code')
-                order = CartP.objects.get(
+                order = Cart.objects.get(
                     user=self.request.user, ordered=False)
                 order.coupon = get_coupon(self.request, code)
                 order.save()
@@ -289,11 +228,11 @@ class AddCouponView(View):
 
 
 class ItemDetailViewP(DetailView):
-    model = Clothes
-    template_name = "clothesL/product.html"
+    model = Product
+    template_name = "market/product.html"
 
 
-class PurseView(LoginRequiredMixin, View):
+class WalletView(LoginRequiredMixin, View):
     def get(self, request):
         user_first_name = None
         user_email = None
@@ -306,18 +245,13 @@ class PurseView(LoginRequiredMixin, View):
             user = request.user
             user_email = get_user_email(user)
             user_last_name = get_user_last_name(user)
-        purse = Purse.get_purse_by_userid(user.id)
+        purse = Wallet.get_purse_by_userid(user.id)
 
-        orders = CartP.objects.filter(user_id=user.id)
-        data = {}
-        data['user'] = user
-        data['purse'] = purse
-        data['money'] = get_user_money(user)
-        data['user_first_name'] = user_first_name
-        data['user_last_name'] = user_last_name
-        data['user_email'] = user_email
+        orders = Cart.objects.filter(user_id=user.id)
+        data = {'user': user, 'purse': purse, 'money': get_user_money(user), 'user_first_name': user_first_name,
+                'user_last_name': user_last_name, 'user_email': user_email}
 
-        if not ShopToUser.objects.filter(user=request.user.id).exists():
+        if not User.objects.filter(user=1).exists():
             data['orders'] = orders
         print('email', user_email)
-        return render(request, 'clothesL/account.html', data)
+        return render(request, 'market/account.html', data)
