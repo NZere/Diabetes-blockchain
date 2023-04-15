@@ -1,0 +1,109 @@
+{% extends "market/catalogue.html" %}
+
+{% block content %}
+<main>
+    <div class="container">
+
+        <div class="table-responsive text-nowrap">
+            <h2>Order Summary</h2>
+            <table class="table"> vc
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Item title</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Item Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order_item in object.items.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ order_item.product.name }}</td>
+
+                    <td>
+                        {% ifnotequal order_item.product.prom 0 %}
+                        <s>{{ order_item.product.price }}</s>
+                        {% endifnotequal%}
+                        {{ order_item.product.priceWithProm}}
+                    </td>
+                    <td>
+
+                        <a href="{% url 'market:remove-single-item-from-cart-p' order_item.product.slug %}"> <i
+                                class="fa fa-cart-arrow-down" style="font-size:20px;color:red"></i> </a>
+                        {{ order_item.quantity }}
+                        <a href="{% url 'market:add-to-cart-p' order_item.product.slug %}"><i class="fa fa-cart-plus"
+                                                                                                style="font-size:20px;color:red"></i></a>
+                    </td>
+                    <td>
+                        {% ifnotequal order_item.product.prom 0 %}
+                        <s>{{ order_item.get_total_item_price }}</s>
+                        {% endifnotequal%}
+                        {{ order_item.get_total_discount_item_price}}
+
+                    </td>
+                    <a style='color: red;' href="{% url 'market:remove-from-cart-p' order_item.product.slug %}">
+                        <i class="fa fa-trash-o" style="font-size:20px;color:red"></i>
+                    </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='5'>Your cart is empty</td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <a class='btn btn-primary float-right' href='/main/collection/'>Continue shopping</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% if object.get_total %}
+                <tr>
+                    <td colspan="4"><b>Order Total</b></td>
+                    <td><b>TG{{ object.get_total }}</b></td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <a class='btn btn-warning float-right ml-2' href='/main/collection/payment/'>Proceed to
+                            checkout</a>
+                        <a class='btn btn-primary float-right' href='/main/collection/'>Continue shopping</a>
+                    </td>
+                </tr>
+
+
+                {% endif %}
+
+
+                {% if object.coupon %}
+                <li class="list-group-item d-flex justify-content-between bg-light">
+                    <div class="text-success">
+                        <h6 class="my-0">Promo code</h6>
+                        <small>{{ object.coupon.code }}</small>
+                    </div>
+                    <span class="text-success">-% {{ object.coupon.amount }}</span>
+                </li>
+                {% endif %}
+
+                <form class="card p-2" action="{% url 'market:add-coupon' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {{ couponform.code }}
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary btn-md waves-effect m-0" type="submit">Redeem</button>
+                        </div>
+                    </div>
+                </form>
+
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+</main>
+
+{% endblock content %}
+
+

@@ -1,0 +1,52 @@
+{% extends "market/catalogue.html" %}
+{% load static%}
+{% block content %}
+<main>
+    <div class="container">
+
+        <div class="table-responsive text-nowrap">
+            <h2>Shop: {{shop.shop_name}}</h2>
+
+            {% if all %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Costumer</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Ordered</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for al in all%}
+                <tr>
+                    <th scope="row" style="width:50px; background: pink">
+                        <img src="{% static 'img/icons/bag.png' %}" alt="">
+                    </th>
+                    <th scope="row">*********</th>
+                    <td>{{ al.product }}</td>
+                    <td>{{ al.quantity }}</td>
+                    <td>
+                        {% if al.ordered %}
+                        <span style='font-size:20px;'>&#10003;</span>
+                        {% else %}
+                        <i class="fa fa-clock-o" style="font-size:22px"></i>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <tr>
+                <td colspan='5'> SALES LIST IS EMPTY</td>
+            </tr>
+            {% endif %}
+
+        </div>
+
+    </div>
+</main>
+
+{% endblock content %}

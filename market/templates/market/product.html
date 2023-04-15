@@ -1,0 +1,194 @@
++.{% extends "market/catalogue.html" %}
+
+{% block content %}
+
+  <main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+        {% if object.image %}
+        <img src="{{ object.image.url}}"  class="img-thumbnail">
+        {% endif %}
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <!--Content-->
+          <div class="p-4">
+
+            <div class="mb-3">
+              <a href="">
+                <span class="badge purple mr-1">{{ object.get_category_display }}</span>
+              </a>
+            </div>
+
+            <p class="lead">
+              {% if object.isProm_0%}
+                    {{object.price}} TG
+                {%else%}
+                     <s>{{object.price}}</s>
+                    {{object.priceWithProm}} TG
+                    {% endif%}
+
+
+            </p>
+
+            <p class="lead font-weight-bold">Description</p>
+<!--                <p class="lead font-weight-bold">   Id:  {{object.id}} <br> </p>-->
+              <p class="lead font-weight-bold">   Name:  {{object.name}} <br> </p>
+              <p class="lead font-weight-bold">For:{%if object.genderM%}</p>
+                        Men
+                        {%endif%}
+                        {%if object.genderW %}
+                         Women
+                        {%endif%}
+            <br>
+              <p class="lead font-weight-bold"> Type of Clothes:</p>
+
+                    {%if object.boolOff%}
+<br>
+                        Offical
+                        {%endif%}
+                    {%if object.boolUp%}
+            <br>
+                        Up
+                        {%endif%}
+                    {%if object.boolDown%}
+            <br>
+                        Down
+                        {%endif%}
+                    {%if object.boolOutwear%}
+            <br>
+                        Outwear
+                        {%endif%}
+                    {%if object.booShoes%}
+            <br>
+                        Shoes
+                        {%endif%}
+                    {%if object.booAcc%}
+            <br>
+                        Accessories
+                        {%endif%}
+<br>
+
+              <i>Date: {{object.date}}</i>
+<br>
+            {% comment %} <form class="d-flex justify-content-left">
+              <!-- Default input -->
+              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+              <button class="btn btn-primary btn-md my-0 p" type="submit">
+                Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </button>
+
+            </form> {% endcomment %}
+
+
+        {% if user.is_authenticated %}
+            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
+              Add to cart
+              <i class="fas fa-shopping-cart ml-1"></i>
+            </a>
+            <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
+              Remove from cart
+            </a>
+        {% else %}
+          <div class="login">
+            <a href="/users/login" class="genre">Log in to add to cart</a>
+          </div>
+          {% endif %}
+
+              <div class="pt-5 mt-5">
+                  <div class="comment-form-wrap pt-5">
+                    <h3 class="mb-5">Leave a comment</h3>
+                      {% if user.is_authenticated %}
+                      <form action="{% url 'market:comment-p' object.slug %}" method="POST">
+                        {% csrf_token %}
+                      <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea name="text" id="message" cols="30" rows="10" class="form-control"></textarea>
+                      </div>
+                      <div class="form-group">
+                        <input type="submit" value="Post Comment" class="btn py-3 px-4 btn-primary">
+                      </div>
+                      </form>
+                          {% else %}
+                          <div class="login">
+                            <a href="/users/login" class="genre">Войдите чтобы оставить комментарий</a>
+                          </div>
+                          {% endif %}
+                          {% for commentary in comments %}
+                            <div class="comment">
+                              <span class="comment__author">{{ commentary.author }}</span>
+                              <p class="comment__text">{{ commentary.text }}</p>
+                            </div>
+                          {% endfor %}
+
+                  </div>
+                </div>
+
+
+          </div>
+          <!--Content-->
+
+
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+      <hr>
+
+      <!--Grid row-->
+      <div class="row d-flex justify-content-center wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 text-center">
+
+
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-12 mb-4">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4">
+
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4 col-md-6 mb-4">
+
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+    </div>
+  </main>
+
+{% endblock %}

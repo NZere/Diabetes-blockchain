@@ -1,0 +1,78 @@
+{% extends "market/catalogue.html" %}
+{% block content %}
+    NEW COLLECTION!!!!
+
+
+{% endblock %}
+
+{% block cl%}
+
+
+<hr>
+<h2>MAN/WOMAN</h2>
+<hr>
+{% for kiim in listW%}
+{% if kiim.was_published_recently %}
+            <hr>
+                 Name: {{kiim.name}}
+            <br>
+                 For:{%if kiim.genderM%}
+                        Men
+                        {%endif%}
+                        {%if kiim.genderW %}
+                         and Women
+                        {%endif%}
+            <br>
+                 Type of Clothes:
+
+                    {%if kiim.boolOff%}
+<br>
+                        Offical
+                        {%endif%}
+                    {%if kiim.boolUp%}
+            <br>
+                        Up
+                        {%endif%}
+                    {%if kiim.boolDown%}
+            <br>
+                        Down
+                        {%endif%}
+                    {%if kiim.boolOutwear%}
+            <br>
+                        Outwear
+                        {%endif%}
+                    {%if kiim.booShoes%}
+            <br>
+                        Shoes
+                        {%endif%}
+                    {%if kiim.booAcc%}
+            <br>
+                        Accessories
+                        {%endif%}
+<br>
+Price:
+                {% if kiim.isProm_0%}
+                    {{kiim.price}}
+                {%else%}
+                     <s>{{kiim.price}}</s>
+                    {{kiim.priceWithProm}}
+                    {% endif%}
+
+
+{% if kiim.image %}
+<a href="/main/collection/product/people/{{kiim.slug}}" >
+    <img src="{{ kiim.image.url}}" width="100" height="100" class="img-thumbnail">
+</a>
+
+{% endif %}
+
+<br>
+<i>Date: {{kiim.date}}</i>
+
+<a href="{{ kiim.get_add_to_cart_url }}" ><button class="btn btn-danger">
+    ADD TO CART</button></a>
+{%endif%}
+    {% endfor %}
+<hr>
+
+{% endblock %}

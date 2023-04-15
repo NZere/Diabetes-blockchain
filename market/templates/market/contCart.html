@@ -1,0 +1,38 @@
+{% extends "market/order_summary.html" %}
+{% load static %}
+{% block cl%}
+
+<table class="table">
+    <tr>
+        <td class="text-center"><strong>Product</strong></td>
+        <td class="text-center"><strong>Count</strong></td>
+        <td class="text-center"><strong>Price</strong></td>
+
+
+    </tr>
+    {% for kiim in CART.items.all %}
+    {{kiim}}
+    {{kiim.product}}
+    {{kiim.product.name}}
+    {{kiim.qty}}
+    {{kiim.item_total}}
+    <tr>
+        <td class="text-center"><strong>{{kiim.product.name}}</strong></td>
+        <td class="text-center"><strong>{{kiim.qty}}</strong></td>
+        <td class="text-center"><strong>{{kiim.item_total}}</strong></td>
+    </tr>
+
+
+
+    {% if CART.coupon %}
+    <li class="list-group-item d-flex justify-content-between bg-light">
+        <div class="text-success">
+        <h6 class="my-0">Promo code</h6>
+        <small>{{ order.coupon.code }}</small>
+        </div>
+        <span class="text-success">-${{ order.coupon.amount }}</span>
+    </li>
+
+{%endfor%}
+</table>
+{% endblock %}

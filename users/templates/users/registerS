@@ -1,0 +1,30 @@
+
+<!--{% extends "mainApp/base.html" %}-->
+<!--{% load static %}-->
+<!--{% load staticfiles %}-->
+<!--{% block content %}-->
+<!--    <div class="content-section">-->
+<!--        <form method="POST">-->
+<!--            {% csrf_token %}-->
+<!--            <fieldset class="from-group">-->
+<!--                <legend class="border-bottem mb-4">-->
+<!--                    Join today-->
+<!--                </legend>-->
+<!--                {{ form.as_p }}-->
+<!--            </fieldset>-->
+<!--            <div class="form-group">-->
+<!--                <button class = "btn btn-outline-info" type="submit">-->
+<!--                    Sign up-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--        <div class="border-top pt-3">-->
+<!--            <small class="text-muted" >-->
+<!--                Already have an Account? <a class="ml-2" href="#"> Sign in </a>-->
+<!--            </small>-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--{% endblock %}-->
