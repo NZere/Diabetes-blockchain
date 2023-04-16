@@ -1,0 +1,341 @@
+/*=============== VARIABLES SCSS ===============*/
+/*========== Colors ==========*/
+/*========== Font ==========*/
+@font-face {
+  font-family: "Comfortaa", cursive;
+  src: url();
+}
+@font-face {
+  font-family: "Molengo", sans-serif;
+  src: url();
+}
+/*========== Typography ==========*/
+/*.5rem = 8px | 1rem = 16px ...*/
+/*========== Font weight ==========*/
+/*========== z index ==========*/
+/* Responsive typography */
+/*=============== REUSABLE CSS CLASSES ===============*/
+.container {
+  max-width: 1140px;
+  margin-inline: auto;
+  padding: 2rem;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #283779;
+  border-radius: 5rem;
+  background: transparent;
+  color: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.btn:hover {
+  color: #b4dcec;
+}
+.btn:hover span {
+  width: 100%;
+}
+
+.cover {
+  width: 0%;
+  z-index: -1;
+}
+
+.cover__bg {
+  width: 100%;
+  z-index: -2;
+}
+
+.cover, .cover__bg {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+section {
+  position: relative;
+}
+
+.bg {
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  width: 100%;
+  line-height: 120%;
+  position: relative;
+  font-size: 3.25rem;
+  color: #283779;
+}
+
+.subtitle {
+  height: 15vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.subtitle h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #283779;
+}
+.subtitle h3 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #283779;
+}
+
+input {
+  width: 80%;
+  margin: 8px 0;
+  padding: 12px 15px;
+  border: 0.1rem solid #b4dcec;
+  border-radius: 5rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+input:focus {
+  border: 0.1rem solid #283779;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+}
+
+body {
+  background-color: #f0f4f9;
+  overflow: hidden;
+}
+
+.appointment__container {
+  margin-top: 2.75rem;
+  width: 100%;
+  height: 100vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#form {
+  width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+#form .fieldset {
+  width: 70vw;
+  position: relative;
+  padding: 20px 30px;
+  border: 0 none;
+  border-radius: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+#form fieldset:not(:first-of-type) {
+  display: none;
+}
+
+.step {
+  width: 20vw;
+  height: 70vh;
+  padding: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: #f0f4f9;
+  -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.6);
+          box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+.step__container {
+  width: 50vw;
+  height: 70vh;
+  position: relative;
+  background-color: #fff;
+  -webkit-box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.6);
+          box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.6);
+}
+.step__numbers {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 1rem;
+}
+.step__numbers .step__number {
+  width: 2rem;
+  height: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border: 2px solid #283779;
+  border-radius: 50%;
+  background-color: #f0f4f9;
+}
+.step__numbers .step__number__on {
+  border: 2px solid #283779;
+  background-color: #283779;
+  color: #fff;
+}
+.step__info svg {
+  width: 3rem;
+  fill: #283779;
+}
+.step__info .subtitle {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 1rem;
+}
+.step__info p {
+  font-size: 1rem;
+  color: #464558;
+}
+.step__contacts {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.step__contacts__number {
+  color: #283779;
+}
+.step__contacts__email {
+  color: #1b71a1;
+}
+
+.action__btn {
+  width: 100px;
+  position: absolute;
+  text-align: center;
+  left: 40%;
+  bottom: 3rem;
+  padding: 10px 5px;
+  background-color: #283779;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+}
+.action__btn:hover, .action__btn:focus {
+  -webkit-box-shadow: 0 0 0 2px #b4dcec, 0 0 0 3px #283779;
+          box-shadow: 0 0 0 2px #b4dcec, 0 0 0 3px #283779;
+}
+.action__btn__previous {
+  width: 10%;
+  position: absolute;
+  text-align: center;
+  left: 20%;
+  bottom: 3rem;
+  background: #b4dcec;
+  font-weight: bold;
+  color: #283779;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  padding: 10px 5px;
+}
+.action__btn__previous:hover, .action__btn__previous:focus {
+  -webkit-box-shadow: 0 0 0 2px #283779, 0 0 0 3px #b4dcec;
+          box-shadow: 0 0 0 2px #283779, 0 0 0 3px #b4dcec;
+}
+
+.date__time {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 0 3rem;
+  gap: 3rem;
+}
+.date__time .calendar {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+.date__time .time {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  position: relative;
+}
+.date__time .time select {
+  width: 100%;
+  height: 50px;
+  padding: 1rem 2rem 1rem 1rem;
+  border: 1px solid #283779;
+  border-radius: 1rem;
+  font-size: 1rem;
+  color: #283779;
+}
+.date__time .time select > option {
+  padding: 1rem;
+}
+.date__time .time select > option:hover {
+  background-color: #283779;
+  color: #fff;
+}

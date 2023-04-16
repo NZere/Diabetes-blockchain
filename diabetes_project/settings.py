@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'market',
     'blockchain',
     'appointment',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,10 @@ ROOT_URLCONF = 'diabetes_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'users/templates',
+            'home/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

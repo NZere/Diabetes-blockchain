@@ -263,4 +263,4 @@ def login(request):
             messages.info(request, 'This user is not exists')
             return redirect('/users/login', value)
     else:
-        return HttpResponse("Error")
+        return render(request, 'login.html')

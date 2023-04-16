@@ -1,0 +1,108 @@
+@import "variables.scss";
+
+/*=============== REUSABLE CSS CLASSES ===============*/
+.container {
+  max-width: 1140px;
+  margin-inline: auto;
+  padding: 2rem;
+}
+
+.btn{
+  display: inline-block;
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: .1rem solid $primary-color;
+  border-radius: 5rem;
+  background: transparent;
+  color: $primary-color;
+  transition: 0.5s;
+  &:hover{
+    color: $bg-color;
+    span {
+      width: 100%;
+    } 
+  }
+}
+
+.cover{
+  width: 0%;
+  z-index: -1;
+}
+
+.cover__bg{
+  width: 100%;
+  z-index: -2;
+}
+
+.cover, .cover__bg {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background: $primary-color;
+  transition: 0.5s;
+}
+
+
+section{
+  position: relative;
+}
+
+.bg{
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title{
+  width: 100%;
+  line-height: 120%;
+  position: relative;
+  font-size: $biggest-font-size;
+  color: $primary-color;
+}
+
+.subtitle{
+  height: 15vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h2{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: $h1-font-size;
+    font-weight: $font-bold;
+    font-family: $subtitle-font;
+    color: $primary-color;
+  }
+  h3{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: $normal-font-size;
+    font-weight: $font-bold;
+    font-family: $subtitle-font;
+    color: $primary-color;
+  }
+}
+
+input {
+	width: 80%;
+	margin: 8px 0;
+  padding: 12px 15px;
+	border: .1rem solid $bg-color;
+  border-radius: 5rem;
+  transition: 0.5s;
+  &:focus{
+    border: .1rem solid $primary-color;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    transform: scale(1.01);
+  }
+}

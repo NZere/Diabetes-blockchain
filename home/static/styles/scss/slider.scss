@@ -1,0 +1,111 @@
+@import "main.scss";
+
+.doctors{
+  &__container {
+  width: 50vw;
+  max-width: 50vw;
+  padding: 0 10vw;
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  }
+  &__card {
+    // flex: 0 0 auto;
+    width: 200px;
+    height: fit-content;
+    margin-right: 2rem;
+    border-radius: 2rem;
+    transition: 0.5s;
+    &__img {
+      position: relative;
+      border-radius: 2rem 2rem 0 0;
+      overflow: hidden;
+      img{
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        // border-radius: 5px;
+      }
+    }
+    &__btn {
+      width: 90%;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px;
+      text-transform: capitalize;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      transition: 0.5s;
+      cursor: pointer;
+      opacity: 0;
+      background-color: $primary-color;
+      font-weight: bold;
+      color: #fff;
+      &:hover, &:focus {
+        box-shadow: 0 0 0 2px $bg-color, 0 0 0 3px $primary-color;
+      }
+
+    }
+    &:hover{
+      border: 1px solid $primary-color;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+      transform: scale(0.9);
+    }
+    &__info {
+      width: 100%;
+      height: 60px;
+      padding-top: 10px;
+      .doctors__card__title {
+        text-transform: uppercase;
+      }
+      .doctors__card__description {
+        width: 100%;
+        height: 20px;
+        line-height: 20px;
+        overflow: hidden;
+        opacity: 0.5;
+        text-transform: capitalize;
+        margin: 5px 0;
+      }
+    }
+  }
+}
+
+.chosen{
+  border: 3px solid $primary-color;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  transform: scale(0.9);
+}
+
+.pre__btn,
+.nxt__btn {
+  width: 10vw;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+  cursor: pointer;
+  z-index: 8;
+  img{
+    opacity: 0.2;
+  }
+  &:hover img{
+    opacity: 1;
+  }
+}
+.pre__btn {
+  left: 0;
+  transform: rotate(180deg);
+}
+.nxt__btn {
+  right: 0;
+}

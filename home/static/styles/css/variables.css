@@ -1,0 +1,16 @@
+/*=============== VARIABLES SCSS ===============*/
+/*========== Colors ==========*/
+/*========== Font ==========*/
+@font-face {
+  font-family: "Comfortaa", cursive;
+  src: url();
+}
+@font-face {
+  font-family: "Molengo", sans-serif;
+  src: url();
+}
+/*========== Typography ==========*/
+/*.5rem = 8px | 1rem = 16px ...*/
+/*========== Font weight ==========*/
+/*========== z index ==========*/
+/* Responsive typography */
