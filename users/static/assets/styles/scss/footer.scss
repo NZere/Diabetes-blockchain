@@ -1,0 +1,172 @@
+@import "main.scss";
+
+/*=============== SUBSCRIBE ===============*/
+.subscribe{
+  padding: 4rem;
+  background-image: url('../../img/info-bg.png');
+  background-size: cover;
+  background-color: $bg-color;
+  &__container{
+    width: 100%;
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    color: $primary-color;
+  }
+  &__info{
+    width: 35%;
+    &__title{
+      margin: 2rem 0;
+      font-size: $h2-font-size;
+      text-transform: uppercase;
+    }
+    &__text{
+      margin-bottom: 2rem;
+      line-height: 1.5rem;
+      font-size: $small-font-size;
+    }
+  }
+  &__form{
+    width: 60%;
+    h3{
+      margin: 2rem 0;
+      font-size: $normal-font-size;
+      text-transform: uppercase;
+    }
+    &__inner{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem;
+      .email{
+        flex: 2;
+      }
+      .action__btn{
+        width: 100px;
+        padding: 10px 5px;
+        background-color: $primary-color;
+        border: 0 none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        color: #fff;
+        &:hover, &:focus {
+          box-shadow: 0 0 0 2px $bg-color, 0 0 0 3px $primary-color;
+        }
+      }
+    }
+  }
+}
+
+/*=============== FOOTER ===============*/
+.footer{
+  background-color: $primary-color;
+  &__container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: #fff;
+  }
+  &__items{
+    flex: 1;
+    padding: 2rem 0;
+    &.logo{
+      flex: 2;
+      a{
+        display: flex;
+        align-items: end;
+        margin-bottom: 2rem;
+      }
+      img{
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+    h4{
+      position: relative;
+      margin-bottom: 30px;
+      font-size: $normal-font-size;
+      font-weight: 600;
+      text-transform: capitalize;
+      z-index: 5;
+      &:before{
+        content: '';
+        width: 45px;
+        height: 45px;
+        display: block;
+        position: absolute;
+        left: -20px;
+        top: -13px;
+        border-radius: 50px;
+        background: $bg-color;
+        opacity: .5;
+        z-index: -1;
+      }
+    }
+    a, &__btn a, .list a{
+      display: inline-block;
+      padding: .5rem 0;
+      text-transform: capitalize;
+      font-size: $normal-font-size;
+      color: #fff;
+      transition: all 0.5s ease;
+    }
+    &.list a:hover{
+      padding-left: .5rem;
+      color: $bg-color;
+    }
+    .social__links{
+      display: flex;
+      gap: 1rem;
+      a{
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        background-color: $bg-color;
+        color: $primary-color;
+        transition: all 0.5s ease;
+        &:hover{
+          background-color: #fff;
+          color: $primary-color;
+        } 
+      }
+    }
+  }
+}
+
+/*=============== COPYRIGHT ===============*/
+.copyright{
+  background-color: $bg-color;
+  color: $primary-color;
+}
+
+@media (max-width: 767px) {
+  .footer{
+    background-color: $primary-color;
+    &__container{
+      flex-direction: column;
+    }
+    &__items{
+      margin-bottom: 30px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .subscribe{
+    &__container{
+      flex-direction: column;
+    }
+  }
+  .footer__items{
+    width: 100%;
+  }
+}

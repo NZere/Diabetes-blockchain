@@ -1,0 +1,108 @@
+@import "main.scss";
+
+.calendar{
+  margin: auto;
+  &__header{
+    padding: 0 0 1rem 0;
+  }
+  .calendar__weekdays{
+    background: $bg-color;
+    .calendar__content {
+      max-width: 15rem;
+    }
+  }
+}
+
+.calendar__content, .calendar__weekdays, .calendar__header {
+  position: relative;
+  overflow: hidden;
+}
+
+.calendar__weekdays div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.calendar__weekdays div, .calendar__content div {
+  width: 14.28571%;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  text-align: center;
+  font-size: 16px; // $small-font-size;
+  background-color: transparent;
+  color: #000;
+}
+
+.calendar__content{
+  div {
+    position: relative;
+    float: left;
+    border: 1px solid transparent;
+    font-weight: $font-semi-bold;
+    color: $primary-color;
+    z-index: 0;
+    &:hover {
+      cursor: default;
+      border: 1px solid #dcdcdc;
+    }
+  }
+  div.blank:hover {
+    cursor: default;
+    border: 1px solid transparent;
+  }
+  div.past__date {
+    font-weight: $font-standart;
+    color: $light-gray;
+  }
+  div.today {
+    font-size: 16px;
+    font-weight: $font-bold;
+    &:after{
+      content: '';
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transform: translateY(-50%);
+      margin: 0 auto;
+      border-radius: 50%;
+      background: $bg-color;
+      color: $primary-color;
+      box-shadow: 0px 5px 11px -9px rgba(0,0,0,0.48);
+      z-index: -1;
+    }
+  }
+  div.selected {
+    border: 1px solid $primary-color;
+  }
+}
+
+.calendar__header {
+    width: 100%;
+    text-align: center;
+    h2 {
+      width: 70%;
+      float: left;
+      padding: 0 1rem;
+      font-size: $normal-font-size;
+      font-weight: $font-bold;
+      color: $primary-color;
+  }
+}
+
+button.switch__month {
+  width: 15%;
+  float: left;
+  padding: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #dcdcdc;
+  transition: color .2s;
+  &:hover {
+    color: $primary-color;
+  }
+}

@@ -1,0 +1,55 @@
+@import "main.scss";
+
+body{
+  background-color: $light-color;
+}
+
+header{
+  background-color: $bg-color;
+  z-index: 10;
+}
+
+/*=============== CONTACT ===============*/
+.contact{
+  &__container{
+    width: 100%;
+    padding-top: $header-height;
+    display: flex;
+    justify-content: space-between;
+  }
+  &__photo{
+    width: 150vh;
+    img{
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+  &__data{
+    width: 100%;
+    margin: 3rem 3rem 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  &__title{
+    line-height: 120%;
+    position: relative;
+    font-size: $h1-font-size;
+    color: $primary-color;
+  }
+  &__description{
+    line-height: 140%;
+    margin: 1rem 0 2.5rem 0;
+    font-size: $normal-font-size;
+    color: $secondary-color;
+  }
+  &__btn{
+    width: fit-content;
+    padding: 1rem 2rem;
+    margin: 0;
+    font-size: $normal-font-size;
+    color: $primary-color;
+    transition: 0.5s;
+    z-index: 2;
+  }
+}

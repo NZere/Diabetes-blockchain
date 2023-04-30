@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Appointment</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/appointment.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/calendar.css" %}/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="" width="118" alt="logo"
+        /></a>
+        <button class="navbar__toggler" id="navbar-toggler">X</button>
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a
+                        class="navbar__link"
+                        aria-current="page"
+                        href="/appointment"
+                >appointment</a
+                >
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#about">about Us</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#departments">departments</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="./shop.html">shop </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#findUs">contact</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
+                </li>
+            {% else %}
+                <li class="navbar__item__btn">
+                    <a class="navbar__btn btn" href="users/login"
+                    ><span class="cover"></span> Sign In</a
+                    >
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!--==================== APPOINTMENT ====================-->
+    <section class="appointment" id="appointment">
+        <div class="appointment__container container">
+            <form id="form" method="post">
+                {% csrf_token %}
+                <!--==================== STEP DATE ====================-->
+                <fieldset>
+                    <div class="fieldset">
+                        <div class="step__container">
+                            <div class="subtitle"><h2>choose date + time</h2></div>
+                            <div class="date__time">
+                                <div class="calendar calendar__first" id="calendar-first">
+                                    <div class="calendar__header">
+                                        <button class="switch__month switch__left">
+                                            <i class="fa fa-chevron-left"></i>
+                                        </button>
+                                        <h2 id="month"></h2>
+                                        <button class="switch__month switch__right">
+                                            <i class="fa fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <div class="calendar__weekdays"></div>
+                                    <div class="calendar__content"></div>
+                                </div>
+                                <div class="time">
+                                    <div class="send">
+                                        <input
+                                                type="button"
+                                                name="Enter Date"
+                                                class="send__btn"
+                                                value="Reload Time"
+                                                id="enter"
+                                        />
+                                    </div>
+                                    <input name="doctor_slug" hidden="hidden" value="{{ doctor_slug }}">
+                                    <select class="time__select" name="time__select">
+                                        <option value="" disabled selected>Choose time</option>
+                                        {% if zip %}
+                                            {% for time_data, time_data_ids in zip %}
+                                                <option value="{{ time_data_ids }}">{{ time_data }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step__numbers">
+                                <div class="step__number step__number__on">1</div>
+                                <div class="step__number step__number__on">2</div>
+                                <div class="step__number">3</div>
+                            </div>
+                            <div class="step__info">
+                                <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 448 512"
+                                >
+                                    <path
+                                            d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM329 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-95 95-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L329 305z"
+                                    />
+                                </svg>
+                                <div class="subtitle"><h3>schedule an appointment</h3></div>
+                                <p>
+                                    Follow the steps to set up an appointment with us to get
+                                    the best isnurance solution
+                                </p>
+                            </div>
+                            <div class="step__contacts">
+                                <div class="step__contacts__number">100100100</div>
+                                <div class="step__contacts__email">
+                                    100points@please.pls
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input
+                            type="button"
+                            name="previous"
+                            class="previous action__btn__previous"
+                            value="Previous"
+                    />
+                    <input
+                            type="submit"
+                            name="next"
+                            class="submit action__btn"
+                            value="Next"
+                            id="next"
+                    />
+                </fieldset>
+            </form>
+        </div>
+    </section>
+</main>
+<script src={% static "/assets/js/jquery-3.6.3.min.js" %}></script>
+<script src={% static "/assets/js/appointment.js" %}></script>
+<script src={% static "/assets/js/calendar.js" %}></script>
+
+<script>
+    {#let doctor = {{ doctor_id }};#}
+    {#let date_sch ={{  }}#}
+    console.log("hi")
+    let content = $(".calendar__content")
+    let header = $(".calendar__header")
+    let day_ch = "";
+    $("#enter").click(function () {
+        console.log("hii");
+
+        var selectedElement = null;
+        content.children().each(function () {
+            if ($(this).hasClass('selected')) {
+                selectedElement = $(this);
+                return false; // exit loop
+            }
+        });
+        if (selectedElement) {
+            console.log('Found selected element:', selectedElement);
+        } else {
+            console.log('No selected element found');
+        }
+
+        day_ch = selectedElement[0].textContent
+        let monthYear = $("#month").text().split(" ");
+        let url = window.location.pathname;
+        {# April -> 4#}
+        const monthName = monthYear[0];
+        const dateObj = new Date(`${monthName} 1, 2023`);
+        const monthNum = dateObj.getMonth() + 1;
+
+        let url_end = url + "date/" + monthYear[1] + "-" + monthNum + "-" + day_ch
+        console.log(url_end)
+        {#window.open(window.location.origin+url_end)#}
+        window.location.pathname = url_end
+    });
+    let time_select = $(".time__select")
+
+    console.log(window.location.pathname)
+    console.log(time_select.val())
+    let form = $('#form')
+    $('#next').click(function () {
+        {#console.log($( ".time__select option:selected" ).text());#}
+        console.log(time_select.val())
+        let url_list = window.location.pathname.split('/')
+        let doctor_slug = url_list[2]
+
+        form.attr('action', '/appointment/appointment_submit/')
+
+// Submit form
+
+        {#form.submit();#}
+
+    })
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+@import "main.scss";
+
+body{
+  background-color: $light-color;
+  overflow: hidden;
+}
+
+.appointment{
+  &__container{
+    margin-top: calc($header-height/2);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+#form{
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  // background-color: #2C3E50;
+  .fieldset{
+    width: 70vw;
+    // max-width: 70vw;
+    position: relative;
+    padding: 20px 30px;
+    // margin: 0 10%;
+    border: 0 none;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    // flex-wrap: wrap;
+  }
+  fieldset:not(:first-of-type){
+    display: none;
+  }
+}
+
+.step{
+  &__container{
+    width: 50vw;
+    height: 70vh;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.6);
+  }
+  width: 20vw;
+  height: 70vh;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  background-color: $light-color;
+  box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.6);
+  z-index: $z-tooltip;
+  &__numbers{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    .step__number{
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid $primary-color;
+      border-radius: 50%;
+      background-color: $light-color;
+      &__on{
+        border: 2px solid $primary-color;
+        background-color: $primary-color;
+        color: #fff;
+      }
+    }
+  }
+  &__info{
+    svg{
+      width: 3rem;
+      fill: $primary-color;
+    }
+    .subtitle{
+      height: fit-content;
+      padding: 1rem;
+    }
+    p{
+      font-size: $small-font-size;
+      color: $dark-gray;
+    }
+  }
+  &__contacts{
+    font-size: $small-font-size;
+    font-weight: $font-semi-bold;
+    &__number{
+      color: $primary-color;
+    }
+    &__email{
+      color: $secondary-color;
+    }
+  }
+}
+
+.action__btn{
+  width: 100px;
+  position: absolute;
+  text-align: center;
+  left: 40%;
+  bottom: 3rem;
+  padding: 10px 5px;
+  // margin: 1rem 0.5rem;
+  background-color: $primary-color;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-weight: bold;
+  color: #fff;
+  &:hover, &:focus {
+    box-shadow: 0 0 0 2px $bg-color, 0 0 0 3px $primary-color;
+  }
+  &__previous {
+    width: 10%;
+    position: absolute;
+    text-align: center;
+    left: 20%;
+    bottom: 3rem;
+    background: $bg-color;
+    font-weight: bold;
+    color: $primary-color;
+    border: 0 none;
+    border-radius: 25px;
+    cursor: pointer;
+    padding: 10px 5px;
+    // margin: 10px 5px;
+    &:hover, &:focus {
+      box-shadow: 0 0 0 2px $primary-color, 0 0 0 3px $bg-color;
+    }
+  }
+}
+
+.date__time{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 3rem;
+  gap: 3rem;
+  .calendar{
+    flex: 2;
+  }
+  .time{
+    flex: 1;
+    position: relative;
+    select, .send__btn{
+      width: 100%;
+      height: 50px;
+      padding: 1rem 2rem 1rem 1rem;
+      border: 1px solid $primary-color;
+      border-radius: 1rem;
+      font-size: $small-font-size;
+      color: $primary-color;
+    }
+    .send__btn{
+      background-color: $light-color;
+    }
+  }
+}
+
+// .hidden{
+//   display: none;
+// }

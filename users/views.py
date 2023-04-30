@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from .face_recognition import dataset, training, recognition
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
@@ -9,7 +10,8 @@ from Crypto.Cipher import AES
 from Crypto import Random
 from django.views.decorators.csrf import csrf_exempt
 
-from users.models import Wallet
+from users.models import Wallet, Doctor
+from django.http import HttpResponse
 
 BS = 16
 pad = lambda s: bytes(s + (BS - len(s) % BS) * chr(BS - len(s) % BS), 'utf-8')
@@ -121,10 +123,10 @@ def register(request):
         print("here")
         first_name = request.POST.get('first_name', '')
         last_name = request.POST.get('last_name', '')
-        username = request.POST.get('username', '')
+        username = request.POST.get('username_up', '')
         password1 = request.POST.get('password1', '')
         password2 = request.POST.get('password1', '')
-        email = request.POST.get('email', '')
+        email = request.POST.get('email_up', '')
 
         value = {
             'first_name': first_name,
@@ -195,10 +197,10 @@ def register(request):
             return redirect('/users/login', value)
         else:
             messages.warning(request, error_message)
-            return render(request, 'users/register.html', value)
+            return render(request, 'login.html', value)
     else:
         print("lal")
-        return render(request, 'users/register.html')
+        return render(request, 'login.html')
 
 
 def index(request):
@@ -210,57 +212,183 @@ def logout(request):
     return redirect('/')
 
 
+# def crypto(request):
+#     user = User.objects.get(id=1)
+#     user.email = (encrypt(user.id, user.email, user.username)).decode('ascii')
+#     user.first_name = (encrypt(user.id, user.first_name, user.username)).decode('ascii')
+#     user.last_name = (encrypt(user.id, user.last_name, user.username)).decode('ascii')
+#     user.password = (encrypt(user.id, hashlib.sha256("admin".encode('ascii')).hexdigest(), user.username)).decode(
+#         'ascii')
+#     print(user.id, user.username, user.password, user.first_name, user.last_name, user.email)
+#     user.save()
+#     return redirect('/')
 def crypto(request):
-    user = User.objects.get(id=1)
-    user.email = (encrypt(user.id, user.email, user.username)).decode('ascii')
-    user.first_name = (encrypt(user.id, user.first_name, user.username)).decode('ascii')
-    user.last_name = (encrypt(user.id, user.last_name, user.username)).decode('ascii')
-    user.password = (encrypt(user.id, hashlib.sha256("admin".encode('ascii')).hexdigest(), user.username)).decode(
+    user_id = 1
+    username = "admin"
+    password = "admin"
+    email = "admin@admin.com"
+    first_name = "Admin"
+    last_name = "Admin"
+    user = User.objects.get(id=user_id)
+
+    user.email = (encrypt(user_id, email, username)).decode('ascii')
+    user.first_name = (encrypt(user_id, first_name, username)).decode('ascii')
+    user.last_name = (encrypt(user_id, last_name, username)).decode('ascii')
+    user.password = (encrypt(user_id, hashlib.sha256(password.encode('ascii')).hexdigest(), username)).decode(
         'ascii')
-    print(user.id, user.username, user.password, user.first_name, user.last_name, user.email)
+    print(user.id)
+    print(user.username)
+    print(user.password)
+    print(user.first_name)
+    print(user.last_name)
+    print(user.email)
     user.save()
     return redirect('/')
 
 
 @csrf_exempt
 def login(request):
-    if request.method == 'POST':
-        username = request.POST.get("username", '')
-        password = request.POST.get("password", '')
-
-        user = None
-        try:
-            print("here")
-            user = User.objects.get(username=username)
-        except():
-            user = None
-        value = {'username': username}
-        if user is not None:
-            user_id = user.id
-            iv = get_iv_from_cipher(user.id, (user.password).encode('ascii'))
-            user_hashed = hashlib.sha256(password.encode('ascii')).hexdigest()
-            print("hashed", user_hashed)
-            temp_pass = (encrypt_with_iv(iv, user_id, user_hashed, username)).decode('ascii')
-            print('temp_pass', temp_pass)
-            print('password', password)
-            if temp_pass == user.password:
-                print("password matches")
-                try:
-                    user = User.objects.get(username=username, password=temp_pass)
-                    user.backend = 'django.contrib.auth.backends.ModelBackend'
-                    auth.login(request, user)
-                    first_name = get_user_first_name(user)
-                    message = "Hello, " + first_name
-                    messages.success(request, message)
-                    return redirect('/')
-                except():
-                    messages.warning(request, 'Invalid password')
-                    return redirect('/users/login', value)
-            else:
-                messages.warning(request, 'Invalid password')
-                return redirect('/users/login', value)
+    print("login page")
+    print(request)
+    if request.method == "POST":
+        print("POST")
+        username = request.POST.get("username_in", '')
+        password = request.POST.get("password_in", '')
+        print("username", username)
+        user = check_user(username, password)
+        if type(user)==User:
+            try:
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                auth.login(request, user)
+                first_name = get_user_first_name(user)
+                message = "Hello, " + first_name
+                messages.success(request, message)
+                return redirect('/')
+            except Exception:
+                value = {'username': username}
+                redirect('/users/login')
         else:
-            messages.info(request, 'This user is not exists')
-            return redirect('/users/login', value)
+            value = {'username': username}
+            redirect('/users/login')
+
     else:
         return render(request, 'login.html')
+
+
+@csrf_exempt
+def login_docto_pass(request):
+    print("login doctor page")
+    print(request)
+    if request.method == "POST":
+        print("POST")
+        username = request.POST.get("username_in", '')
+        password = request.POST.get("password_in", '')
+        print("username", username)
+        user = check_user(username, password)
+        if type(user) == User:
+            try:
+                doctor_user = Doctor.objects.get(doctor_user=user)
+                if not doctor_user:
+                    return redirect('/users/login/users/doctor/pass')
+                user.backend = 'django.contrib.auth.backends.ModelBackend'
+                auth.login(request, user)
+                first_name = get_user_first_name(user)
+                message = "Hello, " + first_name
+                messages.success(request, message)
+                return redirect('/')
+            except Exception:
+                value = {'username': username}
+                redirect('/users/login')
+        else:
+            value = {'username': username}
+            redirect('/users/login')
+
+    else:
+        return render(request, 'loginDoctor.html')
+
+@csrf_exempt
+def login_doctor_face(request):
+    user_id = recognition.run()
+    try:
+        user = User.objects.get(id=user_id)
+        if not user:
+            return redirect('/users/login/users/doctor/pass')
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
+        auth.login(request, user)
+        first_name = get_user_first_name(user)
+        return redirect('/')
+    except Exception:
+        redirect('/users/login/users/doctor/pass')
+
+
+def learn_doctor():
+    dataset.run()
+    training.run()
+
+
+def check_user(username: str, password: str):
+    user = None
+    try:
+        print("here")
+        user = User.objects.get(username=username)
+    except:
+        user = None
+        return 'Username is not exist'
+    if user is not None:
+        user_id = user.id
+        iv = get_iv_from_cipher(user.id, (user.password).encode('ascii'))
+        user_hashed = hashlib.sha256(password.encode('ascii')).hexdigest()
+        print("hashed", user_hashed)
+        temp_pass = (encrypt_with_iv(iv, user_id, user_hashed, username)).decode('ascii')
+        print('temp_pass', temp_pass)
+        print('password', password)
+        if temp_pass == user.password:
+            print("password matches")
+            try:
+                user = User.objects.get(username=username, password=temp_pass)
+                return user
+            except():
+                return 'Invalid password'
+        else:
+            return 'Invalid password'
+    else:
+        return 'This user is not exists'
+
+
+@csrf_exempt
+def add_doctor(request):
+    if request.user.is_superuser and request.method == "POST":
+        user_id = int(request.POST.get("user_id", ''))
+        experience = request.POST.get("experience", '')
+        description = request.POST.get("description", '')
+        image = request.POST.get("image", '')
+        phone_num = request.POST.get("phone_num", '')
+        sex = request.POST.get("sex", '')
+        try:
+            user = User.objects.get(id=user_id)
+            user_doctor, created = Doctor.objects.create(
+                doctor_user=user,
+                experience=experience,
+                description=description,
+                image=image,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                phoneNum=phone_num,
+                slug=user.username,
+                sex=sex
+            )
+            message = f"Doctor with id {user_id} added" if created else f"Error in adding doctor"
+            # return HttpResponse(status=201, messages=message)
+            return HttpResponse(status=201)
+        except Exception:
+            message = f"Error in adding doctor"
+            return HttpResponse(status=400)
+    elif not request.user.is_superuser:
+        return HttpResponse(status=403)
+
+
+@csrf_exempt
+def remove_doctor(request, user_id):
+    if request.method == "DELETE":
+        user_doctor, deleted = Doctor.objects.filter(doctor_user=User.objects.get(user=user_id)).delete()
+        return HttpResponse(status=200)

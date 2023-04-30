@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Project A</title>
-    <link rel="stylesheet" href="./assets/styles/css/nullstyle.css"/>
-    <link rel="stylesheet" href="./assets/styles/css/header.css"/>
-    <link rel="stylesheet" href="./assets/styles/css/style.css"/>
+    <link rel="stylesheet" href={% static "./assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "./assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "./assets/styles/css/style.css" %}/>
+
+    {% load static %}
 </head>
 <body>
 <!--==================== HEADER ====================-->
@@ -16,7 +19,7 @@
         <a class="navbar__brand" aria-current="page" href="./index.html"
         ><img src="" width="118" alt="logo"
         /></a>
-        <button class="navbar__toggler" id="navbar-toggler">X</button>
+        {#        <button class="navbar__toggler" id="navbar-toggler">X</button>#}
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
                 <a class="navbar__link" href="./appointment.html">appointment</a>
@@ -28,7 +31,7 @@
                 <a class="navbar__link" href="#departments">doctors</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="./shop.html">shop </a>
+                <a class="navbar__link" href="#">shop </a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="#findUs">contact</a>
@@ -36,7 +39,7 @@
 
             {% if user.is_authenticated %}
                 <li class="navbar__item">
-                    <a> Welcome, {{ user_first_name }}</a>
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
                 </li>
             {% else %}
                 <li class="navbar__item__btn">
@@ -47,18 +50,7 @@
             {% endif %}
         </ul>
     </nav>
-    <div class="mt-5 pt-4">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+
 </header>
 
 <main id="main">
@@ -75,15 +67,15 @@
                     You can get the care you need 24/7 – be it online or in person.
                     You will be treated by caring specialist doctors.
                 </p>
-                <a href="./appointment.html" class="welcome__btn btn">
+                <a href="./appointment" class="welcome__btn btn">
                     <span class="cover"></span> Make an appointment
                     <span class="cover__bg"></span>
                 </a>
             </div>
             <div class="welcome__photo">
                 <img
-                        src="./assets/img/welcome.png"
-                        class="welcome__photo"
+                        src={% static "./assets/img/welcome.png" %}
+                                class="welcome__photo"
                         alt="welcome__photo"
                 />
             </div>
@@ -115,8 +107,8 @@
             <div class="about__container">
                 <div class="about__photo">
                     <img
-                            src="./assets/img/about.png"
-                            class="about__photo"
+                            src={% static "./assets/img/about.png" %}
+                                    class="about__photo"
                             alt="about__photo"
                     />
                 </div>
@@ -139,9 +131,9 @@
 </main>
 
 <!--=============== MAIN JS ===============-->
-<script src="./assets/js/jquery-3.6.3.min.js"></script>
+<script src={% static "/assets/js/jquery-3.6.3.min.js" %}></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
-<script src="./assets/js/header.js"></script>
-<script src="./assets/js/main.js"></script>
+<script src={% static "/assets/js/header.js" %}></script>
+<script src={% static "/assets/js/main.js" %}></script>
 </body>
 </html>

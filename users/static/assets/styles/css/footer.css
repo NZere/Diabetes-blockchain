@@ -1,0 +1,325 @@
+/*=============== VARIABLES SCSS ===============*/
+/*========== Colors ==========*/
+/*========== Font ==========*/
+@font-face {
+  font-family: "Comfortaa", cursive;
+  src: url();
+}
+@font-face {
+  font-family: "Molengo", sans-serif;
+  src: url();
+}
+/*========== Typography ==========*/
+/*.5rem = 8px | 1rem = 16px ...*/
+/*========== Font weight ==========*/
+/*========== z index ==========*/
+/* Responsive typography */
+/*=============== REUSABLE CSS CLASSES ===============*/
+.container {
+  max-width: 1140px;
+  margin-inline: auto;
+  padding: 2rem;
+}
+
+.cover {
+  width: 0%;
+  z-index: -1;
+}
+
+.cover__bg {
+  width: 100%;
+  z-index: -2;
+}
+
+.cover, .cover__bg {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+section {
+  position: relative;
+}
+
+.bg {
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  width: 100%;
+  line-height: 120%;
+  position: relative;
+  font-size: 3.25rem;
+  color: #283779;
+}
+
+.subtitle {
+  height: 15vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.subtitle h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #283779;
+}
+.subtitle h3 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #283779;
+}
+
+input {
+  width: 80%;
+  margin: 8px 0;
+  padding: 12px 15px;
+  border: 0.1rem solid #b4dcec;
+  border-radius: 5rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+input:focus {
+  border: 0.1rem solid #283779;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+}
+
+/*=============== SUBSCRIBE ===============*/
+.subscribe {
+  padding: 4rem;
+  background-image: url("../../img/info-bg.png");
+  background-size: cover;
+  background-color: #b4dcec;
+}
+.subscribe__container {
+  width: 100%;
+  padding-top: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  color: #283779;
+}
+.subscribe__info {
+  width: 35%;
+}
+.subscribe__info__title {
+  margin: 2rem 0;
+  font-size: 1.75rem;
+  text-transform: uppercase;
+}
+.subscribe__info__text {
+  margin-bottom: 2rem;
+  line-height: 1.5rem;
+  font-size: 1rem;
+}
+.subscribe__form {
+  width: 60%;
+}
+.subscribe__form h3 {
+  margin: 2rem 0;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+.subscribe__form__inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 1rem;
+}
+.subscribe__form__inner .email {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+.subscribe__form__inner .action__btn {
+  width: 100px;
+  padding: 10px 5px;
+  background-color: #283779;
+  border: 0 none;
+  border-radius: 25px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+.subscribe__form__inner .action__btn:hover, .subscribe__form__inner .action__btn:focus {
+  -webkit-box-shadow: 0 0 0 2px #b4dcec, 0 0 0 3px #283779;
+          box-shadow: 0 0 0 2px #b4dcec, 0 0 0 3px #283779;
+}
+
+/*=============== FOOTER ===============*/
+.footer {
+  background-color: #283779;
+}
+.footer__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  color: #fff;
+}
+.footer__items {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 2rem 0;
+}
+.footer__items.logo {
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
+}
+.footer__items.logo a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: end;
+  margin-bottom: 2rem;
+}
+.footer__items.logo img {
+  width: 100px;
+  height: 100px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+}
+.footer__items h4 {
+  position: relative;
+  margin-bottom: 30px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  z-index: 5;
+}
+.footer__items h4:before {
+  content: "";
+  width: 45px;
+  height: 45px;
+  display: block;
+  position: absolute;
+  left: -20px;
+  top: -13px;
+  border-radius: 50px;
+  background: #b4dcec;
+  opacity: 0.5;
+  z-index: -1;
+}
+.footer__items a, .footer__items__btn a, .footer__items .list a {
+  display: inline-block;
+  padding: 0.5rem 0;
+  text-transform: capitalize;
+  font-size: 1.5rem;
+  color: #fff;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.footer__items.list a:hover {
+  padding-left: 0.5rem;
+  color: #b4dcec;
+}
+.footer__items .social__links {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+}
+.footer__items .social__links a {
+  width: 40px;
+  height: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 50%;
+  background-color: #b4dcec;
+  color: #283779;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+.footer__items .social__links a:hover {
+  background-color: #fff;
+  color: #283779;
+}
+
+/*=============== COPYRIGHT ===============*/
+.copyright {
+  background-color: #b4dcec;
+  color: #283779;
+}
+
+@media (max-width: 767px) {
+  .footer {
+    background-color: #283779;
+  }
+  .footer__container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .footer__items {
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 500px) {
+  .subscribe__container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .footer__items {
+    width: 100%;
+  }
+}

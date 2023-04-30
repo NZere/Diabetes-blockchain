@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Appointment</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/appointment.css" %}/>
+    <link rel="stylesheet" href={% static "./assets/styles/css/jquery-msgpopup.css" %}/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="" width="118" alt="logo"
+        /></a>
+        <button class="navbar__toggler" id="navbar-toggler">X</button>
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a
+                        class="navbar__link"
+                        aria-current="page"
+                        href="/appointment"
+                >appointment</a
+                >
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#about">about Us</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#departments">departments</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="./shop.html">shop </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#findUs">contact</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
+                </li>
+            {% else %}
+                <li class="navbar__item__btn">
+                    <a class="navbar__btn btn" href="users/login"
+                    ><span class="cover"></span> Sign In</a
+                    >
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!--==================== APPOINTMENT ====================-->
+    <section class="appointment" id="appointment">
+        <div class="appointment__container container">
+            <form id="form" method="post" action="/appointment/appointment_end/">
+                {% csrf_token %}
+                <!--==================== STEP PERSONAL INFO ====================-->
+                <fieldset>
+                    <div class="fieldset">
+                        <div class="step__container">
+                            <div class="subtitle">
+                                <h2>confirm your personal info</h2>
+                            </div>
+                            <input type="text" name="first_name" placeholder="Name" value={{ first_name }}>
+                            <input type="text" name ="last_name" placeholder="Surname" value={{ last_name }}>
+                            <input type="email" name="email" placeholder="Email" value={{ email }}>
+                            <input hidden="hidden" name="doctor_slug" type="text" placeholder="doctor_slug" value={{ doctor_slug }}>
+                            <input hidden="hidden" name="time_sel" type="text" placeholder="time_sel" value={{ time_sel }}>
+
+
+                        </div>
+                        <div class="step">
+                            <div class="step__numbers">
+                                <div class="step__number step__number__on">1</div>
+                                <div class="step__number step__number__on">2</div>
+                                <div class="step__number step__number__on">3</div>
+                            </div>
+                            <div class="step__info">
+                                <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 448 512"
+                                >
+                                    <path
+                                            d="M128 0c17.7 0 32 14.3 32 32V64H288V32c0-17.7 14.3-32 32-32s32 14.3 32 32V64h48c26.5 0 48 21.5 48 48v48H0V112C0 85.5 21.5 64 48 64H96V32c0-17.7 14.3-32 32-32zM0 192H448V464c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V192zM329 305c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-95 95-47-47c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l64 64c9.4 9.4 24.6 9.4 33.9 0L329 305z"
+                                    />
+                                </svg>
+                                <div class="subtitle"><h3>schedule an appointment</h3></div>
+                                <p>
+                                    Follow the steps to set up an appointment with us to get
+                                    the best isnurance solution
+                                </p>
+                            </div>
+                            <div class="step__contacts">
+                                <div class="step__contacts__number">100100100</div>
+                                <div class="step__contacts__email">
+                                    100points@please.pls
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input
+                            type="button"
+                            name="previous"
+                            class="previous action__btn__previous"
+                            value="Previous"
+                    />
+                    <input
+                            type="submit"
+                            name="submit"
+                            class="submit action__btn"
+                            data-btn-header-example="success"
+                            value="Submit"
+                    />
+                    <!-- data-btn-header-example="error" -->
+                </fieldset>
+            </form>
+        </div>
+    </section>
+
+    <!--==================== POPUP====================-->
+</main>
+<script src={% static "/assets/js/jquery-3.6.3.min.js" %}></script>
+<script src={% static "/assets/js/appointment.js" %}></script>
+<script src={% static "/assets/js/appointment.js" %}></script>
+</body>
+</html>

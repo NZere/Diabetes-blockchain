@@ -1,0 +1,92 @@
+@import "main.scss";
+
+header{
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  background-color: $light-color;
+  transition: background-color .3s, box-shadow .3s;
+  z-index: $z-fixed;
+  .navbar{
+    height: $header-height;
+    padding: 1rem;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__toggler{
+      display: none;
+    }
+    &__list{
+      max-width: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    &__item {
+      position: relative;
+      &:before{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 5%;
+        display: block;
+        border-radius: 50px;
+        background: $primary-color;
+        width: 0%;
+        height: 1px;
+        transition: all 0.3s ease;
+        z-index: -1;
+      }
+      a{
+        display: inline-block;
+        padding: 1rem;
+        text-transform: capitalize;
+        font-size: $normal-font-size;
+        color: $primary-color;
+        transition: 0.5s;
+        z-index: 5;
+      }
+      &:hover:before {
+        width: 100%;
+      }
+    }
+  }
+  .icons{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    a{
+      font-size: $normal-font-size;
+      color: $light-gray;
+    }
+    .icon:hover, .active{
+      color: $primary-color;
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .navbar__list{
+    width: 100%;
+    position: fixed;
+    top: -100%;
+    left: 0;
+    background-color: #fff;
+    box-shadow: 0 4px #fff;
+    padding-block: 3.5rem 3rem;
+    border-radius: 0 0 2rem 2rem;
+    transition: top .4s;
+  }
+  .navbar__item{
+    color: $secondary-color;
+    &:hover{
+      color: $secondary-color;
+    }
+  }
+  .navbar__toggler{
+    display: block;
+  }
+}

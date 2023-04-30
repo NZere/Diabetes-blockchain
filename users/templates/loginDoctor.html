@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Log In</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+    <link rel="stylesheet" href={% static "assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "assets/styles/css/login.css" %}/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="" width="118" alt="logo"
+        /></a>
+        <button class="navbar__toggler" id="navbar-toggler">X</button>
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/appointment/">appointment</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#about">about Us</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#departments">departments</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#findUs">shop </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="#findUs">contact</a>
+            </li>
+            <li class="navbar__item__btn">
+                <a class="navbar__btn btn" aria-current="page" href="./login.html"
+                ><span class="cover"></span> sign in</a
+                >
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!--==================== FORM ====================-->
+    <section class="login" id="login">
+        <div class="login__container container" id="container">
+            <div class="form__container signup__container">
+                <form action="#">
+                    <h1 class="title">Sign in</h1>
+                    <div class="social__container">
+                        <a href="#" class="social">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social">
+                            <i class="fab fa-google-plus-g"></i>
+                        </a>
+                        <a href="#" class="social">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <span>or use your account</span>
+                    <input type="text" name="username_in" value="{{ username }}" placeholder="Username"/>
+                    <input type="password" name="password_in" placeholder="Password"/>
+                    <a href="#" class="forgot__password">Forgot your password?</a>
+                    <a href="#" class="login__btn btn" id="submitSignUp">
+                        <span class="cover"></span> Sign In
+                        <span class="cover__bg"></span>
+                    </a>
+                </form>
+            </div>
+            <div class="form__container signin__container">
+                <form action="#" id="formSignIn">
+                    <h1 class="title">Face ID Authentication</h1>
+                </form>
+            </div>
+            <div class="overlay__container">
+                <div class="overlay">
+                    <div class="overlay__panel overlay__left">
+                        <h1 class="title">Welcome Back!</h1>
+                        <p>Use Face ID Authentication</p>
+                        <a href="#" class="overlay__btn btn" id="signIn">
+                            <span class="cover"></span> Face ID
+                            <span class="cover__bg"></span>
+                        </a>
+                    </div>
+                    <div class="overlay__panel overlay__right">
+                        <h1 class="title">Welcome Back!</h1>
+                        <p>Enter via username/gmail and password</p>
+                        <a href="#" class="overlay__btn btn" id="signUp">
+                            <span class="cover"></span> Username
+                            <span class="cover__bg"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script src={% static "/assets/js/login.js" %}></script>
+</body>
+</html>

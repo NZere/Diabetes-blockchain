@@ -1,0 +1,220 @@
+/*=============== VARIABLES SCSS ===============*/
+/*========== Colors ==========*/
+/*========== Font ==========*/
+@font-face {
+  font-family: "Comfortaa", cursive;
+  src: url();
+}
+@font-face {
+  font-family: "Molengo", sans-serif;
+  src: url();
+}
+/*========== Typography ==========*/
+/*.5rem = 8px | 1rem = 16px ...*/
+/*========== Font weight ==========*/
+/*========== z index ==========*/
+/* Responsive typography */
+/*=============== REUSABLE CSS CLASSES ===============*/
+.container {
+  max-width: 1140px;
+  margin-inline: auto;
+  padding: 2rem;
+}
+
+.cover {
+  width: 0%;
+  z-index: -1;
+}
+
+.cover__bg {
+  width: 100%;
+  z-index: -2;
+}
+
+.cover, .cover__bg {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+section {
+  position: relative;
+}
+
+.bg {
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  width: 100%;
+  line-height: 120%;
+  position: relative;
+  font-size: 3.25rem;
+  color: #283779;
+}
+
+.subtitle {
+  height: 15vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.subtitle h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #283779;
+}
+.subtitle h3 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  color: #283779;
+}
+
+input {
+  width: 80%;
+  margin: 8px 0;
+  padding: 12px 15px;
+  border: 0.1rem solid #b4dcec;
+  border-radius: 5rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+input:focus {
+  border: 0.1rem solid #283779;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+}
+
+.calendar {
+  margin: auto;
+}
+.calendar__header {
+  padding: 0 0 1rem 0;
+}
+.calendar .calendar__weekdays {
+  background: #b4dcec;
+}
+.calendar .calendar__weekdays .calendar__content {
+  max-width: 15rem;
+}
+
+.calendar__content, .calendar__weekdays, .calendar__header {
+  position: relative;
+  overflow: hidden;
+}
+
+.calendar__weekdays div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.calendar__weekdays div, .calendar__content div {
+  width: 14.28571%;
+  padding: 0.5rem 0;
+  overflow: hidden;
+  text-align: center;
+  font-size: 16px;
+  background-color: transparent;
+  color: #000;
+}
+
+.calendar__content div {
+  position: relative;
+  float: left;
+  border: 1px solid transparent;
+  font-weight: 600;
+  color: #283779;
+  z-index: 0;
+}
+.calendar__content div:hover {
+  cursor: default;
+  border: 1px solid #dcdcdc;
+}
+.calendar__content div.blank:hover {
+  cursor: default;
+  border: 1px solid transparent;
+}
+.calendar__content div.past__date {
+  font-weight: 400;
+  color: #7b7a8b;
+}
+.calendar__content div.today {
+  font-size: 16px;
+  font-weight: 700;
+}
+.calendar__content div.today:after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #b4dcec;
+  color: #283779;
+  -webkit-box-shadow: 0px 5px 11px -9px rgba(0, 0, 0, 0.48);
+          box-shadow: 0px 5px 11px -9px rgba(0, 0, 0, 0.48);
+  z-index: -1;
+}
+.calendar__content div.selected {
+  border: 1px solid #283779;
+}
+
+.calendar__header {
+  width: 100%;
+  text-align: center;
+}
+.calendar__header h2 {
+  width: 70%;
+  float: left;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #283779;
+}
+
+button.switch__month {
+  width: 15%;
+  float: left;
+  padding: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  color: #dcdcdc;
+  -webkit-transition: color 0.2s;
+  transition: color 0.2s;
+}
+button.switch__month:hover {
+  color: #283779;
+}
