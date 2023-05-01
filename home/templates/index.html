@@ -6,9 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Project A</title>
-    <link rel="stylesheet" href={% static "./assets/styles/css/nullstyle.css" %}/>
-    <link rel="stylesheet" href={% static "./assets/styles/css/header.css" %}/>
-    <link rel="stylesheet" href={% static "./assets/styles/css/style.css" %}/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/style.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/footer.css"%} />
 
     {% load static %}
 </head>
@@ -17,12 +26,12 @@
 <header id="header" class="bg-header">
     <nav class="navbar container">
         <a class="navbar__brand" aria-current="page" href="./index.html"
-        ><img src="" width="118" alt="logo"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
         /></a>
         {#        <button class="navbar__toggler" id="navbar-toggler">X</button>#}
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
-                <a class="navbar__link" href="./appointment.html">appointment</a>
+                <a class="navbar__link" href="/appointment">appointment</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="#about">about Us</a>
@@ -55,32 +64,32 @@
 
 <main id="main">
     <!--==================== WELCOME ====================-->
-    <section class="welcome bg" id="welcome">
+      <section class="welcome bg" id="welcome">
         <div class="welcome__container container">
-            <div class="welcome__data">
-                <h1 class="title">
-                    We're <strong>determined </strong>for your<strong>
-                    better life.</strong
-                >
-                </h1>
-                <p class="welcome__description">
-                    You can get the care you need 24/7 – be it online or in person.
-                    You will be treated by caring specialist doctors.
-                </p>
-                <a href="./appointment" class="welcome__btn btn">
-                    <span class="cover"></span> Make an appointment
-                    <span class="cover__bg"></span>
-                </a>
-            </div>
-            <div class="welcome__photo">
-                <img
-                        src={% static "./assets/img/welcome.png" %}
-                                class="welcome__photo"
-                        alt="welcome__photo"
-                />
-            </div>
+          <div class="welcome__data">
+            <h1 class="title">
+              We're <strong>determined </strong>for your<strong>
+                better life.</strong
+              >
+            </h1>
+            <p class="welcome__description">
+              You can get the care you need 24/7 – be it online or in person.
+              You will be treated by caring specialist doctors.
+            </p>
+            <a href="/appointment" class="welcome__btn btn">
+              <span class="cover"></span> Make an appointment
+              <span class="cover__bg"></span>
+            </a>
+          </div>
+          <div class="welcome__photo">
+            <img
+              src={% static "/assets/img/welcome.png" %}
+              class="welcome__photo"
+              alt="welcome__photo"
+            />
+          </div>
         </div>
-    </section>
+      </section>
 
     <!--==================== DEPARTMENTS ====================-->
     <section class="departments" id="departments">
@@ -97,38 +106,149 @@
             </div>
         </div>
     </section>
+    <!--==================== INFO ====================-->
+      <section class="info bg" id="info">
+        <div class="info__container container">
+          <div class="info__photo">
+            <img
+              src={% static "/assets/img/info.png"%}
+              class="info__photo"
+              alt="info__photo"
+            />
+          </div>
+          <div class="info__data">
+            <h2 class="info__title">
+              Lorem ipsum dolor sit amet consectetur adipisicing.
+            </h2>
+            <p class="info__description">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              accusantium praesentium dolores incidunt. Et, perspiciatis fuga
+              reprehenderit provident quae asperiores.
+            </p>
+            <a href="#" class="info__btn btn">
+              <span class="cover"></span> Make an appointment
+              <span class="cover__bg"></span>
+            </a>
+          </div>
+        </div>
+      </section>
 
     <!--==================== ABOUT ====================-->
-    <section class="about bg" id="about">
+      <section class="about bg" id="about">
         <div class="container">
-            <div class="about__title__bg subtitle">
-                <h2>about us</h2>
+          <div class="about__title__bg subtitle">
+            <h2>about us</h2>
+          </div>
+          <div class="about__container">
+            <div class="about__data">
+              <h2 class="about__title">
+                Lorem ipsum dolor sit amet consectetur adipisicing.
+              </h2>
+              <p class="about__description">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+                accusantium praesentium dolores incidunt. Et, perspiciatis fuga
+                reprehenderit provident quae asperiores.
+              </p>
+              <a href="#" class="about__btn btn"
+                ><span class="cover"></span> Learn more</a
+              >
             </div>
-            <div class="about__container">
-                <div class="about__photo">
-                    <img
-                            src={% static "./assets/img/about.png" %}
-                                    class="about__photo"
-                            alt="about__photo"
-                    />
-                </div>
-                <div class="about__data">
-                    <h2 class="about__title">
-                        Lorem ipsum dolor sit amet consectetur adipisicing.
-                    </h2>
-                    <p class="about__description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-                        accusantium praesentium dolores incidunt. Et, perspiciatis fuga
-                        reprehenderit provident quae asperiores.
-                    </p>
-                    <a href="#" class="about__btn btn"
-                    ><span class="cover"></span> Learn more</a
-                    >
-                </div>
+            <div class="about__photo">
+              <img
+                src={% static "/assets/img/about.png"%}
+                class="about__photo"
+                alt="about__photo"
+              />
             </div>
+          </div>
         </div>
-    </section>
-</main>
+      </section>
+    <!--==================== DEPARTMENTS ====================-->
+      <section class="departments" id="departments">
+        <div class="departments__container container">
+          <div class="departments__title__bg subtitle">
+            <h2>our departments</h2>
+          </div>
+          <div class="departments__cards">
+            <div class="card card1"></div>
+            <div class="card card2"></div>
+            <div class="card card3"></div>
+            <div class="card card4"></div>
+            <div class="card card5"></div>
+          </div>
+        </div>
+      </section>
+
+      <!--==================== SUBSCRIBE ====================-->
+      <section class="subscribe bg" id="subscribe">
+        <div class="subscribe__container container">
+          <div class="subscribe__info">
+            <h2 class="subscribe__info__title">Get an update every week</h2>
+            <p class="subscribe__info__text">
+              This website was created for diploma project. <br />
+              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+            </p>
+          </div>
+          <div class="subscribe__form">
+            <h3>SUBSCRIBE TO NEWSLETTER</h3>
+            <form class="subscribe__form__inner">
+              <input type="email" placeholder="Email" class="email" />
+              <input
+                type="submit"
+                name="next"
+                class="submit action__btn"
+                value="Next"
+              />
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!--==================== FOOTER ====================-->
+    <footer class="footer">
+      <div class="footer__container container">
+        <div class="footer__items logo">
+          <a aria-current="page" href="./index.html"
+            ><img src={% static "/assets/img/logo-bg.png"%} alt="logo" />Diploma Project</a
+          >
+          <h3>The world's most trusted diabet system.</h3>
+        </div>
+        <div class="footer__items list">
+          <h4>About Us</h4>
+          <ul>
+            <li><a href="#">Lorem</a></li>
+            <li><a href="#">Lorem</a></li>
+            <li><a href="#">Lorem</a></li>
+            <li><a href="#">Lorem</a></li>
+          </ul>
+        </div>
+        <div class="footer__items list">
+          <h4>online shop</h4>
+          <ul>
+            <li><a href="#">Lorem</a></li>
+            <li><a href="#">Lorem</a></li>
+            <li><a href="#">Lorem</a></li>
+            <li><a href="#">Lorem</a></li>
+          </ul>
+        </div>
+        <div class="footer__items">
+          <h4>follow us</h4>
+          <div class="social__links">
+            <a href=""><i class="fab fa-brands fa-instagram"></i></a>
+            <a href=""><i class="fab fa-brands fa-twitter"></i></a>
+            <a href=""><i class="fab fa-brands fa-facebook"></i></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!--==================== COPYRIGHT ====================-->
+    <div class="copyright">
+      <div class="copyright__container container">
+        All rights Reserved &copy; Diploma project, 2023
+      </div>
+    </div>
+
 
 <!--=============== MAIN JS ===============-->
 <script src={% static "/assets/js/jquery-3.6.3.min.js" %}></script>

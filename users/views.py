@@ -1,4 +1,12 @@
-from django.http import HttpResponse
+import json
+import os
+import subprocess
+
+import cv2
+from asgiref.sync import sync_to_async
+from django.http import HttpResponse, StreamingHttpResponse
+from django.views.decorators import gzip
+
 from .face_recognition import dataset, training, recognition
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -9,9 +17,9 @@ import hashlib
 from Crypto.Cipher import AES
 from Crypto import Random
 from django.views.decorators.csrf import csrf_exempt
-
 from users.models import Wallet, Doctor
 from django.http import HttpResponse
+import asyncio
 
 BS = 16
 pad = lambda s: bytes(s + (BS - len(s) % BS) * chr(BS - len(s) % BS), 'utf-8')
@@ -248,6 +256,10 @@ def crypto(request):
 
 @csrf_exempt
 def login(request):
+    user_first_name = None
+    if request.user.is_authenticated:
+        user_first_name = get_user_first_name(request.user)
+        print(user_first_name)
     print("login page")
     print(request)
     if request.method == "POST":
@@ -256,27 +268,35 @@ def login(request):
         password = request.POST.get("password_in", '')
         print("username", username)
         user = check_user(username, password)
-        if type(user)==User:
+        if type(user) == User:
             try:
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
                 auth.login(request, user)
                 first_name = get_user_first_name(user)
                 message = "Hello, " + first_name
                 messages.success(request, message)
-                return redirect('/')
+                return redirect('/',
+                  {"user_first_name": user_first_name})
             except Exception:
                 value = {'username': username}
-                redirect('/users/login')
+                redirect('/users/login',
+                  {"user_first_name": user_first_name})
         else:
             value = {'username': username}
-            redirect('/users/login')
+            redirect('/users/login',
+                  {"user_first_name": user_first_name})
 
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html',
+                  {"user_first_name": user_first_name})
 
 
 @csrf_exempt
-def login_docto_pass(request):
+def login_doctor_pass(request):
+    user_first_name = None
+    if request.user.is_authenticated:
+        user_first_name = get_user_first_name(request.user)
+        print(user_first_name)
     print("login doctor page")
     print(request)
     if request.method == "POST":
@@ -295,36 +315,81 @@ def login_docto_pass(request):
                 first_name = get_user_first_name(user)
                 message = "Hello, " + first_name
                 messages.success(request, message)
-                return redirect('/')
+                return redirect('/',
+                  {"user_first_name": user_first_name})
             except Exception:
                 value = {'username': username}
-                redirect('/users/login')
+                return render(request, 'loginDoctor.html',
+                              {"user_first_name": user_first_name})
         else:
             value = {'username': username}
-            redirect('/users/login')
+            return render(request, 'loginDoctor.html',
+                          {"user_first_name": user_first_name})
 
     else:
-        return render(request, 'loginDoctor.html')
+        return render(request, 'loginDoctor.html',
+                      {"user_first_name": user_first_name})
+
 
 @csrf_exempt
 def login_doctor_face(request):
-    user_id = recognition.run()
+    user_first_name = None
+    if request.user.is_authenticated:
+        user_first_name = get_user_first_name(request.user)
+        print(user_first_name)
+    login_face_id(request)
+    return render(request, 'loginDoctor.html',
+                  {"user_first_name": user_first_name})
+
+
+def login_face_id(request):
+    user_first_name = None
+    if request.user.is_authenticated:
+        user_first_name = get_user_first_name(request.user)
+        print(user_first_name)
+    print("here")
+    res = subprocess.run(["python3 users/face_recognition/recognition.py"], shell=True, capture_output=True)
+    print(res.stdout)
+    face_id_result = json.loads(res.stdout)
+    print(face_id_result)
+    if "error" in face_id_result:
+        return redirect('/users/login/users/doctor/pass', {"user_first_name": user_first_name})
+    user_id = face_id_result["result"]
+    print(user_id[0])
     try:
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(id=user_id[0])
         if not user:
-            return redirect('/users/login/users/doctor/pass')
+            return redirect('/users/login/users/doctor/pass', {"user_first_name": user_first_name})
         user.backend = 'django.contrib.auth.backends.ModelBackend'
         auth.login(request, user)
         first_name = get_user_first_name(user)
-        return redirect('/')
+        print("fn", first_name)
+        return redirect('/', {"user_first_name": user_first_name})
     except Exception:
-        redirect('/users/login/users/doctor/pass')
+        return redirect('/users/login/users/doctor/pass',
+                  {"user_first_name": user_first_name})
+    return redirect('/',
+                  {"user_first_name": user_first_name})
 
 
-def learn_doctor():
-    dataset.run()
-    training.run()
+def learn_doctor(request, id):
+    user_first_name = None
+    if request.user.is_authenticated:
+        user_first_name = get_user_first_name(request.user)
+        print(user_first_name)
+    user = User.objects.get(id=id)
+    print(user.username)
+    try:
+        subprocess.run([f"python3 users/face_recognition/dataset.py {id} {user.username}"], shell=True, capture_output=True)
+        training_recognition()
+    except:
+        print("error")
+    return render(request, 'loginDoctor.html',
+                  {"user_first_name": user_first_name})
 
+
+def training_recognition():
+    subprocess.run(["python3 users/face_recognition/training.py"], shell=True, capture_output=True)
 
 def check_user(username: str, password: str):
     user = None
@@ -392,3 +457,4 @@ def remove_doctor(request, user_id):
     if request.method == "DELETE":
         user_doctor, deleted = Doctor.objects.filter(doctor_user=User.objects.get(user=user_id)).delete()
         return HttpResponse(status=200)
+

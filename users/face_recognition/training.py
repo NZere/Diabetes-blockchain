@@ -2,10 +2,11 @@ import cv2
 import numpy as np
 from PIL import Image
 import os
+DIRNAME = os.path.dirname(__file__)
 
 path = 'dataset'
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+cascade = cv2.CascadeClassifier(cv2.data.haarcascades+"haarcascade_frontalface_default.xml")
 
 
 def get_images_and_labels(path):
@@ -27,7 +28,12 @@ def get_images_and_labels(path):
 
 def run():
     print("[INFO] Training faces. It will take a few seconds. Wait ...")
-    faces, ids = get_images_and_labels(path)
+    faces, ids = get_images_and_labels(os.path.join(DIRNAME, path))
     recognizer.train(faces, np.array(ids))
-    recognizer.write('train/train.yml')
+    recognizer.write(os.path.join(DIRNAME, './train/train.yml'))
     print("[INFO] {0} faces trained. Exiting Program".format(len(np.unique(ids))))
+
+
+if __name__ == '__main__':
+    run()
+

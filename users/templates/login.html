@@ -24,7 +24,7 @@
 <header id="header">
     <nav class="navbar container">
         <a class="navbar__brand" href="/"
-        ><img src="" width="118" alt="logo"
+        ><img src="{% static "/assets/img/logo-bg.png" %}" width="118" alt="logo"
         /></a>
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
@@ -43,11 +43,17 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="#findUs">contact</a>
             </li>
-            <li class="navbar__item__btn">
-                <a class="navbar__btn btn" aria-current="page" href="./login.html"
-                ><span class="cover"></span> sign in</a
-                >
-            </li>
+            {% if user.is_authenticated %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
+                </li>
+            {% else %}
+                <li class="navbar__item__btn">
+                    <a class="navbar__btn btn" href="users/login"
+                    ><span class="cover"></span> Sign In</a
+                    >
+                </li>
+            {% endif %}
         </ul>
     </nav>
 </header>

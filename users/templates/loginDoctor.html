@@ -23,7 +23,7 @@
 <header id="header">
     <nav class="navbar container">
         <a class="navbar__brand" href="/"
-        ><img src="" width="118" alt="logo"
+        ><img src="{% static "/assets/img/logo-bg.png" %}" width="118" alt="logo"
         /></a>
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
@@ -42,11 +42,17 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="#findUs">contact</a>
             </li>
-            <li class="navbar__item__btn">
-                <a class="navbar__btn btn" aria-current="page" href="./login.html"
-                ><span class="cover"></span> sign in</a
-                >
-            </li>
+            {% if user.is_authenticated %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
+                </li>
+            {% else %}
+                <li class="navbar__item__btn">
+                    <a class="navbar__btn btn" href="/"
+                    ><span class="cover"></span> Sign In</a
+                    >
+                </li>
+            {% endif %}
         </ul>
     </nav>
 </header>
@@ -56,7 +62,7 @@
     <section class="login" id="login">
         <div class="login__container container" id="container">
             <div class="form__container signup__container">
-                <form action="#">
+                <form id="formSignIn" action="/users/login/doctor/pass/" method="post">
                     <h1 class="title">Sign in</h1>
                     <div class="social__container">
                         <a href="#" class="social">
@@ -73,7 +79,7 @@
                     <input type="text" name="username_in" value="{{ username }}" placeholder="Username"/>
                     <input type="password" name="password_in" placeholder="Password"/>
                     <a href="#" class="forgot__password">Forgot your password?</a>
-                    <a href="#" class="login__btn btn" id="submitSignUp">
+                    <a href="#" class="login__btn btn" id="submitSignIn">
                         <span class="cover"></span> Sign In
                         <span class="cover__bg"></span>
                     </a>
