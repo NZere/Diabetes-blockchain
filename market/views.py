@@ -1,9 +1,11 @@
+import json
+
 from django.utils import timezone
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
@@ -18,6 +20,8 @@ from django.contrib import messages
 
 from django.contrib.auth.models import User
 
+from django.forms.models import model_to_dict
+
 
 def product(request, slug):
     user_first_name = None
@@ -31,6 +35,100 @@ def product(request, slug):
         "user_first_name": user_first_name
     }
     return render(request, 'market/product.html', context)
+
+
+CHOICE_TYPE = {
+    0: 'food',
+    1: 'medicine',
+    2: 'device',
+    3: 'other'
+}
+
+
+def get_all_products(request):
+    types = request.GET.getlist('type')
+    sorting = request.GET.get('sorting')
+
+    # print(types)
+    products = Product.objects.all()
+
+    match sorting:
+        case 'asc':
+            print('asc')
+            products = products.order_by('price')
+        case 'dsc':
+            print('dsc')
+            products = products.order_by('-price')
+        case 'new':
+            print('new')
+            products = products.order_by('date')
+
+    pr = []
+    print(types)
+
+    if not types:
+        for pro in products:
+            print(type)
+            pr.append(
+                {
+                    'product_name': pro.name_product,
+                    'product_price': pro.price,
+                    'product_price_current': pro.price_with_prom,
+                    'product_slug': pro.slug,
+                    # 'product_description': pro.description_product
+                }
+            )
+        return HttpResponse(json.dumps(pr))
+    for pro in products:
+        if CHOICE_TYPE[pro.type] in types:
+            print(type)
+            pr.append(
+                {
+                    'product_name': pro.name_product,
+                    'product_price': pro.price,
+                    'product_price_current': pro.price_with_prom,
+                    'product_slug': pro.slug,
+                    # 'product_description': pro.description_product
+                }
+            )
+
+    print(pr)
+    return HttpResponse(json.dumps(pr))
+
+
+def get_all_products_filter(request):
+    type = request.GET.get('type')
+    print(type)
+    CHOICE_TYPE = {
+        0: 'food',
+        1: 'medicine',
+        2: 'device',
+        3: 'other'
+    }
+    products = Product.objects.all()
+    pr = []
+    for pro in products:
+        print("------------------")
+        print(pro.type)
+        print(CHOICE_TYPE[pro.type])
+        print(type)
+        print("------------------")
+        if CHOICE_TYPE[pro.type] == type:
+            pr.append(
+                {
+                    'product_name': pro.name_product,
+                    'product_price': pro.price,
+                    'product_price_current': pro.price_with_prom,
+                    # 'product_description': pro.description_product
+                }
+            )
+    print(pr)
+    # data = {
+    #     'products': pr,
+    #     'products': pr,
+    #
+    # }
+    return HttpResponse(json.dumps(pr))
 
 
 @login_required
@@ -195,7 +293,7 @@ class PaymentView(LoginRequiredMixin, View):
                                 for order_item in order_items:
                                     purchase += order_item.get_final_price()
                                     main_admin_wallet.money = (
-                                        encrypt(main_admin.id, str(main_admin_wallet.money), main_admin.username)).\
+                                        encrypt(main_admin.id, str(main_admin_wallet.money), main_admin.username)). \
                                         decode('ascii')
                                     main_admin_wallet.save()
                         else:

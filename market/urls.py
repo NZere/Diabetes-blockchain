@@ -10,4 +10,7 @@ urlpatterns = [
     path('market/remove-item-from-cart/<slug>/', views.remove_single_item_from_cart_p,
          name='remove-single-item-from-cart-p'),
     path('collection/order-summary/', views.OrderSummaryView.as_view(), name='order-summary'),
+
+    path('get_all_products/', views.get_all_products, name='get_all_products'),
+    path('get_all_products_filter/', views.get_all_products_filter, name='get_all_products_filter'),
 ]

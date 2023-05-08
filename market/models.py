@@ -32,6 +32,7 @@ class Product(models.Model):
         else:
             return False
 
+    @property
     def price_with_prom(self):
         price = self.price-self.price / 100 * self.prom
         return price
