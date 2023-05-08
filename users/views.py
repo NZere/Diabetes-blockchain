@@ -221,7 +221,7 @@ def logout(request):
 
 
 # def crypto(request):
-#     user = User.objects.get(id=1)
+#     user = User.objects.get(id=5)
 #     user.email = (encrypt(user.id, user.email, user.username)).decode('ascii')
 #     user.first_name = (encrypt(user.id, user.first_name, user.username)).decode('ascii')
 #     user.last_name = (encrypt(user.id, user.last_name, user.username)).decode('ascii')
@@ -230,11 +230,13 @@ def logout(request):
 #     print(user.id, user.username, user.password, user.first_name, user.last_name, user.email)
 #     user.save()
 #     return redirect('/')
+
+@csrf_exempt
 def crypto(request):
-    user_id = 1
-    username = "admin"
-    password = "admin"
-    email = "admin@admin.com"
+    user_id = 5
+    username = "admin2"
+    password = "admin2"
+    email = "admin2@admin.com"
     first_name = "Admin"
     last_name = "Admin"
     user = User.objects.get(id=user_id)
@@ -418,7 +420,6 @@ def check_user(username: str, password: str):
             return 'Invalid password'
     else:
         return 'This user is not exists'
-
 
 @csrf_exempt
 def add_doctor(request):

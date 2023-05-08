@@ -7,12 +7,14 @@ from django.conf import settings
 
 class Product(models.Model):
     CHOICE_TYPE = (
-        ('0', 'food'),
-        ('1', 'medicine'),
-        ('2', 'other')
+        (0, 'food'),
+        (1, 'medicine'),
+        (2, 'device'),
+        (3, 'other')
     )
 
     name_product = models.CharField(max_length=100)
+    description_product = models.CharField(max_length=1000, null=True, default=None)
     count = models.IntegerField(default=0)
     price = models.FloatField(default=0)
     type = models.IntegerField(default=2, choices=CHOICE_TYPE)
