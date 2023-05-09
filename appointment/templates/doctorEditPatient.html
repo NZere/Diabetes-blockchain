@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit patient page</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/doctorEdit.css" %}/>
+  </head>
+  <body>
+    <!--==================== HEADER ====================-->
+    <header id="header">
+      <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
+        /></a>
+        <button class="navbar__toggler" id="navbar-toggler">X</button>
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">home page</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/market">shop</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/main/contact">contact</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
+                </li>
+            {% else %}
+                <li class="navbar__item__btn">
+                    <a class="navbar__btn btn" href="users/login"
+                    ><span class="cover"></span> Sign In</a
+                    >
+                </li>
+            {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!--==================== PATIENTS ====================-->
+      <section class="patient">
+        <div class="patient__container container">
+          <div class="patient__title">
+            <h2 class="title">date & time</h2>
+            <button class="patient__btn">Save</button>
+          </div>
+          <div class="patient__data">
+            <div class="patient__main">
+              <h2 class="patient__id">id</h2>
+              <h3 class="date">Patient Name</h3>
+              <p class="patient__info">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
+                omnis perferendis molestias ex numquam odit et, esse non
+                architecto praesentium, saepe cumque quis natus fuga ut ad quasi
+                ducimus doloribus laboriosam eius aspernatur in perspiciatis.
+                Assumenda accusamus fugiat fuga pariatur, a possimus?
+                Praesentium, voluptas odio molestiae quae consequatur impedit
+                iusto! Velit minima voluptatum qui, recusandae accusamus aliquid
+                ad optio architecto quis magnam, nesciunt autem molestias
+                veritatis sed quae minus quisquam tenetur ratione. Vitae
+                possimus, ducimus autem accusamus nostrum aliquid. Ad mollitia,
+                deleniti magnam perferendis amet, fugit pariatur eos dolores
+                sunt repellendus quo aliquid error tempora. Voluptatem laborum
+                officia porro enim.
+              </p>
+            </div>
+            <div class="patient__recommendations">
+              <textarea
+                placeholder="Doctor's recommendations"
+                cols="20"
+                rows="5"
+              ></textarea>
+              <textarea
+                placeholder="Recommended medications"
+                cols="20"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

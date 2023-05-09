@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Shop</title>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/headerShop.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/shop.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/footerShop.css" %}/>
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
+        /></a>
+        <!-- <button class="navbar__toggler" id="navbar-toggler">X</button> -->
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">diabet</a>
+            </li>
+            <li class="navbar__item">
+                <a
+                        class="navbar__link"
+                        aria-current="page"
+                        href="/appointment"
+                >appointment</a
+                >
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="">products</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="">about</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/main/contact">contact</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="" class="icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            {% if user.is_authenticated %}
+            <a href="/users/logout" class="icon">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+            {% else %}
+            <a href="users/login" class="icon">
+                <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<main>
+    <!--==================== WELCOME ====================-->
+    <section class="welcome bg" id="welcome">
+        <div class="welcome__container container">
+            <div class="welcome__data">
+                <h1 class="title">Diabet <strong> shop </strong></h1>
+                <a href="#" class="welcome__btn">Shop now</a>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== ADVANTAGES ====================-->
+    <section class="advantages">
+        <div class="advantages__container container">
+            <div class="advantages__item">
+                <div class="icon"><i class="fa-solid fa-truck"></i></div>
+                <div class="advantage__title">
+                    <h2>FREE SHIPPING</h2>
+                    <p>Suffered Alteration in Some Form</p>
+                </div>
+            </div>
+            <div class="advantages__item">
+                <div class="icon"><i class="fa-solid fa-money-bill"></i></div>
+                <div class="advantage__title">
+                    <h2>CASH ON DELIVERY</h2>
+                    <p>The Internet Tend To Repeat</p>
+                </div>
+            </div>
+            <div class="advantages__item">
+                <div class="icon"><i class="fa-solid fa-rotate-right"></i></div>
+                <div class="advantage__title">
+                    <h2>45 DAYS RETURN</h2>
+                    <p>Making it Look Like Readable</p>
+                </div>
+            </div>
+            <div class="advantages__item">
+                <div class="icon"><i class="fa-solid fa-clock"></i></div>
+                <div class="advantage__title">
+                    <h2>OPENING ALL WEEK</h2>
+                    <p>8AM - 09PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== CATEGORY ====================-->
+    <section class="category">
+        <div class="category__container container">
+            <div class="category__item item__first">
+                <div class="category__title">Medicine</div>
+            </div>
+            <div class="category__item item__second">
+                <div class="category__title">Glossary</div>
+            </div>
+            <div class="category__item item__third">
+                <div class="category__title">Devices</div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== NEW PRODUCTS ====================-->
+    <section class="products">
+        <div class="products__container container">
+            <div class="products__data">
+                <div class="products__title subtitle">
+                    <h2>new product</h2>
+                </div>
+                <div class="products__filter"></div>
+            </div>
+            <div class="product__cards">
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg"%} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg"%} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg"%} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg"%} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== INFORMATION ====================-->
+    <section class="information">
+        <div class="information__container container">
+            <div class="information__cards">
+                <div class="information__card">
+                    <div class="percent" style="--num: 87">
+                        <div class="dot"></div>
+                        <svg>
+                            <circle cx="70" cy="70" r="70"></circle>
+                            <circle cx="70" cy="70" r="70"></circle>
+                        </svg>
+                        <div class="number">
+                            <h2>87%</h2>
+                        </div>
+                    </div>
+                    <div class="percent__description">
+                        would like to participate in a diabetes workplace programme
+                    </div>
+                </div>
+                <div class="information__card">
+                    <div class="percent" style="--num: 26">
+                        <div class="dot"></div>
+                        <svg>
+                            <circle cx="70" cy="70" r="70"></circle>
+                            <circle cx="70" cy="70" r="70"></circle>
+                        </svg>
+                        <div class="number">
+                            <h2>26%</h2>
+                        </div>
+                    </div>
+                    <div class="percent__description">
+                        have a family member with diabetes which increases their risk
+                    </div>
+                </div>
+                <div class="information__card">
+                    <div class="percent" style="--num: 33">
+                        <div class="dot"></div>
+                        <svg>
+                            <circle cx="70" cy="70" r="70"></circle>
+                            <circle cx="70" cy="70" r="70"></circle>
+                        </svg>
+                        <div class="number">
+                            <h2>33%</h2>
+                        </div>
+                    </div>
+                    <div class="percent__description">
+                        are concerned about the link with Covid and being overweight
+                    </div>
+                </div>
+            </div>
+            <div class="information__text">
+                <div>
+                    <div class="information__title subtitle">
+                        <h2>Diabetes & The Workplace</h2>
+                    </div>
+                    <p>
+                        There is a strong likelihood that your employees would welcome a
+                        diabetes programme. Studies show that employees participating in
+                        a diabetes wellness programme experience significant positive
+                        impacts on their health and also that the workplace is the
+                        optimum environment to address diabetes
+                    </p>
+                    <p>
+                        A healthy workforce results in a healthier bottom line and a
+                        more committed workforce.
+                    </p>
+                </div>
+                <a href="/appointment" class="welcome__btn"
+                >Make appointment</a
+                >
+            </div>
+        </div>
+    </section>
+
+    <!--==================== BLOGS ====================-->
+    <section class="blogs">
+        <div class="blogs__container container">
+            <div class="blogs__data">
+                <div class="blogs__title subtitle">
+                    <h2>Latest Blogs</h2>
+                </div>
+            </div>
+            <div class="blog__cards">
+                <div class="blog__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/blog1.png"%} alt=""/>
+                    </a>
+                    <div class="blog__card__info">
+                        <div class="blog__card__title subtitle">
+                            <h2>Lorem, ipsum dolor.</h2>
+                        </div>
+                        <div class="blog__card__btn welcome__btn">Learn more</div>
+                    </div>
+                </div>
+                <div class="blog__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/blog2.png"%} alt=""/>
+                    </a>
+                    <div class="blog__card__info">
+                        <div class="blog__card__title subtitle">
+                            <h2>Lorem, ipsum dolor.</h2>
+                        </div>
+                        <div class="blog__card__btn welcome__btn">Learn more</div>
+                    </div>
+                </div>
+                <div class="blog__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/blog3.jpg"%} alt=""/>
+                    </a>
+                    <div class="blog__card__info">
+                        <div class="blog__card__title subtitle">
+                            <h2>Lorem, ipsum dolor.</h2>
+                        </div>
+                        <div class="blog__card__btn welcome__btn">Learn more</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== SUBSCRIBE ====================-->
+    <section class="subscribe bg" id="subscribe">
+        <div class="subscribe__container container">
+            <div class="subscribe__info">
+                <h2 class="subscribe__info__title">Get an update every week</h2>
+                <p class="subscribe__info__text">
+                    This website was created for diploma project. <br/>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                </p>
+            </div>
+            <div class="subscribe__form">
+                <h3>SUBSCRIBE TO NEWSLETTER</h3>
+                <form class="subscribe__form__inner">
+                    <input type="email" placeholder="Email" class="email"/>
+                    <input type="submit" name="next" class="send__btn" value="Next"/>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!--==================== FOOTER ====================-->
+<footer class="footer">
+    <div class="footer__container container">
+        <div class="footer__items">
+            <ul class="footer__list">
+                <li class="footer__item">
+                    <a class="footer__link" href="/">diabet</a>
+                </li>
+                <li class="footer__item">
+                    <a class="footer__link" href="/">appointment</a>
+                </li>
+                <li class="footer__item">
+                    <a class="footer__link" href="">products</a>
+                </li>
+            </ul>
+        </div>
+        <div class="footer__items">
+            <div class="social__links">
+                <a href=""><i class="fab fa-brands fa-instagram"></i></a>
+                <a href=""><i class="fab fa-brands fa-twitter"></i></a>
+                <a href=""><i class="fab fa-brands fa-facebook"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--==================== COPYRIGHT ====================-->
+<div class="copyright">
+    <div class="copyright__container container">
+        All rights Reserved &copy; Diploma project, 2023
+    </div>
+</div>
+</body>
+</html>

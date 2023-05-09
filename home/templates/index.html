@@ -33,17 +33,19 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% if user.is_authenticated %}
             <li class="navbar__item">
-                <a class="navbar__link" href="#about">about Us</a>
+                <a class="navbar__link" href="/appointment/account/">account</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="#departments">doctors</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="#">shop </a>
+                <a class="navbar__link" href="/market">shop </a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="#findUs">contact</a>
+                <a class="navbar__link" href="/main/contact">contact</a>
             </li>
 
             {% if user.is_authenticated %}

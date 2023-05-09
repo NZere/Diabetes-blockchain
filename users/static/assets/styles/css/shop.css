@@ -2,23 +2,28 @@
 /*========== Colors ==========*/
 /*========== Font ==========*/
 @font-face {
-  font-family: "Comfortaa", cursive;
-  src: url();
+  font-family: "Barlow";
+  src: url(../../../fonts/Barlow/Barlow-Regular.ttf);
 }
 @font-face {
-  font-family: "Molengo", sans-serif;
-  src: url();
+  font-family: "Muli", sans-serif;
+  src: url(../../../fonts/muli/Muli.ttf);
 }
 /*========== Typography ==========*/
 /*.5rem = 8px | 1rem = 16px ...*/
 /*========== Font weight ==========*/
 /*========== z index ==========*/
 /* Responsive typography */
+body {
+  font-family: "Barlow";
+}
+
 /*=============== REUSABLE CSS CLASSES ===============*/
 .container {
-  max-width: 1140px;
+  max-width: 1200px;
   margin-inline: auto;
-  padding: 2rem;
+  padding: 1rem;
+  position: relative;
 }
 
 .cover {
@@ -42,6 +47,26 @@
   transition: 0.5s;
 }
 
+.btn {
+  display: inline-block;
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #283779;
+  border-radius: 5rem;
+  background: transparent;
+  color: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.btn:hover {
+  color: #b4dcec;
+}
+.btn:hover span {
+  width: 100%;
+}
+
 section {
   position: relative;
 }
@@ -59,6 +84,7 @@ section {
   line-height: 120%;
   position: relative;
   font-size: 3.25rem;
+  font-family: "Muli";
   color: #283779;
 }
 
@@ -82,7 +108,6 @@ section {
   text-transform: uppercase;
   font-size: 2rem;
   font-weight: 700;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   color: #283779;
 }
 .subtitle h3 {
@@ -90,7 +115,7 @@ section {
   text-transform: uppercase;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "Muli";
   color: #283779;
 }
 
@@ -117,7 +142,7 @@ body {
 
 /*=============== WELCOME ===============*/
 .welcome {
-  background-image: url("../../img/shop.jpg");
+  background-image: url(../../../img/shop.jpg);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -139,8 +164,22 @@ body {
   margin-top: -50px;
   text-align: center;
 }
+.welcome__data h1 {
+  margin-bottom: 2rem;
+}
 .welcome__btn {
-  border-radius: 5px;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0.1rem solid #283779;
+  background: transparent;
+  color: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
 .welcome__btn:hover {
   color: #f0f4f9;
@@ -218,19 +257,21 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  overflow: hidden;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: aqua;
+  -webkit-box-shadow: 0 0 5px 0 #283779;
+          box-shadow: 0 0 5px 0 #283779;
 }
 .category .item__first {
-  background-image: url();
+  background-image: url(../../../img/accessories.jpg);
 }
 .category .item__second {
-  background-image: url();
+  background-image: url(../../../img/food.jpg);
 }
 .category .item__third {
-  background-image: url("../../img/glucometer.jpg");
+  background-image: url(../../../img/glucometer.png);
 }
 .category__title {
   padding: 15px 25px;
@@ -238,12 +279,16 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   background-color: #f0f4f9;
+  z-index: 5;
 }
 .category__title:hover {
   color: #283779;
 }
 
 /*=============== PRODUCTS ===============*/
+.products {
+  margin: 2rem;
+}
 .products__container {
   width: 100%;
 }
@@ -257,13 +302,17 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: space-evenly;
-      -ms-flex-pack: space-evenly;
-          justify-content: space-evenly;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 2rem;
 }
 .product__card {
-  width: 20rem;
+  width: 18rem;
   height: 25rem;
+  padding: 1rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -272,15 +321,256 @@ body {
           justify-content: space-between;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  background-color: red;
+  -webkit-box-shadow: 0 0 5px 0 #283779;
+          box-shadow: 0 0 5px 0 #283779;
+  border: 0.1rem solid #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.product__card:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  -webkit-box-shadow: 0 0 1rem 0 #283779;
+          box-shadow: 0 0 1rem 0 #283779;
 }
 .product__card img {
-  width: 20rem;
-  height: 20rem;
-  -o-object-fit: contain;
-     object-fit: contain;
+  width: 100%;
+  height: 15rem;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-bottom: 1rem;
 }
 .product__card__info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+  gap: 1rem;
+}
+.product__card__selected {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+.product__card__selected i {
+  font-size: 1.5rem;
+  color: #283779;
+}
+
+/*=============== INFORMATION ===============*/
+.information {
+  padding: 2rem 0;
+  background-color: #e2e9f0;
+}
+.information__container {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 2rem;
+}
+.information__cards {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+.information__card {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 150px;
+}
+.information__card .percent {
+  width: 150px;
+  height: 150px;
+  position: relative;
+}
+.information__card .percent svg {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  -webkit-transform: rotate(270deg);
+          transform: rotate(270deg);
+}
+.information__card .percent svg circle {
+  width: 100%;
+  height: 100%;
+  fill: transparent;
+  stroke-width: 2;
+  stroke: #f0f4f9;
+  -webkit-transform: translate(5px, 5px);
+          transform: translate(5px, 5px);
+}
+.information__card .percent svg circle:nth-child(2) {
+  opacity: 0;
+  stroke: #283779;
+  stroke-dasharray: 440;
+  stroke-dashoffset: calc(440 - 440 * var(--num) / 100);
+  -webkit-animation: circleAnimation 1s linear forwards;
+          animation: circleAnimation 1s linear forwards;
+  -webkit-animation-delay: 2s;
+          animation-delay: 2s;
+}
+.information__card .percent .dot {
+  position: absolute;
+  inset: 5px;
+  z-index: 10;
+  -webkit-animation: dotAnimation 1.5s linear forwards;
+          animation: dotAnimation 1.5s linear forwards;
+}
+.information__card .percent .dot::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  border-radius: 50%;
+  -webkit-box-shadow: 0 0 10px #283779, 0 0 30px #283779;
+          box-shadow: 0 0 10px #283779, 0 0 30px #283779;
+  background-color: #283779;
+}
+.information__card .percent .number {
+  position: absolute;
+  inset: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.information__card .percent .number h2 {
+  color: #283779;
+  font-weight: 900;
+  font-size: 35px;
+}
+.information__card .percent__description {
+  max-width: 150px;
+  padding: 1rem 0;
+  font-size: 1rem;
+  color: #283779;
+  text-align: center;
+}
+.information__text {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 2rem;
+}
+.information__text .subtitle {
+  height: -webkit-fit-content !important;
+  height: -moz-fit-content !important;
+  height: fit-content !important;
+  margin-bottom: 2rem;
+}
+.information__text p {
+  font-size: 1rem;
+}
+.information__text p:last-child {
+  margin-top: 1rem;
+}
+.information__text a {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+/*=============== BLOGS ===============*/
+.blogs {
+  margin: 2rem;
+}
+.blogs__container {
+  width: 100%;
+}
+.blogs__title {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: start;
+}
+
+.blog__cards {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 2rem;
+}
+.blog__card {
+  width: 25rem;
+  height: 20rem;
+  position: relative;
+  -webkit-box-shadow: 0 0 5px 0 #283779;
+          box-shadow: 0 0 5px 0 #283779;
+  border: 0.1rem solid #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.blog__card img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.blog__card__info {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -291,9 +581,84 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   gap: 1rem;
-  background-color: blue;
+  visibility: hidden;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
 }
-.product__card__selected {
-  margin: 2rem 0;
+.blog__card__btn {
+  color: #f0f4f9 !important;
+  background-color: #283779 !important;
+}
+.blog__card:hover img {
+  background-color: #283779;
+  opacity: 0.2;
+}
+.blog__card:hover .blog__card__info {
+  visibility: visible;
+}
+
+@-webkit-keyframes dotAnimation {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(calc(3.6deg * var(--num)));
+            transform: rotate(calc(3.6deg * var(--num)));
+  }
+}
+
+@keyframes dotAnimation {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(calc(3.6deg * var(--num)));
+            transform: rotate(calc(3.6deg * var(--num)));
+  }
+}
+@-webkit-keyframes circleAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes circleAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@media (max-width: 767px) {
+  .information__container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+  }
+  .blog__card {
+    width: 100%;
+    height: 20vh;
+  }
+}
+@media (max-width: 487px) {
+  .information__cards {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    gap: 1rem;
+  }
 }

@@ -19,7 +19,7 @@ def index(request):
             doctor.last_name = get_user_first_name(doctor.doctor_user)
         data = {
             "all_doctors": all_doctors,
-                }
+        }
         return render(request, 'appointment1.html', data)
 
 
@@ -27,7 +27,7 @@ def doctor_selected(request, slug):
     # item = get_object_or_404(Doctor, slug=slug)
     print("doctor_selected")
     schedules = get_all_open_work_time_of_doctor(slug)
-    return render(request, 'appointment2.html', {"schedules":schedules})
+    return render(request, 'appointment2.html', {"schedules": schedules})
 
 
 def get_all_open_work_time_of_doctor(doctor_slug):
@@ -58,7 +58,7 @@ def date_selected(request, slug, date_schedule):
     print(date_schedule)
     work_times = get_work_time_of_date(slug, date_schedule)
     time_data = []
-    time_data_ids= []
+    time_data_ids = []
     for work_time in work_times:
         time_data.append(work_time.work_time.time.__str__())
         time_data_ids.append(work_time.work_time_id)
@@ -71,6 +71,7 @@ def get_work_time_of_date(doctor_slug, date_schedule):
     user_doctor = get_user_doctor(doctor_slug)
     work_times = Schedule.objects.filter(doctor=user_doctor, status='open', work_time__date=date_schedule)
     return work_times
+
 
 @csrf_exempt
 def appointment_submit(request):
@@ -119,6 +120,67 @@ def appointment_end(request):
         return redirect('/appointment')
 
 
+def user_main_page(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        user_first_name = get_user_first_name(user)
+        try:
+            doctor = Doctor.objects.get(doctor_user=user)
+            if not doctor:
+                return render(request, "patientMain.html", {'user_first_name': user_first_name,
+                                                            "data": get_all_appointments_patient(user)})
+            else:
+                return render(request, "doctorMain.html", {'user_first_name': user_first_name,
+                                                           "data": get_all_appointments_doctor(doctor)})
+        except:
+            return render(request, "patientMain.html", {'user_first_name': user_first_name,
+                                                        "data": get_all_appointments_patient(user)})
+    else:
+        return redirect("/")
+
+
+def get_all_appointments_doctor(doctor_user):
+    print("id", doctor_user.id)
+    print("du", doctor_user)
+    appointments = Schedule.objects.filter(doctor=doctor_user.id)
+    data = []
+    for app in appointments:
+        if app.patient is not None:
+            data.append({
+                "id": app.id,
+                "patient": app.patient.first_name,
+                "date": app.work_time.date,
+                "time": app.work_time.time,
+                "status": app.status
+            })
+    print(data)
+    return data
+
+
+def get_all_appointments_patient(patient_user):
+    appointments = Schedule.objects.filter(patient=patient_user)
+    data = []
+    for app in appointments:
+        print(app)
+        data.append({
+            "id": app.id,
+            "doctor": get_user_first_name(app.doctor.doctor_user),
+            "date": app.work_time.date,
+            "time": app.work_time.time,
+            "status": app.status
+        })
+    print(data)
+    return data
+
+
+def appointment_doctor_page(request, id: int):
+    appointment = Schedule.objects.get(id=id)
+    return render(request, "doctorEditPatient.html", {"appointment": appointment})
+
+
+def appointment_patient_page(request, id: int):
+    appointment = Schedule.objects.get(id=id)
+    return render(request, "patientReport.html", {"appointment": appointment})
 
 # def check_user_data(first_data, second_data):
 #     if first_data == second_data:

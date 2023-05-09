@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/contact.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/footer.css" %}/>
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
+        /></a>
+        <button class="navbar__toggler" id="navbar-toggler">X</button>
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/appointment">appointment</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">about Us</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">doctors</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/market">shop </a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/main/contact">contact</a>
+            </li>
+            {% if user.is_authenticated %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/users/logout"> Welcome, {{ user_first_name }}</a>
+                </li>
+            {% else %}
+                <li class="navbar__item__btn">
+                    <a class="navbar__btn btn" href="users/login"
+                    ><span class="cover"></span> Sign In</a
+                    >
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!--==================== CONTACT ====================-->
+    <section class="contact bg" id="contact">
+        <div class="contact__container container">
+            <div class="contact__data">
+                <div class="contact__description">
+                    <h1 class="title">Questions?</h1>
+                    <p>
+                        Please call our free number if you have any questions about our
+                        diploma project. This diploma project was created on 2023 and
+                        includes cryptography, blockchain technology, Face-ID
+                        authentication & etc.
+                    </p>
+                </div>
+                <div class="contact__description">
+                    <h2 class="contact__title">Office Location</h2>
+                    <p>Manas St. 34/1</p>
+                    <p>Almaty, KZ</p>
+                </div>
+                <div class="contact__description">
+                    <h2 class="contact__title">Contact Information</h2>
+                    <p><span>Aisha:</span> +7 777 7777</p>
+                    <p><span>Aisha:</span> +7 777 7777</p>
+                    <p><span>Aisha:</span> +7 777 7777</p>
+                </div>
+            </div>
+            <div class="contact__map">
+                <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2906.7763340918145!2d76.90746491548424!3d43.23514887913782!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3883692f027581ad%3A0x2426740f56437e63!2z0JzQtdC20LTRg9C90LDRgNC-0LTQvdGL0Lkg0YPQvdC40LLQtdGA0YHQuNGC0LXRgiDQuNC90YTQvtGA0LzQsNGG0LjQvtC90L3Ri9GFINGC0LXRhdC90L7Qu9C-0LPQuNC5!5e0!3m2!1sru!2skz!4v1683402261918!5m2!1sru!2skz"
+                        height="450"
+                        style="border: 0"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== SUBSCRIBE ====================-->
+    <section class="subscribe bg" id="subscribe">
+        <div class="subscribe__container container">
+            <div class="subscribe__info">
+                <h2 class="subscribe__info__title">Get an update every week</h2>
+                <p class="subscribe__info__text">
+                    This website was created for diploma project. <br/>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                </p>
+            </div>
+            <div class="subscribe__form">
+                <h3>SUBSCRIBE TO NEWSLETTER</h3>
+                <form class="subscribe__form__inner">
+                    <input type="email" placeholder="Email" class="email"/>
+                    <input
+                            type="submit"
+                            name="next"
+                            class="submit action__btn"
+                            value="Next"
+                    />
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!--==================== FOOTER ====================-->
+<footer class="footer">
+    <div class="footer__container container">
+        <div class="footer__items logo">
+            <a aria-current="page" href="./index.html"
+            ><img src={% static "/assets/img/logo-bg.png" %} alt="logo"/>Diploma Project</a
+            >
+            <h3>The world's most trusted diabet system.</h3>
+        </div>
+        <div class="footer__items list">
+            <h4>About Us</h4>
+            <ul>
+                <li><a href="#">Lorem</a></li>
+                <li><a href="#">Lorem</a></li>
+                <li><a href="#">Lorem</a></li>
+                <li><a href="#">Lorem</a></li>
+            </ul>
+        </div>
+        <div class="footer__items list">
+            <h4>online shop</h4>
+            <ul>
+                <li><a href="#">Lorem</a></li>
+                <li><a href="#">Lorem</a></li>
+                <li><a href="#">Lorem</a></li>
+                <li><a href="#">Lorem</a></li>
+            </ul>
+        </div>
+        <div class="footer__items">
+            <h4>follow us</h4>
+            <div class="social__links">
+                <a href=""><i class="fab fa-brands fa-instagram"></i></a>
+                <a href=""><i class="fab fa-brands fa-twitter"></i></a>
+                <a href=""><i class="fab fa-brands fa-facebook"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--==================== COPYRIGHT ====================-->
+<div class="copyright">
+    <div class="copyright__container container">
+        All rights Reserved &copy; Diploma project, 2023
+    </div>
+</div>
+</body>
+</html>

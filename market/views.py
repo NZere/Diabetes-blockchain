@@ -23,6 +23,10 @@ from django.contrib.auth.models import User
 from django.forms.models import model_to_dict
 
 
+def index(request):
+    return render(request, 'market/shop.html')
+
+
 def product(request, slug):
     user_first_name = None
     if request.user.is_authenticated:

@@ -1,24 +1,30 @@
+
 /*=============== VARIABLES SCSS ===============*/
 /*========== Colors ==========*/
 /*========== Font ==========*/
 @font-face {
-  font-family: "Comfortaa", cursive;
-  src: url();
+  font-family: "Barlow";
+  src: url(../../../fonts/Barlow/Barlow-Regular.ttf);
 }
 @font-face {
-  font-family: "Molengo", sans-serif;
-  src: url();
+  font-family: "Muli", sans-serif;
+  src: url(../../../fonts/muli/Muli.ttf);
 }
 /*========== Typography ==========*/
 /*.5rem = 8px | 1rem = 16px ...*/
 /*========== Font weight ==========*/
 /*========== z index ==========*/
 /* Responsive typography */
+body {
+  font-family: "Barlow";
+}
+
 /*=============== REUSABLE CSS CLASSES ===============*/
 .container {
-  max-width: 1140px;
+  max-width: 1200px;
   margin-inline: auto;
-  padding: 2rem;
+  padding: 1rem;
+  position: relative;
 }
 
 .cover {
@@ -42,6 +48,26 @@
   transition: 0.5s;
 }
 
+.btn {
+  display: inline-block;
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #283779;
+  border-radius: 5rem;
+  background: transparent;
+  color: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.btn:hover {
+  color: #b4dcec;
+}
+.btn:hover span {
+  width: 100%;
+}
+
 section {
   position: relative;
 }
@@ -59,6 +85,7 @@ section {
   line-height: 120%;
   position: relative;
   font-size: 3.25rem;
+  font-family: "Muli";
   color: #283779;
 }
 
@@ -82,7 +109,6 @@ section {
   text-transform: uppercase;
   font-size: 2rem;
   font-weight: 700;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   color: #283779;
 }
 .subtitle h3 {
@@ -90,7 +116,7 @@ section {
   text-transform: uppercase;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "Muli";
   color: #283779;
 }
 
@@ -113,8 +139,7 @@ input:focus {
 
 /*=============== SUBSCRIBE ===============*/
 .subscribe {
-  padding: 4rem;
-  background-image: url("../../img/info-bg.png");
+  background-image: url(../../../img/info-bg.png);
   background-size: cover;
   background-color: #b4dcec;
 }
@@ -132,10 +157,13 @@ input:focus {
           align-items: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
+  gap: 2rem;
   color: #283779;
 }
 .subscribe__info {
-  width: 35%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 .subscribe__info__title {
   margin: 2rem 0;
@@ -148,7 +176,9 @@ input:focus {
   font-size: 1rem;
 }
 .subscribe__form {
-  width: 60%;
+  -webkit-box-flex: 2;
+      -ms-flex: 2;
+          flex: 2;
 }
 .subscribe__form h3 {
   margin: 2rem 0;
@@ -299,6 +329,18 @@ input:focus {
 }
 
 @media (max-width: 767px) {
+  .subscribe__container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .subscribe__info, .subscribe__form {
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    width: 100%;
+  }
   .footer {
     background-color: #283779;
   }
