@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Doctor main page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
@@ -42,6 +46,18 @@
             {% endif %}
         </ul>
     </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </header>
 
 <main>
@@ -52,7 +68,7 @@
                 {% if user.is_authenticated %}
                     <h2 class="title">Welcome, Dr. {{ user_first_name }}!</h2>
                 {% endif %}
-                <button class="today patient__btn">Show today</button>
+                <button class="today patient__btn" onclick="location.href=location.href+'?today=True'">Show today</button>
             </div>
             <div class="patients__data">
                 {% if data %}
@@ -63,9 +79,15 @@
                                 <h3 class="date">{{ app.date }} {{ app.time }}</h3>
                                 <p class="name">{{ app.patient }}</p>
                             </div>
-                            <div class="patient__btn">
-                                <a href="/appointment/account/doctor/{{ app.id }}">Edit</a>
-                            </div>
+
+                            {% if app.status == "done" %}
+                                <a class="patient__btn" style="background-color: #aaff88 !important;" href="/appointment/account/doctor/{{ app.id }}">Done
+                                </a>
+
+                            {% else %}
+                                <a class="patient__btn" href="/appointment/account/doctor/{{ app.id }}" >Edit
+                                </a>
+                            {% endif %}
                         </div>
                     {% endfor %}
                 {% else %}

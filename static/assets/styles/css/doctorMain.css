@@ -234,14 +234,15 @@ body {
   cursor: pointer;
   text-align: center;
   font-weight: bold;
+    color: #283779;
 }
 .patient__btn:hover, .patient__btn:focus {
   -webkit-box-shadow: 0 0 0 2px #283779, 0 0 0 3px #b4dcec;
           box-shadow: 0 0 0 2px #283779, 0 0 0 3px #b4dcec;
 }
-.patient__btn a {
-  color: #283779;
-}
+/*.patient__btn a {*/
+/*  color: #283779;*/
+/*}*/
 
 @media screen and (max-width: 980px) {
   .patients__data {

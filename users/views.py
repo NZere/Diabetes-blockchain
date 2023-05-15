@@ -256,6 +256,22 @@ def crypto(request):
     return redirect('/')
 
 
+def add_money(request):
+    user = User.objects.get(id=3)
+    wallet = Wallet.objects.get(user=user)
+    money = '50000'
+    wallet.money = (encrypt(user.id, money, user.username)).decode('ascii')
+    wallet.save()
+
+def create_wallet(request):
+    user = User.objects.get(id=1)
+    wallet = Wallet(user=user)
+    money = '10000'
+    wallet.money = (encrypt(user.id, money, user.username)).decode('ascii')
+    wallet.save()
+
+
+
 @csrf_exempt
 def login(request):
     user_first_name = None
@@ -369,8 +385,6 @@ def login_face_id(request):
         return redirect('/', {"user_first_name": user_first_name})
     except Exception:
         return redirect('/users/login/users/doctor/pass',
-                  {"user_first_name": user_first_name})
-    return redirect('/',
                   {"user_first_name": user_first_name})
 
 

@@ -6,6 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Edit patient page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
@@ -42,41 +46,68 @@
             {% endif %}
         </ul>
     </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </header>
 
 <main>
     <!--==================== PATIENTS ====================-->
     <section class="patient">
-        <div class="patient__container container">
-            <div class="patient__title">
-                <h2 class="title">Patient Name</h2>
-                <button class="date patient__btn">Save</button>
-            </div>
-            <div class="patient__data">
-                <div class="patient__main">
-                    <h2 class="patient__id">id</h2>
-                    <h3 class="name">date & time</h3>
-                    <p class="patient__info">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
-                        omnis perferendis molestias ex numquam odit et, esse non
-                        architecto praesentium, saepe cumque quis natus fuga ut ad quasi
-                        ducimus doloribus laboriosam eius aspernatur in perspiciatis.
-                        Assumenda accusamus fugiat fuga pariatur, a possimus?
-                        Praesentium, voluptas odio molestiae quae consequatur impedit
-                        iusto! Velit minima voluptatum qui, recusandae accusamus aliquid
-                        ad optio architecto quis magnam, nesciunt autem molestias
-                        veritatis sed quae minus quisquam tenetur ratione. Vitae
-                        possimus, ducimus autem accusamus nostrum aliquid. Ad mollitia,
-                        deleniti magnam perferendis amet, fugit pariatur eos dolores
-                        sunt repellendus quo aliquid error tempora. Voluptatem laborum
-                        officia porro enim.
-                    </p>
+        {% if appointment %}
+            <div class="patient__container container">
+                <div class="patient__title">
+                    <h2 class="title">{{ appointment.work_time.date }} {{ appointment.work_time.time }}</h2>
+
                 </div>
-                <div class="patient__recommendations">
-                    <textarea name="" id="" cols="20" rows="10"></textarea>
+                <div class="patient__data">
+                    <div class="patient__main">
+                        <h2 class="patient__id">{{ name_user }}</h2>
+                        <h3 class="date">Doctor: {{ name_doctor }}</h3>
+                        <p class="patient__info">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto
+                            omnis perferendis molestias ex numquam odit et, esse non
+                            architecto praesentium, saepe cumque quis natus fuga ut ad quasi
+                            ducimus doloribus laboriosam eius aspernatur in perspiciatis.
+                            Assumenda accusamus fugiat fuga pariatur, a possimus?
+                            Praesentium, voluptas odio molestiae quae consequatur impedit
+                            iusto! Velit minima voluptatum qui, recusandae accusamus aliquid
+                            ad optio architecto quis magnam, nesciunt autem molestias
+                            veritatis sed quae minus quisquam tenetur ratione. Vitae
+                            possimus, ducimus autem accusamus nostrum aliquid. Ad mollitia,
+                            deleniti magnam perferendis amet, fugit pariatur eos dolores
+                            sunt repellendus quo aliquid error tempora. Voluptatem laborum
+                            officia porro enim.
+                        </p>
+                    </div>
+                    <div class="patient__recommendations">
+                        <textarea readonly
+                                placeholder="Doctor's recommendations: &#13;&#10; {{ appointment.info }}"
+                                cols="20"
+                                rows="5"
+                                id=recommendation-doctor
+                                name=recommendation-doctor
+                        ></textarea>
+                        <textarea readonly
+                                placeholder="Recommended medications: &#13;&#10; {{ products }}"
+                                cols="20"
+                                rows="3"
+                                id=recommendation-medications
+                                name=recommendation-medications
+                        ></textarea>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </section>
 </main>
 </body>

@@ -1,0 +1,348 @@
+/*=============== VARIABLES SCSS ===============*/
+/*========== Colors ==========*/
+/*========== Font ==========*/
+@font-face {
+  font-family: "Barlow";
+  src: url(../../fonts/Barlow/Barlow-Regular.ttf);
+}
+@font-face {
+  font-family: "Muli", sans-serif;
+  src: url(../../fonts/muli/Muli.ttf);
+}
+/*========== Typography ==========*/
+/*.5rem = 8px | 1rem = 16px ...*/
+/*========== Font weight ==========*/
+/*========== z index ==========*/
+/* Responsive typography */
+body {
+  font-family: "Barlow";
+}
+
+/*=============== REUSABLE CSS CLASSES ===============*/
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 1rem;
+  position: relative;
+}
+
+.cover {
+  width: 0%;
+  z-index: -1;
+}
+
+.cover__bg {
+  width: 100%;
+  z-index: -2;
+}
+
+.cover, .cover__bg {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #283779;
+  border-radius: 5rem;
+  background: transparent;
+  color: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.btn:hover {
+  color: #b4dcec;
+}
+.btn:hover span {
+  width: 100%;
+}
+
+section {
+  position: relative;
+}
+
+.bg {
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  width: 100%;
+  line-height: 120%;
+  position: relative;
+  font-size: 3.25rem;
+  font-family: "Muli";
+  color: #283779;
+}
+
+.subtitle {
+  height: 15vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.subtitle h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #283779;
+}
+.subtitle h3 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Muli";
+  color: #283779;
+}
+
+input {
+  width: 80%;
+  margin: 8px 0;
+  padding: 12px 15px;
+  border: 0.1rem solid #b4dcec;
+  border-radius: 5rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+input:focus {
+  border: 0.1rem solid #283779;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+}
+
+body {
+  background-color: #f0f4f9;
+}
+
+.shopping {
+  /*=============== SHOPPING CARD TABLE ===============*/
+  /*=============== SHOPPING INFO ===============*/
+}
+.shopping__container {
+  padding-top: 5.5rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.shopping__cart__table {
+  width: 100%;
+  margin: 3rem 0;
+  text-align: center;
+  border-collapse: collapse;
+}
+.shopping__cart__table thead tr {
+  border-bottom: 0.1rem solid #b4dcec;
+}
+.shopping__cart__table thead th {
+  padding-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #000;
+}
+.shopping__cart__table thead th.shopping__product {
+  text-align: left;
+}
+.shopping__cart__table tbody tr {
+  border-bottom: 0.1rem solid #b4dcec;
+}
+.shopping__cart__table tbody tr td {
+  padding: 1.5rem 0;
+}
+.shopping__cart__table tbody tr td.shopping__cart__item {
+  max-width: 630px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.shopping__cart__table tbody tr td.shopping__cart__item img {
+  width: 80px;
+  height: 80px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-right: 25px;
+}
+.shopping__cart__table tbody tr td.shopping__cart__item h5 {
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__price {
+  width: 100px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__total {
+  width: 110px;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__item__close {
+  text-align: right;
+}
+.shopping__cart__table tbody tr td.shopping__cart__item__close span{
+  font-size: 1.5rem;
+  color: #b4dcec;
+  cursor: pointer;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity {
+  width: 225px;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity input {
+  width: 120px;
+  font-size: 1.5rem;
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity input::-webkit-input-placeholder {
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity input::-moz-placeholder {
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity input:-ms-input-placeholder {
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity input::-ms-input-placeholder {
+  color: #000;
+}
+.shopping__cart__table tbody tr td.shopping__cart__quantity .quantity input::placeholder {
+  color: #000;
+}
+.shopping__info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 5rem;
+}
+
+.shopping__discount {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.shopping__discount h5 {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #283779;
+}
+.shopping__discount form {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 1rem 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 20px;
+}
+.shopping__discount form .coupon__btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  letter-spacing: 0.5rem;
+  background-color: #b4dcec;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.shopping__discount form .coupon__btn:hover {
+  background-color: #283779;
+  color: #b4dcec;
+}
+
+.shopping__checkout {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 2rem;
+  background-color: #b4dcec;
+}
+.shopping__checkout h5 {
+  color: #000;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+.shopping__checkout ul {
+  margin: 1rem 0;
+}
+.shopping__checkout ul li {
+  padding: 1rem 0;
+  border-bottom: 0.1rem solid #283779;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000;
+  overflow: hidden;
+}
+.shopping__checkout ul li:last-child {
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+.shopping__checkout ul li span {
+  font-size: 1.5rem;
+  color: #000;
+  float: right;
+}
+.shopping__checkout .shopping__btn {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 1rem 2rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0.1rem solid #283779;
+  background-color: #283779;
+  font-weight: 600;
+  color: #f0f4f9;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.shopping__checkout .shopping__btn:hover {
+  background-color: #f0f4f9;
+  color: #283779;
+}

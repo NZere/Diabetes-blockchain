@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Blockchain</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/headerShop.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/blockchain.css" %}/>
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" href="/"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
+        /></a>
+        <!-- <button class="navbar__toggler" id="navbar-toggler">X</button> -->
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">diabet</a>
+            </li>
+            <li class="navbar__item">
+                <a
+                        class="navbar__link"
+                        aria-current="page"
+                        href="/appointment"
+                >appointment</a
+                >
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="">products</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/main/contact">contact</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="/market/order-summary" class="icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            {% if user.is_authenticated %}
+                <a href="/users/logout" class="icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            {% else %}
+                <a href="users/login" class="icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<!--==================== BLOCKCHAIN INFO ====================-->
+<section class="blockchain__info">
+    <div class="blockchain__container container">
+        <div class="blockchain__data">
+            <div class="data"></div>
+            <h1 class="title data">Blockchain</h1>
+            <p class="blockchain__lenght data">Lenght - {{ length }}</p>
+        </div>
+    </div>
+</section>
+
+<!--==================== BLOCKCHAIN ====================-->
+<section class="blockchain">
+    <div class="blockchain__container container">
+        <table class="blockchain__block__table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Recipent</th>
+                <th>Amount</th>
+                <th>Time</th>
+                <th>Proof</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item_chain,item_hash, item_check in zip %}
+                <!-- start block -->
+                <tr class="start__block">
+                    <td class="blockchain__block__id">
+                        <h5>{{ item_chain.id }} </h5>
+                    </td>
+                    <td class="blockchain__block__recipent" colspan="3">{{ item_chain.transactions }}</td>
+                    <td class="blockchain__block__proof">{{ item_chain.proof }}</td>
+                    {% if  item_check == 1 %}
+                        <td class="blockchain__block__status">Ok</td>
+                    {% else %}
+                        <td class="blockchain__block__status changed">Changed</td>
+                    {% endif %}
+
+                </tr>
+                <tr>
+                    <td colspan="3" class="prevHash">
+                        Prev:
+                        {{ item_chain.previous_hash }}
+                    </td>
+                    <td colspan="3" class="thisHash">
+                        This:
+                        {{ item_hash }}
+                    </td>
+                </tr>
+                <!-- finish block & second start -->
+                </tbody>
+
+
+                <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+                </tbody>
+                <tbody>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Card</title>
+    <link
+            rel="shortcut icon"
+            href={% static "/assets/img/logo-bg.png" %}
+                    type="image/x-icon"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/headerShop.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/shoppingCard.css" %}/>
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" aria-current="page" href="/"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
+        /></a>
+        <!-- <button class="navbar__toggler" id="navbar-toggler">X</button> -->
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">diabet</a>
+            </li>
+            <li class="navbar__item">
+                <a
+                        class="navbar__link"
+                        aria-current="page"
+                        href="/appointment"
+                >appointment</a
+                >
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="">products</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="">about</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/main/contact">contact</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="/market/order-summary" class="icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            {% if user.is_authenticated %}
+                <a href="/users/logout" class="icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            {% else %}
+                <a href="users/login" class="icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</header>
+
+<!--==================== SHOPING CARD ====================-->
+<section class="shopping__cart">
+    <div class="shopping__container container">
+        <table class="shopping__cart__table">
+            <thead>
+            <tr>
+                <th class="shopping__product">Products</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order_item in object.items.all %}
+                <tr>
+                    <td class="shopping__cart__item">
+                        <img src={{ order_item.product.image }} alt=""/>
+                        <h5>{{ order_item.product.name_product }}</h5>
+                    </td>
+                    <td class="shopping__cart__price">
+                        {% if order_item.product.prom != 0 %}
+                            <s>{{ order_item.product.price }}</s>
+                        {% endif %}
+                        {{ order_item.product.price_with_prom }}
+                    </td>
+                    <td class="shopping__cart__quantity">
+                        <div class="quantity">
+                            <input type="number" value="{{ order_item.quantity }}"/>
+                        </div>
+                    </td>
+                    <td class="shopping__cart__total">
+                        {% if order_item.product.prom != 0 %}
+                            <s>{{ order_item.get_total_item_price }}</s>
+                        {% endif %}
+                        {{ order_item.get_total_discount_item_price }}
+                    </td>
+                    <td class="shopping__cart__item__close">
+                        <a href="{% url 'market:remove-from-cart' order_item.product.slug %}">
+
+                <span class="icon_close">
+                        <i class="fas fa-solid fa-xmark"></i>
+                </span>
+                        </a>
+
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan='5'>Your cart is empty</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="shopping__info">
+            <div class="shopping__discount">
+                <h5>Discount Codes</h5>
+                <form action="{% url 'market:add-coupon' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="code" placeholder="Enter your coupon code"/>
+                    <button type="submit" class="coupon__btn">APPLY COUPON</button>
+                </form>
+            </div>
+            <div class="shopping__checkout">
+                {% if object.get_total %}
+                    <h5>Cart Total</h5>
+                    <ul>
+                        <li>Subtotal <span><s>{{ object.get_total_without_prom }}</s></span></li>
+                        {% if object.coupon %}
+                            <li>Coupon <span>- {{ object.coupon.amount }}%</span></li>
+                        {% endif %}
+                        <li>Total <span>{{ object.get_total }}</span></li>
+                    </ul>
+                {% endif %}
+                <button class="shopping__btn" onclick="location.href='/market/payment'">ORDER</button>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

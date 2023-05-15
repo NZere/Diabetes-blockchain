@@ -27,6 +27,7 @@ class Blockchain(object):
         self.nodes.add(parsed_url.netloc)
 
     def new_block(self, proof, previous_hash=None):
+        print("new block")
         block = Block.objects.create(
             transactions=self.current_transactions,
             proof=proof,
@@ -81,7 +82,9 @@ class Blockchain(object):
 
     def proof_of_work(self, last_proof):
         proof = 0
+        print("========")
         while self.valid_proof(last_proof, proof) is False:
+            print(proof)
             proof += 1
         return proof
 
@@ -248,11 +251,9 @@ def mine(request, *args, **kwargs):
     # last_proof = last_block['proof']
     last_proof = last_block.proof
     proof = blockchain.proof_of_work(last_proof)
-
     if len(blockchain.current_transactions) == 0 and request.user.is_staff == 0:
         messages.warning(request, "you can not mine")
         return redirect("/")
-
     block = blockchain.new_block(proof)
 
     response = {
@@ -269,7 +270,7 @@ def mine(request, *args, **kwargs):
         'user_first_name': user_first_name
     }
     print(response)
-    return render(request, 'block/mine.html', response)
+    return redirect("/blockchain/block/chain", response)
     # return HttpResponse(json.dumps(response))
 
 
@@ -283,27 +284,31 @@ def new_transaction(request):
     # print(index)
     # response = {'message': 'Transaction will be added to Block %s' % index}
     # return HttpResponse(json.dumps(response))
-    # order = CartP.objects.get(user=self.request.user, ordered=False)
+    # order = CartP.objects.get(user=self.request.user, is_ordered=False)
     # shop_order = {}
     # # shops= set()
     # # for i in range order
     # print(order)
     # order_items = order.items.all()
-    # order_items.update(ordered=True)
-    order = Cart.objects.get(user=request.user, ordered=False)
+    # order_items.update(is_ordered=True)
+    order = Cart.objects.get(user=request.user, is_ordered=False)
     order_items = order.items.all()
     final = 0
     for i in order_items:
         final += i.get_final_price()
     index = 0
+    print("final, ", final)
     index = blockchain.new_transaction(request.user.username, User.objects.get(id=1).first_name,
                                        final)
-    order_items.update(ordered=True)
+    order_items.update(is_ordered=True)
     for item in order_items:
+        print("here")
         item.save()
-    order.ordered = True
+    print("end")
+    order.is_ordered = True
     order.save()
     messages.success(request, 'Transaction will be added to Block %s' % index)
+    print("to mine")
     return redirect("blockchain:mine")
 
 
@@ -329,7 +334,7 @@ def full_chain(request):
     if request.user.is_authenticated:
         user_first_name = get_user_first_name(request.user)
     blockchain_chain = Block.objects.all()
-    colors = ["palegreen"]
+    checking_blocks = []
     current_index = 2
 
     hashes_blocks = hashes_of_blocks()
@@ -341,16 +346,17 @@ def full_chain(request):
 
         if blockchain.valid_proof(b_prev.proof, b1.proof) and (
                 not is_red and b1.previous_hash == blockchain.hash(Block.objects.get(id=(current_index - 1)))):
-            colors.append("palegreen")
+            checking_blocks.append(1)
         else:
             is_red = True
-            colors.append("red")
+            checking_blocks.append(0)
 
         current_index += 1
     blockchain_chain2 = Block.objects.all().order_by("-id")
-    colors.reverse()
+
+    checking_blocks.reverse()
     hashes_blocks.reverse()
-    zippedList = zip(blockchain_chain2, hashes_blocks, colors)
+    zippedList = zip(blockchain_chain2, hashes_blocks, checking_blocks)
     print(blockchain_chain)
     response = {
         # 'chain': blockchain.chain,
@@ -362,7 +368,7 @@ def full_chain(request):
     }
     # return HttpResponse(json.dumps(response))
     print("here")
-    return render(request, 'block/blockchain.html', response)
+    return render(request, 'blockchain.html', response)
 
 
 def proof_of_work(self, last_proof):
@@ -376,7 +382,7 @@ def proof_of_work(self, last_proof):
 def valid_proof(last_proof, proof):
     guess = str(last_proof * proof).encode()
     guess_hash = hashlib.sha256(guess).hexdigest()
-    return guess_hash[:5] == "00000"
+    return guess_hash[:4] == "0000"
 
 
 @csrf_exempt
@@ -413,4 +419,4 @@ def replace_chain(request):  # New
 
         except:
             print("replace chain error")
-    return redirect("clothesL:chain")
+    return redirect("blockchain:chain")

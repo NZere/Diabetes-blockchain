@@ -1,0 +1,233 @@
+/*=============== VARIABLES SCSS ===============*/
+/*========== Colors ==========*/
+/*========== Font ==========*/
+@font-face {
+  font-family: "Barlow";
+  src: url(../../fonts/Barlow/Barlow-Regular.ttf);
+}
+@font-face {
+  font-family: "Muli", sans-serif;
+  src: url(../../fonts/muli/Muli.ttf);
+}
+/*========== Typography ==========*/
+/*.5rem = 8px | 1rem = 16px ...*/
+/*========== Font weight ==========*/
+/*========== z index ==========*/
+/* Responsive typography */
+body {
+  font-family: "Barlow";
+}
+
+/*=============== REUSABLE CSS CLASSES ===============*/
+.container {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 1rem;
+  position: relative;
+}
+
+.cover {
+  width: 0%;
+  z-index: -1;
+}
+
+.cover__bg {
+  width: 100%;
+  z-index: -2;
+}
+
+.cover, .cover__bg {
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-radius: 25px;
+  background: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  margin: 1rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #283779;
+  border-radius: 5rem;
+  background: transparent;
+  color: #283779;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+.btn:hover {
+  color: #b4dcec;
+}
+.btn:hover span {
+  width: 100%;
+}
+
+section {
+  position: relative;
+}
+
+.bg {
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.title {
+  width: 100%;
+  line-height: 120%;
+  position: relative;
+  font-size: 3.25rem;
+  font-family: "Muli";
+  color: #283779;
+}
+
+.subtitle {
+  height: 15vh;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: top center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.subtitle h2 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #283779;
+}
+.subtitle h3 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: "Muli";
+  color: #283779;
+}
+
+input {
+  width: 80%;
+  margin: 8px 0;
+  padding: 12px 15px;
+  border: 0.1rem solid #b4dcec;
+  border-radius: 5rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+input:focus {
+  border: 0.1rem solid #283779;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+  -webkit-transform: scale(1.01);
+          transform: scale(1.01);
+}
+
+body {
+  background-color: #f0f4f9;
+}
+
+.blockchain {
+  /*=============== BLOCKCHAIN TABLE ===============*/
+}
+.blockchain__info .blockchain__container {
+  padding-top: 5.5rem;
+}
+.blockchain__data {
+  height: 20vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 2rem;
+}
+.blockchain__data .data {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+.blockchain__lenght {
+  max-width: -webkit-fit-content;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 1rem;
+  overflow: hidden;
+  border: 0.1rem solid #283779;
+  background: transparent;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #283779;
+}
+.blockchain__block__table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+.blockchain__block__table thead th {
+  padding-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: #000;
+}
+.blockchain__block__table tbody tr.start__block {
+  border: 0.1rem solid #b4dcec;
+  border-bottom: none;
+}
+.blockchain__block__table tbody tr td {
+  padding: 1.5rem 0;
+}
+.blockchain__block__table tbody tr td.blockchain__block__status {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.blockchain__block__table tbody tr td.changed {
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 0.1rem solid rgb(255, 86, 86);
+  background-color: rgb(255, 86, 86);
+  color: #fff;
+}
+.blockchain__block__table tbody tr td.prevHash {
+  text-align: center;
+  font-weight: 600;
+  background-color: #283779;
+  color: #b4dcec;
+}
+.blockchain__block__table tbody tr td.thisHash {
+  text-align: center;
+  font-weight: 600;
+  background-color: #b4dcec;
+  color: #283779;
+}
+.blockchain__block__table tbody:has(.changed), .blockchain__block__table thead:has(.changed), .blockchain__block__table .start__block:has(.changed) {
+  border: 0.2rem solid rgb(255, 86, 86);
+}
+.blockchain__block__table tbody:has(.changed) .prevHash {
+  background-color: rgb(255, 86, 86);
+  color: #fff;
+}
+.blockchain__block__table tbody:has(.changed) .thisHash {
+  background-color: #fff;
+  color: rgb(255, 86, 86);
+}

@@ -1,0 +1,47 @@
+{% extends "block/mine.html" %}
+{% load static %}
+{% block cont %}
+
+
+<div>
+    <h1 class="lead font-weight-bold" style="text-align: center; margin-bottom: 20px">Neighbours</h1>
+    {% if neighbours %}
+    <table style="margin: 0 auto 50px auto">
+        {% for item_n in neighbours%}
+        <div>
+            <td style="border: 5px white solid; border-radius: 50%; padding: 15px 20px 0 20px">
+                <p class="lead font-weight-bold"> {{item_n}}</p>
+            </td>
+        </div>
+
+        {% endfor %}
+    {% else %}
+                <p class="lead font-weight-bold" style="text-align: center; margin-bottom: 50px"> There is not any neighbours near</p>
+
+        {% endif %}
+    </table>
+
+</div>
+
+
+<h1 class="lead font-weight-bold" style="text-align: center; margin-bottom: 20px">BLOCKCHAIN (length: {{length}})</h1>
+<table style="border: 5px white solid">
+    {% for item_chain,item_hash, item_color in zip %}
+    <div>
+        <tr style="border: 10px white solid">
+            <td style="background:{{item_color}}; padding: 10px 0 0 50px">
+                <div>
+                    <p class="lead font-weight-bold"> index: {{item_chain.id}} <br></p>
+                    <p class="lead font-weight-bold"> transaction: {{item_chain.transactions}} <br></p>
+                    <p class="lead font-weight-bold"> proof: {{item_chain.proof}} <br></p>
+                    <p class="lead font-weight-bold"> previous hash: {{item_chain.previous_hash}} <br></p>
+                    <p class="lead font-weight-bold"> this hash: {{item_hash}} <br></p>
+
+                </div>
+            </td>
+        </tr>
+    </div>
+    {% endfor %}
+
+</table>
+{% endblock %}

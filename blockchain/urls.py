@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+app_name = 'blockchain'
 urlpatterns = [
     path(r'block/mine', views.mine, name='mine'),
     path(r'block/transactions/new/', views.new_transaction, name='transactions'),

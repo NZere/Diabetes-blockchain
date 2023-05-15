@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Shop</title>
+{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">#}
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -13,6 +14,10 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/headerShop.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/shop.css" %}/>
@@ -42,14 +47,14 @@
                 <a class="navbar__link" href="">products</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="">about</a>
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="/main/contact">contact</a>
             </li>
         </ul>
         <div class="icons">
-            <a href="" class="icon">
+            <a href="/market/order-summary" class="icon">
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>
             {% if user.is_authenticated %}
@@ -63,6 +68,18 @@
             {% endif %}
         </div>
     </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </header>
 
 <main>
@@ -144,7 +161,7 @@
                         <div class="product__card__price">Product Price</div>
                     </div>
                     <div class="product__card__selected">
-                        <a href="" class="icon">
+                        <a href="/market/order-summary" class="icon">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
                     </div>
@@ -158,7 +175,7 @@
                         <div class="product__card__price">Product Price</div>
                     </div>
                     <div class="product__card__selected">
-                        <a href="" class="icon">
+                        <a href="/market/order-summary" class="icon">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
                     </div>
@@ -172,7 +189,7 @@
                         <div class="product__card__price">Product Price</div>
                     </div>
                     <div class="product__card__selected">
-                        <a href="" class="icon">
+                        <a href="/market/order-summary" class="icon">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
                     </div>
@@ -186,7 +203,7 @@
                         <div class="product__card__price">Product Price</div>
                     </div>
                     <div class="product__card__selected">
-                        <a href="" class="icon">
+                        <a href="/market/order-summary" class="icon">
                             <i class="fa-solid fa-cart-shopping"></i>
                         </a>
                     </div>

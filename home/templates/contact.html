@@ -15,6 +15,10 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/contact.css" %}/>
@@ -33,7 +37,7 @@
                 <a class="navbar__link" href="/appointment">appointment</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="/">about Us</a>
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="/">doctors</a>
@@ -50,13 +54,25 @@
                 </li>
             {% else %}
                 <li class="navbar__item__btn">
-                    <a class="navbar__btn btn" href="users/login"
+                    <a class="navbar__btn btn" href="/users/login"
                     ><span class="cover"></span> Sign In</a
                     >
                 </li>
             {% endif %}
         </ul>
     </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </header>
 
 <main>

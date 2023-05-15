@@ -6,7 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Appointment</title>
-    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png"%} type="image/x-icon"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/appointment.css" %}/>
@@ -33,7 +37,7 @@
                 <a class="navbar__link" aria-current="page" href="#">appointment</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="#about">about Us</a>
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="#departments">departments</a>
@@ -58,6 +62,18 @@
             {% endif %}
         </ul>
     </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 </header>
 
 <main>
@@ -77,26 +93,26 @@
                                 <img src={% static "/assets/img/arrow.png" %} alt=""/>
                             </div>
                             <div class="doctors__container">
-                            {% if all_doctors %}
-                                {% for doctor in all_doctors %}
-                                    <div class="doctors__card" id="{{ doctor.slug }}">
-                                        <div class="doctors__card__img">
-                                            {% if doctor.image %}
-                                                <img src={{ doctor.image }} class="doctor__img" alt=""/>
-                                            {% else %}
-                                                <img src={% static "assets/img/doctor.jpg" %} class="doctor__img"
-                                                     alt=""/>
-                                            {% endif %}
+                                {% if all_doctors %}
+                                    {% for doctor in all_doctors %}
+                                        <div class="doctors__card" id="{{ doctor.slug }}">
+                                            <div class="doctors__card__img">
+                                                {% if doctor.image %}
+                                                    <img src={{ doctor.image }} class="doctor__img" alt=""/>
+                                                {% else %}
+                                                    <img src={% static "assets/img/doctor.jpg" %} class="doctor__img"
+                                                         alt=""/>
+                                                {% endif %}
+                                            </div>
+                                            <div class="doctors__card__info">
+                                                <h2 class="doctors__card__title">{{ doctor.first_name }} {{ doctor.last_name }}</h2>
+                                                <p class="doctors__card__description">
+                                                    {{ doctor.description }}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div class="doctors__card__info">
-                                            <h2 class="doctors__card__title">{{ doctor.first_name }} {{ doctor.last_name }}</h2>
-                                            <p class="doctors__card__description">
-                                                {{ doctor.description }}
-                                            </p>
-                                        </div>
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
+                                    {% endfor %}
+                                {% endif %}
                             </div>
                         </div>
                         <div class="step">
@@ -290,8 +306,7 @@
         chosen = $().hasClass('chosen')
         console.log("hii")
         console.log(chosen)
-        doctor=$(this).attr('id')
-
+        doctor = $(this).attr('id')
 
 
         {##}

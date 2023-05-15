@@ -11,7 +11,6 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import DetailView
 
-from market.forms import CouponForm
 from market.models import Product, CartItem, Cart, Coupon
 from users.models import Wallet
 from users.views import get_user_first_name, get_user_money, encrypt, get_user_email, get_user_last_name
@@ -28,17 +27,20 @@ def index(request):
 
 
 def product(request, slug):
-    user_first_name = None
+    user_first_name = email = None
     if request.user.is_authenticated:
         user_first_name = get_user_first_name(request.user)
+        email = get_user_email(request.user)
     products = Product.objects.get(slug=slug)
     comments = products.commentary_set.order_by('-id')[:10]
     context = {
         "object": products,
         "comments": comments,
-        "user_first_name": user_first_name
+        "user_first_name": user_first_name,
+        "email": email,
+        "comments_count": comments.count()
     }
-    return render(request, 'market/product.html', context)
+    return render(request, 'market/productSingle.html', context)
 
 
 CHOICE_TYPE = {
@@ -141,9 +143,9 @@ def add_to_cart(request, slug):
     order_item, created = CartItem.objects.get_or_create(
         product=product_to_add,
         user=request.user,
-        ordered=False
+        is_ordered=False
     )
-    order_qs = Cart.objects.filter(user=request.user, ordered=False)
+    order_qs = Cart.objects.filter(user=request.user, is_ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
@@ -157,7 +159,7 @@ def add_to_cart(request, slug):
             messages.info(request, "This item was added to your cart.")
             return redirect("market:order-summary")
     else:
-        ordered_date = timezone
+        ordered_date = timezone.now()
         order = Cart.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
@@ -166,24 +168,29 @@ def add_to_cart(request, slug):
 
 
 @login_required
-def remove_from_cart_p(request, slug):
+def remove_from_cart(request, slug):
     item = get_object_or_404(Product, slug=slug)
     order_qs = Cart.objects.filter(
         user=request.user,
-        ordered=False
+        is_ordered=False
     )
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
         if order.items.filter(product__slug=item.slug).exists():
-            order_item = CartItem.objects.filter(
-                product=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            order.items.remove(order_item)
-            messages.info(request, "This item was removed from your cart.")
-            return redirect("market:order-summary")
+            try:
+                order_item = CartItem.objects.filter(
+                    product=item,
+                    user=request.user,
+                    is_ordered=False
+                ).first()
+
+                order.items.remove(order_item)
+                order.save()
+                messages.info(request, "This item was removed from your cart.")
+                return redirect("market:order-summary")
+            except Exception as e:
+                print("error", e)
         else:
             messages.info(request, "This item was not in your cart")
             return redirect("market:order-summary", slug=slug)
@@ -193,11 +200,11 @@ def remove_from_cart_p(request, slug):
 
 
 @login_required
-def remove_single_item_from_cart_p(request, slug):
+def remove_single_item_from_cart(request, slug):
     product_to_remove = get_object_or_404(Product, slug=slug)
     order_qs = Cart.objects.filter(
         user=request.user,
-        ordered=False
+        is_ordered=False
     )
     if order_qs.exists():
         order = order_qs[0]
@@ -206,7 +213,7 @@ def remove_single_item_from_cart_p(request, slug):
             order_item = CartItem.objects.filter(
                 product=product_to_remove,
                 user=request.user,
-                ordered=False
+                is_ordered=False
             )[0]
             if order_item.quantity > 1:
                 order_item.quantity -= 1
@@ -226,13 +233,13 @@ def remove_single_item_from_cart_p(request, slug):
 @login_required
 def comment(request, slug):
     try:
-        a = Product.objects.get(slug=slug)
+        product = Product.objects.get(slug=slug)
     except():
         raise Http404("ERROORRRRRR")
     if request.method == 'POST':
-        text1 = request.POST['text']
-        a.commentary_set.create(author=request.user, text=text1, clothes_id=a.id)
-    return HttpResponseRedirect(reverse('market:product', args=(a.slug,)))
+        comment = request.POST['comment']
+        product.commentary_set.create(user_name=request.user, text=comment, product_id=product.id)
+    return HttpResponseRedirect(reverse('market:product', args=(product.slug,)))
 
 
 class OrderSummaryView(LoginRequiredMixin, View):
@@ -241,14 +248,13 @@ class OrderSummaryView(LoginRequiredMixin, View):
         if self.request.user.is_authenticated:
             user_first_name = get_user_first_name(self.request.user)
         try:
-            order = Cart.objects.get(user=self.request.user, ordered=False)
+            order = Cart.objects.get(user=self.request.user, is_ordered=False)
             context = {
                 'object': order,
-                'couponform': CouponForm(),
                 'DISPLAY_COUPON_FORM': True,
                 'user_first_name': user_first_name
             }
-            return render(self.request, 'market/order_summary.html', context)
+            return render(self.request, 'market/shoppingCart.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
             print("You do not have an active order")
@@ -261,7 +267,7 @@ def get_coupon(request, code):
         return coupon
     except ObjectDoesNotExist:
         messages.info(request, "This coupon does not exist")
-        return redirect("core:checkout")
+        return redirect("market:order-summary")
 
 
 class PaymentView(LoginRequiredMixin, View):
@@ -270,7 +276,7 @@ class PaymentView(LoginRequiredMixin, View):
         if self.request.user.is_authenticated:
             user_first_name = get_user_first_name(self.request.user)
         try:
-            order = Cart.objects.get(user=self.request.user, ordered=False)
+            order = Cart.objects.get(user_id=self.request.user.id, is_ordered=False)
             order_items = order.items.all()
             user = None
             if self.request.user.is_authenticated:
@@ -278,7 +284,7 @@ class PaymentView(LoginRequiredMixin, View):
             print(user.id)
             user_wallet = Wallet.get_purse_by_userid(user.id)
             purchase = 0
-            main_admin = User.objects.get(user=1)
+            main_admin = User.objects.get(id=1)
             main_admin_wallet = Wallet.get_purse_by_userid(1)
 
             with transaction.atomic():
@@ -303,9 +309,9 @@ class PaymentView(LoginRequiredMixin, View):
                         else:
                             error_message = 'Not enough money !!'
                             messages.warning(self.request, error_message)
-                            return redirect("/", {'user_first_name': user_first_name})
+                            return redirect("/market", {'user_first_name': user_first_name})
             messages.success(self.request, "Your order was successful!")
-            return redirect("/main/block/transactions/new",
+            return redirect("/blockchain/block/transactions/new",
                             {'user_first_name': user_first_name, 'market': purchase})
         except():
             messages.warning(self.request, "Error")
@@ -313,20 +319,19 @@ class PaymentView(LoginRequiredMixin, View):
 
 
 class AddCouponView(View):
-    def post(self, *args, **kwargs):
-        form = CouponForm(self.request.POST or None)
-        if form.is_valid():
+    def post(self, request, *args, **kwargs):
+        if request.method == "POST":
             try:
-                code = form.cleaned_data.get('code')
+                code = request.POST.get('code', '')
                 order = Cart.objects.get(
-                    user=self.request.user, ordered=False)
+                    user=self.request.user, is_ordered=False)
                 order.coupon = get_coupon(self.request, code)
                 order.save()
                 messages.success(self.request, "Successfully added coupon")
-                return redirect("clothesL:order-summary")
+                return redirect("market:order-summary")
             except ObjectDoesNotExist:
                 messages.info(self.request, "You do not have an active order")
-                return redirect("clothesL:order-summary")
+                return redirect("market:order-summary")
 
 
 class ItemDetailViewP(DetailView):
@@ -334,26 +339,26 @@ class ItemDetailViewP(DetailView):
     template_name = "market/product.html"
 
 
-class WalletView(LoginRequiredMixin, View):
-    def get(self, request):
-        user_first_name = None
-        user_email = None
-        user_last_name = None
-        if self.request.user.is_authenticated:
-            user_first_name = get_user_first_name(self.request.user)
-
-        user = None
-        if request.user.is_authenticated:
-            user = request.user
-            user_email = get_user_email(user)
-            user_last_name = get_user_last_name(user)
-        purse = Wallet.get_purse_by_userid(user.id)
-
-        orders = Cart.objects.filter(user_id=user.id)
-        data = {'user': user, 'purse': purse, 'money': get_user_money(user), 'user_first_name': user_first_name,
-                'user_last_name': user_last_name, 'user_email': user_email}
-
-        if not User.objects.filter(user=1).exists():
-            data['orders'] = orders
-        print('email', user_email)
-        return render(request, 'market/account.html', data)
+# class WalletView(LoginRequiredMixin, View):
+#     def get(self, request):
+#         user_first_name = None
+#         user_email = None
+#         user_last_name = None
+#         if self.request.user.is_authenticated:
+#             user_first_name = get_user_first_name(self.request.user)
+#
+#         user = None
+#         if request.user.is_authenticated:
+#             user = request.user
+#             user_email = get_user_email(user)
+#             user_last_name = get_user_last_name(user)
+#         purse = Wallet.get_purse_by_userid(user.id)
+#
+#         orders = Cart.objects.filter(user_id=user.id)
+#         data = {'user': user, 'purse': purse, 'money': get_user_money(user), 'user_first_name': user_first_name,
+#                 'user_last_name': user_last_name, 'user_email': user_email}
+#
+#         if not User.objects.filter(user=1).exists():
+#             data['orders'] = orders
+#         print('email', user_email)
+#         return render(request, 'market/account.html', data)

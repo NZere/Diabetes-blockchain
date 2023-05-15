@@ -2,7 +2,7 @@ import datetime
 
 from django.shortcuts import render, redirect, get_object_or_404
 from dateutil.relativedelta import relativedelta
-from appointment.models import Schedule, All_work_times
+from appointment.models import *
 from users.models import Doctor
 from users.views import get_user_first_name, get_user_last_name, get_user_email
 from django.contrib.auth.models import User, auth
@@ -121,6 +121,8 @@ def appointment_end(request):
 
 
 def user_main_page(request):
+    today = request.GET.get('today')
+    print(today)
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
         user_first_name = get_user_first_name(user)
@@ -128,21 +130,26 @@ def user_main_page(request):
             doctor = Doctor.objects.get(doctor_user=user)
             if not doctor:
                 return render(request, "patientMain.html", {'user_first_name': user_first_name,
-                                                            "data": get_all_appointments_patient(user)})
+                                                            "data": get_all_appointments_patient(user, today)})
             else:
                 return render(request, "doctorMain.html", {'user_first_name': user_first_name,
-                                                           "data": get_all_appointments_doctor(doctor)})
+                                                           "data": get_all_appointments_doctor(doctor, today)})
         except:
             return render(request, "patientMain.html", {'user_first_name': user_first_name,
-                                                        "data": get_all_appointments_patient(user)})
+                                                        "data": get_all_appointments_patient(user, today)})
     else:
         return redirect("/")
 
 
-def get_all_appointments_doctor(doctor_user):
+def get_all_appointments_doctor(doctor_user, today=False):
     print("id", doctor_user.id)
     print("du", doctor_user)
-    appointments = Schedule.objects.filter(doctor=doctor_user.id)
+
+    if not today:
+        appointments = Schedule.objects.filter(doctor=doctor_user.id)
+    else:
+        today = datetime.date.today()
+        appointments = Schedule.objects.filter(doctor=doctor_user.id, work_time__date=today)
     data = []
     for app in appointments:
         if app.patient is not None:
@@ -157,17 +164,23 @@ def get_all_appointments_doctor(doctor_user):
     return data
 
 
-def get_all_appointments_patient(patient_user):
-    appointments = Schedule.objects.filter(patient=patient_user)
+def get_all_appointments_patient(patient_user, today=False):
+    if not today:
+        appointments = Schedule.objects.filter(patient=patient_user)
+    else:
+        today = datetime.date.today()
+        appointments = Schedule.objects.filter(patient=patient_user, work_time__date=today)
+
     data = []
     for app in appointments:
         print(app)
+
         data.append({
             "id": app.id,
             "doctor": get_user_first_name(app.doctor.doctor_user),
             "date": app.work_time.date,
             "time": app.work_time.time,
-            "status": app.status
+            "status": app.status,
         })
     print(data)
     return data
@@ -175,12 +188,72 @@ def get_all_appointments_patient(patient_user):
 
 def appointment_doctor_page(request, id: int):
     appointment = Schedule.objects.get(id=id)
-    return render(request, "doctorEditPatient.html", {"appointment": appointment})
+
+    products = Recommendation_product.objects.filter(schedule=appointment)
+    rec_products = []
+    for pr in products:
+        rec_products.append(pr.id)
+    print("rec_prooods", rec_products)
+    rec_str = ""
+    try:
+        rec_str = ', '.join(str(v) for v in rec_products)
+    except Exception as e:
+        print("error ", e)
+
+    return render(request, "doctorEditPatient.html", {
+        "appointment": appointment,
+        "products": rec_str})
 
 
 def appointment_patient_page(request, id: int):
     appointment = Schedule.objects.get(id=id)
-    return render(request, "patientReport.html", {"appointment": appointment})
+    products = Recommendation_product.objects.filter(schedule=appointment)
+    doctor = Doctor.objects.get(id=appointment.doctor.id)
+    doctor_user = User.objects.get(id=doctor.doctor_user.id)
+    rec_products = []
+    for pr in products:
+        rec_products.append(pr.id)
+    print("rec_prooods", rec_products)
+    rec_str = ""
+    try:
+        rec_str = ', '.join(str(v) for v in rec_products)
+    except Exception as e:
+        print("error ", e)
+    return render(request, "patientReport.html", {
+        "appointment": appointment,
+        "products": rec_str,
+        "name_user": get_user_first_name(user=request.user)+" "+get_user_last_name(user=request.user),
+        "name_doctor": get_user_first_name(user=doctor_user)+" "+get_user_last_name(user=doctor_user)
+    })
+
+
+@csrf_exempt
+def appointment_doctor_save(request, id: int):
+    user = User.objects.get(id=request.user.id)
+    if request.method == "POST":
+        rec_doctor = request.POST.get("recommendation-doctor", '')
+        rec_med = request.POST.get("recommendation-medications", '')
+        doctor = Doctor.objects.get(doctor_user=user)
+        appointment = Schedule.objects.filter(id=id, doctor=doctor).first()
+        print("rec_doctor", rec_doctor)
+        appointment.info = rec_doctor
+        appointment.status = "done"
+        appointment.save()
+        print("rec_med", rec_med)
+        rec_products = str(rec_med).split(',')
+        for rec_product_id in rec_products:
+            product = Product.objects.get(id=rec_product_id)
+            rec_med_object = Recommendation_product.objects.create(
+                schedule=appointment,
+                doctor=appointment.doctor,
+                patient=appointment.patient,
+                product=product
+            )
+            rec_med_object.save()
+
+        return redirect("/appointment/account/")
+    else:
+        return redirect("/appointment/account/")
 
 # def check_user_data(first_data, second_data):
 #     if first_data == second_data:

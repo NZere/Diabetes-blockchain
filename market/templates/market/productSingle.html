@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Product</title>
+    <link
+            rel="shortcut icon"
+            href={% static "/assets/img/logo-bg.png" %}
+                    type="image/x-icon"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/headerShop.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/productSingle.css" %}/>
+    <link rel="stylesheet" href={% static "/assets/styles/css/footerShop.css" %}/>
+</head>
+<body>
+<!--==================== HEADER ====================-->
+<header id="header">
+    <nav class="navbar container">
+        <a class="navbar__brand" aria-current="page" href="/"
+        ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
+        /></a>
+        <!-- <button class="navbar__toggler" id="navbar-toggler">X</button> -->
+        <ul class="navbar__list" id="navbar-list">
+            <li class="navbar__item">
+                <a class="navbar__link" href="/">diabet</a>
+            </li>
+            <li class="navbar__item">
+                <a
+                        class="navbar__link"
+                        aria-current="page"
+                        href="/appointment"
+                >appointment</a
+                >
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="">products</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
+            </li>
+            <li class="navbar__item">
+                <a class="navbar__link" href="/main/contact">contact</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <a href="/market/order-summary" class="icon">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            {% if user.is_authenticated %}
+                <a href="/users/logout" class="icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            {% else %}
+                <a href="users/login" class="icon">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="mt-5 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</header>
+
+<main>
+    <!--==================== PRODUCT ====================-->
+    <section class="product">
+        <div class="product__container container">
+            <div class="product__main">
+                <div class="product__img flex1">
+                    <img src={{ object.image }} alt=""/>
+                </div>
+                <div class="product__data flex1">
+                    <div class="product__info">
+                        <div class="product__title">
+                            <h2>{{ object.name_product }}</h2>
+                        </div>
+                        <div class="product__reviews">
+                            <i class="fa fa-sharp fa-solid fa-star"></i>
+                            <i class="fa fa-sharp fa-solid fa-star"></i>
+                            <i class="fa fa-sharp fa-solid fa-star"></i>
+                            <i class="fa fa-sharp fa-solid fa-star"></i>
+                            <i class="fa fa-sharp fa-solid fa-star"></i>
+                            ({{ comments_count }} reviews)
+                        </div>
+                        <h3 class="product__price">{{ object.price }} <span>tenge</span></h3>
+                        <p class="product__description">
+                            {{ object.description_product }}
+                        </p>
+                        {% if user.is_authenticated %}
+                            <div class="btn__container">
+                                <a href="{{ object.get_add_to_cart_url }}" class="product__btn">
+                                    Add to card
+                                    <i class="fa fa-solid fa-card-plus"></i>
+                                </a>
+                                <a href="{{ object.get_remove_from_cart_url }}" class="product__btn remove__btn">
+                                    Remove from card
+                                    <i class="fa fa-solid fa-card-xmark"></i>
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="btn__container">
+                                <a href="/users/login" class="product__btn">
+                                    Log in to add to cart
+                                    <i class="fa fa-solid fa-card-plus"></i>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="product__more__info">
+                        <div class="more__info__title">
+                            <p class="availability"><strong>Availability</strong></p>
+                            <p class="shipping"><strong>Shipping</strong></p>
+                            <p class="weight"><strong>Weight</strong></p>
+                        </div>
+                        <div class="more__info">
+                            <p class="availability">In Stock</p>
+                            <p class="shipping">01 day shipping</p>
+                            <p class="weight">0.5 kg</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== REVIEW ====================-->
+    <section class="review">
+        <div class="review__container container">
+            <div class="review__title">
+                <h3>Reviews</h3>
+            </div>
+            <div class="review__main">
+
+                {% if user.is_authenticated %}
+                    <form class="write__review" action="{% url 'market:comment' object.slug %}" method="POST">
+                        {% csrf_token %}
+                        <h3 class="write__review__title">Write review</h3>
+                        <div class="write__review__main">
+                            <input type="text" class="name" placeholder="{{ user_first_name }}"/>
+                            <input type="email" class="email" placeholder="{{ email }}"/>
+                        </div>
+                        <textarea
+                                name="comment"
+                                id=""
+                                cols="30"
+                                rows="10"
+                                placeholder="Write your comment"
+                        ></textarea>
+                        <input type="submit" class="send__btn"/>
+                    </form>
+                {% else %}
+                    <div class="btn__container">
+                        <a href="/users/login" class="product__btn">
+                            Log in to add to cart
+                            <i class="fa fa-solid fa-card-plus"></i>
+                        </a>
+                    </div>
+
+                {% endif %}
+                <div class="reviews">
+                    <!-- card start -->
+                    {% for commentary in comments %}
+                        <div class="reviews__card">
+                            <h5 class="reviews__title">{{ commentary.user_name }}</h5>
+                            <p class="reviews__date">2023 May 5</p>
+                            <div class="reviews__starts">
+                                <i class="fa fa-sharp fa-solid fa-star start__on"></i>
+                                <i class="fa fa-sharp fa-solid fa-star start__on"></i>
+                                <i class="fa fa-sharp fa-solid fa-star start__on"></i>
+                                <i class="fa fa-sharp fa-solid fa-star start__on"></i>
+                                <i class="fa fa-sharp fa-solid fa-star start__off"></i>
+                            </div>
+                            <p class="reviews__text">
+                                {{ commentary.text }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                    <!-- card end -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== NEW PRODUCTS ====================-->
+    <section class="products">
+        <div class="products__container container">
+            <div class="products__data review__title">
+                <h3>new product</h3>
+            </div>
+            <div class="product__cards">
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="/market/order-summary" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="/market/order-summary" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="/market/order-summary" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="product__card">
+                    <a href="./productSingle.html">
+                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
+                    </a>
+                    <div class="product__card__info">
+                        <div class="product__card__name">Product Name</div>
+                        <div class="product__card__price">Product Price</div>
+                    </div>
+                    <div class="product__card__selected">
+                        <a href="/market/order-summary" class="icon">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--==================== SUBSCRIBE ====================-->
+    <section class="subscribe bg" id="subscribe">
+        <div class="subscribe__container container">
+            <div class="subscribe__info">
+                <h2 class="subscribe__info__title">Get an update every week</h2>
+                <p class="subscribe__info__text">
+                    This website was created for diploma project. <br/>
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                </p>
+            </div>
+            <div class="subscribe__form">
+                <h3>SUBSCRIBE TO NEWSLETTER</h3>
+                <form class="subscribe__form__inner">
+                    <input type="email" placeholder="Email" class="email"/>
+                    <input type="submit" name="next" class="send__btn" value="Next"/>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!--==================== FOOTER ====================-->
+<footer class="footer">
+    <div class="footer__container container">
+        <div class="footer__items">
+            <ul class="footer__list">
+                <li class="footer__item">
+                    <a class="footer__link" href="/">diabet</a>
+                </li>
+                <li class="footer__item">
+                    <a class="footer__link" href="/">appointment</a>
+                </li>
+                <li class="footer__item">
+                    <a class="footer__link" href="">products</a>
+                </li>
+            </ul>
+        </div>
+        <div class="footer__items">
+            <div class="social__links">
+                <a href=""><i class="fab fa-brands fa-instagram"></i></a>
+                <a href=""><i class="fab fa-brands fa-twitter"></i></a>
+                <a href=""><i class="fab fa-brands fa-facebook"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--==================== COPYRIGHT ====================-->
+<div class="copyright">
+    <div class="copyright__container container">
+        All rights Reserved &copy; Diploma project, 2023
+    </div>
+</div>
+</body>
+</html>

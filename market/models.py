@@ -76,7 +76,7 @@ class CartItem(models.Model):
         return self.quantity * self.product.price
 
     def get_total_discount_item_price(self):
-        return self.quantity * self.product.price_with_prom()
+        return self.quantity * self.product.price_with_prom
 
     def get_amount_saved(self):
         return self.get_total_item_price() - self.get_total_discount_item_price()
@@ -94,12 +94,21 @@ class Cart(models.Model):
     start_date = models.DateTimeField(auto_now_add=True)  # auto_now_add=True,
     ordered_date = models.DateTimeField()
     is_ordered = models.BooleanField(default=False)
+    coupon = models.ForeignKey(
+        'Coupon', on_delete=models.CASCADE, blank=True, null=True)
 
     def get_total(self):
         total = 0
         for order_item in self.items.all():
             a = order_item.product.price - (order_item.product.prom / 100 * order_item.product.price)
             b = order_item.quantity * a
+            total += b
+        return total
+
+    def get_total_without_prom(self):
+        total = 0
+        for order_item in self.items.all():
+            b = order_item.quantity * order_item.product.price
             total += b
         return total
 

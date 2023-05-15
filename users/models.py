@@ -27,5 +27,5 @@ class Wallet(models.Model):
 
     @staticmethod
     def get_purse_by_userid(user_id):
-        return Wallet.objects.get(user=user_id)
+        return Wallet.objects.filter(user_id=user_id).first()
 
