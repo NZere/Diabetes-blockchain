@@ -23,7 +23,7 @@ from django.forms.models import model_to_dict
 
 
 def index(request):
-    return render(request, 'market/shop.html')
+    return render(request, 'shop.html')
 
 
 def product(request, slug):
@@ -40,7 +40,7 @@ def product(request, slug):
         "email": email,
         "comments_count": comments.count()
     }
-    return render(request, 'market/productSingle.html', context)
+    return render(request, 'productSingle.html', context)
 
 
 CHOICE_TYPE = {
@@ -76,30 +76,19 @@ def get_all_products(request):
         for pro in products:
             print(type)
             pr.append(
-                {
-                    'product_name': pro.name_product,
-                    'product_price': pro.price,
-                    'product_price_current': pro.price_with_prom,
-                    'product_slug': pro.slug,
-                    # 'product_description': pro.description_product
-                }
+                pro
             )
-        return HttpResponse(json.dumps(pr))
+            print(pr)
+        return render(request, "products.html", {"pr":pr})
     for pro in products:
         if CHOICE_TYPE[pro.type] in types:
             print(type)
             pr.append(
-                {
-                    'product_name': pro.name_product,
-                    'product_price': pro.price,
-                    'product_price_current': pro.price_with_prom,
-                    'product_slug': pro.slug,
-                    # 'product_description': pro.description_product
-                }
+                pro
             )
 
     print(pr)
-    return HttpResponse(json.dumps(pr))
+    return render(request, "products.html", {"pr":pr})
 
 
 def get_all_products_filter(request):
@@ -121,12 +110,7 @@ def get_all_products_filter(request):
         print("------------------")
         if CHOICE_TYPE[pro.type] == type:
             pr.append(
-                {
-                    'product_name': pro.name_product,
-                    'product_price': pro.price,
-                    'product_price_current': pro.price_with_prom,
-                    # 'product_description': pro.description_product
-                }
+                pro
             )
     print(pr)
     # data = {
@@ -134,7 +118,7 @@ def get_all_products_filter(request):
     #     'products': pr,
     #
     # }
-    return HttpResponse(json.dumps(pr))
+    return render(request, "products.html", {"pr": pr})
 
 
 @login_required
@@ -254,7 +238,7 @@ class OrderSummaryView(LoginRequiredMixin, View):
                 'DISPLAY_COUPON_FORM': True,
                 'user_first_name': user_first_name
             }
-            return render(self.request, 'market/shoppingCart.html', context)
+            return render(self.request, 'shoppingCart.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
             print("You do not have an active order")
