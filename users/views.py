@@ -257,7 +257,7 @@ def crypto(request):
 
 
 def add_money(request):
-    user = User.objects.get(id=3)
+    user = User.objects.get(id=2)
     wallet = Wallet.objects.get(user=user)
     money = '50000'
     wallet.money = (encrypt(user.id, money, user.username)).decode('ascii')

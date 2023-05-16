@@ -103,6 +103,8 @@ class Cart(models.Model):
             a = order_item.product.price - (order_item.product.prom / 100 * order_item.product.price)
             b = order_item.quantity * a
             total += b
+        if self.coupon is not None:
+            total -= self.coupon.amount
         return total
 
     def get_total_without_prom(self):
