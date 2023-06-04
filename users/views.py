@@ -286,6 +286,7 @@ def login(request):
         password = request.POST.get("password_in", '')
         print("username", username)
         user = check_user(username, password)
+        print("user", user)
         if type(user) == User:
             try:
                 user.backend = 'django.contrib.auth.backends.ModelBackend'
@@ -296,13 +297,14 @@ def login(request):
                 return redirect('/',
                   {"user_first_name": user_first_name})
             except Exception:
-                value = {'username': username}
-                redirect('/users/login',
-                  {"user_first_name": user_first_name})
+                return render(request, 'login.html',
+                              {"user_first_name": user_first_name,
+                               'username': username})
         else:
-            value = {'username': username}
-            redirect('/users/login',
-                  {"user_first_name": user_first_name})
+            messages.warning(request, user)
+            return render(request, 'login.html',
+                          {"user_first_name": user_first_name})
+
 
     else:
         return render(request, 'login.html',
@@ -407,6 +409,7 @@ def learn_doctor(request, id):
 def training_recognition():
     subprocess.run(["python3 users/face_recognition/training.py"], shell=True, capture_output=True)
 
+
 def check_user(username: str, password: str):
     user = None
     try:
@@ -414,6 +417,7 @@ def check_user(username: str, password: str):
         user = User.objects.get(username=username)
     except:
         user = None
+        print("except")
         return 'Username is not exist'
     if user is not None:
         user_id = user.id

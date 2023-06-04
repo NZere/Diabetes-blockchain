@@ -29,24 +29,16 @@
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
-                <a
-                        class="navbar__link"
-                        aria-current="page"
-                        href="/appointment"
-                >appointment</a
-                >
+                <a class="navbar__link" aria-current="page" href="/appointment">appointment</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="/">departments</a>
-            </li>
-            <li class="navbar__item">
                 <a class="navbar__link" href="/market">shop </a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="#findUs">contact</a>
+                <a class="navbar__link" href="/main/contact">contact</a>
             </li>
             {% if user.is_authenticated %}
                 <li class="navbar__item">
@@ -54,7 +46,7 @@
                 </li>
             {% else %}
                 <li class="navbar__item__btn">
-                    <a class="navbar__btn btn" href="users/login"
+                    <a class="navbar__btn btn" href="/users/login"
                     ><span class="cover"></span> Sign In</a
                     >
                 </li>
@@ -157,6 +149,7 @@
                             name="previous"
                             class="previous action__btn__previous"
                             value="Previous"
+                            id="previous"
                     />
                     <input
                             type="submit"
@@ -177,6 +170,11 @@
 <script>
     {#let doctor = {{ doctor_id }};#}
     {#let date_sch ={{  }}#}
+
+    console.log(window.location.hostname)
+    console.log(window.location.host)
+    console.log(window.location.href)
+    console.log(window.location.pathname)
     console.log("hi")
     let content = $(".calendar__content")
     let header = $(".calendar__header")
@@ -205,10 +203,20 @@
         const dateObj = new Date(`${monthName} 1, 2023`);
         const monthNum = dateObj.getMonth() + 1;
 
-        let url_end = url + "date/" + monthYear[1] + "-" + monthNum + "-" + day_ch
-        console.log(url_end)
-        {#window.open(window.location.origin+url_end)#}
-        window.location.pathname = url_end
+        var url_href = window.location.href;
+        var selectedDate = "date/" + monthYear[1] + "-" + monthNum + "-" + day_ch
+        var regex = /date\/\d{4}-\d{1,2}-\d{1,2}/;
+        var match = url.match(regex);
+        if (match) {
+            var newUrl = url_href.replace(match[0], selectedDate);
+            window.location.href = newUrl;
+        } else {
+            let url_end = url + selectedDate
+            console.log(url_end)
+            window.location.pathname = url_end
+        }
+
+
     });
     let time_select = $(".time__select")
 
@@ -222,11 +230,10 @@
         let doctor_slug = url_list[2]
 
         form.attr('action', '/appointment/appointment_submit/')
+    })
 
-// Submit form
-
-        {#form.submit();#}
-
+    $('#previous').click(function () {
+        window.location.pathname= "/appointment/";
     })
 
 

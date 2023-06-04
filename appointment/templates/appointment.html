@@ -34,19 +34,16 @@
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
-                <a class="navbar__link" aria-current="page" href="#">appointment</a>
+                <a class="navbar__link" aria-current="page" href="/appointment">appointment</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="#departments">departments</a>
+                <a class="navbar__link" href="/market">shop </a>
             </li>
             <li class="navbar__item">
-                <a class="navbar__link" href="#findUs">shop </a>
-            </li>
-            <li class="navbar__item">
-                <a class="navbar__link" href="#findUs">contact</a>
+                <a class="navbar__link" href="/main/contact">contact</a>
             </li>
 
             {% if user.is_authenticated %}
@@ -55,7 +52,7 @@
                 </li>
             {% else %}
                 <li class="navbar__item__btn">
-                    <a class="navbar__btn btn" href="users/login"
+                    <a class="navbar__btn btn" href="/users/login"
                     ><span class="cover"></span> Sign In</a
                     >
                 </li>

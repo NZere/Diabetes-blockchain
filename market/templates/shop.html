@@ -27,13 +27,13 @@
 <!--==================== HEADER ====================-->
 <header id="header">
     <nav class="navbar container">
-        <a class="navbar__brand" href="/static"
+        <a class="navbar__brand" href="/"
         ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
         /></a>
         <!-- <button class="navbar__toggler" id="navbar-toggler">X</button> -->
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
-                <a class="navbar__link" href="/static">diabet</a>
+                <a class="navbar__link" href="/">diabet</a>
             </li>
             <li class="navbar__item">
                 <a
@@ -62,7 +62,7 @@
                 <i class="fa-solid fa-right-to-bracket"></i>
             </a>
             {% else %}
-            <a href="users/login" class="icon">
+            <a href="/users/login" class="icon">
                 <i class="fa-solid fa-right-to-bracket"></i>
             </a>
             {% endif %}
@@ -88,7 +88,7 @@
         <div class="welcome__container container">
             <div class="welcome__data">
                 <h1 class="title">Diabet <strong> shop </strong></h1>
-                <a href="#" class="welcome__btn">Shop now</a>
+                <a href="/market/products" class="welcome__btn">Shop now</a>
             </div>
         </div>
     </section>

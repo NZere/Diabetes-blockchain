@@ -1,5 +1,6 @@
 import json
 
+from django.db.models import Q
 from django.utils import timezone
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
@@ -49,11 +50,17 @@ CHOICE_TYPE = {
     2: 'device',
     3: 'other'
 }
-
+CHOICE_PRICE = {
+        "0-1K": (0, 1000),
+        "1K-10K": (1000, 10000),
+        "10K-50K": (10000, 50000),
+        "50K+": 50000,
+    }
 
 def get_all_products(request):
     types = request.GET.getlist('type')
     sorting = request.GET.get('sorting')
+    prices = request.GET.getlist('price')
 
     # print(types)
     products = Product.objects.all()
@@ -68,27 +75,48 @@ def get_all_products(request):
         case 'new':
             print('new')
             products = products.order_by('date')
+        case 'asc-name':
+            print('asc')
+            products = products.order_by('name_product')
+        case 'dsc-name':
+            print('dsc')
+            products = products.order_by('-name_product')
 
     pr = []
-    print(types)
+    print(prices)
+    # for price in prices:
+    #     pass
+    filter_query = Q()
+    if prices:
+        for price in prices:
+
+            min_price, max_price = CHOICE_PRICE[price] if type(CHOICE_PRICE[price]) == tuple else (CHOICE_PRICE[price], None)
+
+            if max_price is None:
+                filter_query |= Q(price__gte=min_price)
+            else:
+                filter_query |= Q(price__gte=min_price, price__lt=max_price)
+
+    print("filter_query", filter_query)
+    products = products.filter(filter_query)
 
     if not types:
         for pro in products:
-            print(type)
+            # print(type)
             pr.append(
                 pro
             )
-            print(pr)
-        return render(request, "products.html", {"pr":pr})
+            print("all ", pr)
+        return render(request, "products.html", {"pr": pr})
     for pro in products:
         if CHOICE_TYPE[pro.type] in types:
-            print(type)
+            print("pro.type", pro.type)
             pr.append(
                 pro
             )
 
-    print(pr)
-    return render(request, "products.html", {"pr":pr})
+    print("after filter ", pr)
+    return render(request, "products.html", {"pr": pr})
 
 
 def get_all_products_filter(request):
@@ -321,7 +349,6 @@ class AddCouponView(View):
 class ItemDetailViewP(DetailView):
     model = Product
     template_name = "market/product.html"
-
 
 # class WalletView(LoginRequiredMixin, View):
 #     def get(self, request):

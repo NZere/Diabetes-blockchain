@@ -33,18 +33,10 @@
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
-                <a
-                        class="navbar__link"
-                        aria-current="page"
-                        href="/appointment"
-                >appointment</a
-                >
+                <a class="navbar__link" aria-current="page" href="/appointment">appointment</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
-            </li>
-            <li class="navbar__item">
-                <a class="navbar__link" href="#departments">departments</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="/market">shop </a>
@@ -58,7 +50,7 @@
                 </li>
             {% else %}
                 <li class="navbar__item__btn">
-                    <a class="navbar__btn btn" href="users/login"
+                    <a class="navbar__btn btn" href="/users/login"
                     ><span class="cover"></span> Sign In</a
                     >
                 </li>
@@ -137,6 +129,7 @@
                             name="previous"
                             class="previous action__btn__previous"
                             value="Previous"
+                            id="previous"
                     />
                     <input
                             type="submit"
@@ -156,5 +149,14 @@
 <script src={% static "/assets/js/jquery-3.6.3.min.js" %}></script>
 <script src={% static "/assets/js/appointment.js" %}></script>
 <script src={% static "/assets/js/appointment.js" %}></script>
+
+<script type="text/javascript">
+    let url_list = window.location.pathname.split('/')
+    let doctor_slug = {{ doctor_slug }};
+    let time_sel = {{ time_sel }};
+    $('#previous').click(function () {
+        window.location.pathname= "/appointment/"+doctor_slug+"/date/"+time_sel;
+    })
+</script>
 </body>
 </html>

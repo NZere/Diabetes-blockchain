@@ -26,13 +26,13 @@
 <!--==================== HEADER ====================-->
 <header id="header">
     <nav class="navbar container">
-        <a class="navbar__brand" href="/static"
+        <a class="navbar__brand" href="/"
         ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
         /></a>
         <!-- <button class="navbar__toggler" id="navbar-toggler">X</button> -->
         <ul class="navbar__list" id="navbar-list">
             <li class="navbar__item">
-                <a class="navbar__link" href="/static">diabet</a>
+                <a class="navbar__link" href="/">diabet</a>
             </li>
             <li class="navbar__item">
                 <a
@@ -61,7 +61,7 @@
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
             {% else %}
-                <a href="users/login" class="icon">
+                <a href="/users/login" class="icon">
                     <i class="fa-solid fa-right-to-bracket"></i>
                 </a>
             {% endif %}
@@ -124,7 +124,7 @@
                     <!-- item start -->
                     <div class="filter__item">
                         <label class="material-checkbox">
-                            <input type="checkbox"/>
+                            <input id="0_1000" value="(0,1000)" type="checkbox"/>
                             <span class="checkmark"></span>
                             Less 1 000
                         </label>
@@ -133,7 +133,7 @@
                     <!-- item start -->
                     <div class="filter__item">
                         <label class="material-checkbox">
-                            <input type="checkbox"/>
+                            <input id="1000_10000" value="(1000,10000)" type="checkbox"/>
                             <span class="checkmark"></span>
                             1 000 - 10 000
                         </label>
@@ -142,7 +142,7 @@
                     <!-- item start -->
                     <div class="filter__item">
                         <label class="material-checkbox">
-                            <input type="checkbox"/>
+                            <input id="10000_50000" value="(10000,50000)" type="checkbox"/>
                             <span class="checkmark"></span>
                             10 000 - 50 000
                         </label>
@@ -151,7 +151,7 @@
                     <!-- item start -->
                     <div class="filter__item">
                         <label class="material-checkbox">
-                            <input type="checkbox"/>
+                            <input id="50000_more" value="(50000,more)" type="checkbox"/>
                             <span class="checkmark"></span>
                             More 50 000
                         </label>
@@ -159,7 +159,8 @@
                     <!-- item end -->
                 </div>
             </div>
-            <input id="apply" type="submit" class="send__btn" value="Apply"/>
+            {#            <input id="apply" type="submit" class="send__btn" value="Apply"/>#}
+            <input id="apply" type="button" class="send__btn" value="Apply"/>
         </form>
     </aside>
 
@@ -168,8 +169,8 @@
         <div class="products__container container">
             <div class="products__data">
                 <div class="products__title">
-                    <a href="./shop.html">Shop /</a>
-                    <a href="#"> Products</a>
+                    <a href="/market">Shop /</a>
+                    <a href="/market/products"> Products</a>
                 </div>
                 <div class="products__sort">
                     <div class="select" tabindex="1">
@@ -200,7 +201,7 @@
                             <div class="product__card__name">{{ product.name_product }}</div>
                             {% if product.price != product.price_with_prom %}
                                 <div class="product__card__price">
-                                    <s>{{ product.price }}</s>{{ product.price_with_prom }}</div>
+                                    <s>{{ product.price }}</s> {{ product.price_with_prom }}</div>
                             {% else %}
                                 <div class="product__card__price">
                                     {{ product.price }}</div>
@@ -225,7 +226,7 @@
         <div class="footer__items">
             <ul class="footer__list">
                 <li class="footer__item">
-                    <a class="footer__link" href="/static">diabet</a>
+                    <a class="footer__link" href="/">diabet</a>
                 </li>
                 <li class="footer__item">
                     <a class="footer__link" href="/static">appointment</a>
@@ -264,37 +265,55 @@
     let applyButton = document.getElementById('apply')
 
     // Add event listener to form submission
-    form.action="/market/get_all_products/"
-    form.method="get"
-    applyButton.addEventListener( 'click',function (e) {
-        let url = window.location.pathname;
+    form.action = "/market/get_all_products/?"
+    form.method = "get"
+    applyButton.addEventListener('click', function (e) {
+        let url = "";
         // Check if the medicine checkbox is checked
+
+        console.log("form action " + form.action)
         if (medicineCheckbox.checked) {
-            // Append 'type=medicine' to the form action URL
-            form.action = form.action + '?&type=medicine';
-            url = url + '?%type=medicine'
+            url = url + 'type=medicine\&'
         }
         if (foodCheckbox.checked) {
-            // Append 'type=medicine' to the form action URL
-            form.action = form.action + '?&type=food';
-            url = url + '?%type=food'
+            url = url + 'type=food\&'
         }
         if (deviceCheckbox.checked) {
-            // Append 'type=medicine' to the form action URL
-            form.action = form.action + '?&type=device';
-            url = url + '?%type=device'
+            url = url + 'type=device\&'
         }
         if (otherCheckbox.checked) {
-            // Append 'type=medicine' to the form action URL
-            form.action = form.action + '?&type=other';
-            url = url + '?%type=other'
+            url = url + 'type=other\&'
         }
-        console.log(form.action)
-        console.log(url)
-        window.location.pathname = url
-        form.submit()
+        if (document.getElementById("0_1000").checked) {
+            url = url + 'price=0-1K\&'
+        }
+        if (document.getElementById("1000_10000").checked) {
+            url = url + 'price=1K-10K\&'
+        }
+        if (document.getElementById("10000_50000").checked) {
+            url = url + 'price=10K-50K\&'
+        }
+        if (document.getElementById("50000_more").checked) {
+            url = url + 'price=50K+\&'
+        }
+        console.log("form action " + form.action)
+        console.log("URL " + url)
+        console.log("path " + window.location.pathname)
+
+        console.log("URL " + url)
+        console.log(window.location.pathname + decodeURI("%3F" + url))
+        {#form.submit()#}
+        var encodedQueryParam = decodeURIComponent(url);
+        var url_end = window.location.pathname + "?" + encodedQueryParam;
+        console.log("url_end " + url_end)
+        window.location.href = url_end;
+
+        {#window.location.pathname = window.location.pathname+decodeURIComponent("%3F"+url)#}
+        {#console.log("path "+ window.location.pathname)#}
     });
 
+
+    {#%3Ftype%3Dother%26type%3Dmedicine#}
 </script>
 </body>
 </html>

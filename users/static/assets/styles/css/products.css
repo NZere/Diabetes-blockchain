@@ -406,7 +406,7 @@ main {
           box-shadow: 0 0 1rem 0 #283779;
 }
 .product__card img {
-  width: 100%;
+  width: 15rem;
   height: 15rem;
   -o-object-fit: cover;
      object-fit: cover;
