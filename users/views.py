@@ -390,15 +390,15 @@ def login_face_id(request):
                   {"user_first_name": user_first_name})
 
 
-def learn_doctor(request, id):
+def learn_doctor(request, user_id):
     user_first_name = None
     if request.user.is_authenticated:
         user_first_name = get_user_first_name(request.user)
         print(user_first_name)
-    user = User.objects.get(id=id)
+    user = User.objects.get(id=user_id)
     print(user.username)
     try:
-        subprocess.run([f"python3 users/face_recognition/dataset.py {id} {user.username}"], shell=True, capture_output=True)
+        subprocess.run([f"python3 users/face_recognition/dataset.py {user_id} {user.username}"], shell=True, capture_output=True)
         training_recognition()
     except:
         print("error")

@@ -24,23 +24,44 @@ from django.forms.models import model_to_dict
 
 
 def index(request):
-    return render(request, 'shop.html')
+    user_money = None
+    if request.user.is_authenticated:
+        user_money = get_user_money(request.user)
+
+    new_products = [
+        Product.objects.get(id=10),
+        Product.objects.get(id=11),
+        Product.objects.get(id=12),
+        Product.objects.get(id=13),
+    ]
+
+    return render(request, 'shop.html', {"user_money": user_money, "new_products": new_products})
 
 
 def product(request, slug):
-    user_first_name = email = None
+    user_first_name = email = user_money = None
     if request.user.is_authenticated:
         user_first_name = get_user_first_name(request.user)
         email = get_user_email(request.user)
+        user_money = get_user_money(request.user)
     products = Product.objects.get(slug=slug)
     comments = products.commentary_set.order_by('-id')[:10]
+    new_products = [
+        Product.objects.get(id=10),
+        Product.objects.get(id=11),
+        Product.objects.get(id=12),
+        Product.objects.get(id=13),
+    ]
     context = {
         "object": products,
         "comments": comments,
         "user_first_name": user_first_name,
         "email": email,
-        "comments_count": comments.count()
+        "comments_count": comments.count(),
+        "user_money": user_money,
+        "new_products": new_products
     }
+
     return render(request, 'productSingle.html', context)
 
 
@@ -54,10 +75,15 @@ CHOICE_PRICE = {
         "0-1K": (0, 1000),
         "1K-10K": (1000, 10000),
         "10K-50K": (10000, 50000),
-        "50K+": 50000,
+        "50K+": (50000, 99999999),
+        "50K ": (50000, 99999999),
     }
 
+
 def get_all_products(request):
+    user_money = None
+    if request.user.is_authenticated:
+        user_money = get_user_money(request.user)
     types = request.GET.getlist('type')
     sorting = request.GET.get('sorting')
     prices = request.GET.getlist('price')
@@ -90,7 +116,7 @@ def get_all_products(request):
     if prices:
         for price in prices:
 
-            min_price, max_price = CHOICE_PRICE[price] if type(CHOICE_PRICE[price]) == tuple else (CHOICE_PRICE[price], None)
+            min_price, max_price = CHOICE_PRICE[price]
 
             if max_price is None:
                 filter_query |= Q(price__gte=min_price)
@@ -107,7 +133,7 @@ def get_all_products(request):
                 pro
             )
             print("all ", pr)
-        return render(request, "products.html", {"pr": pr})
+        return render(request, "products.html", {"pr": pr, "user_money": user_money})
     for pro in products:
         if CHOICE_TYPE[pro.type] in types:
             print("pro.type", pro.type)
@@ -116,10 +142,13 @@ def get_all_products(request):
             )
 
     print("after filter ", pr)
-    return render(request, "products.html", {"pr": pr})
+    return render(request, "products.html", {"pr": pr, "user_money": user_money})
 
 
 def get_all_products_filter(request):
+    user_money = None
+    if request.user.is_authenticated:
+        user_money = get_user_money(request.user)
     type = request.GET.get('type')
     print(type)
     CHOICE_TYPE = {
@@ -146,7 +175,7 @@ def get_all_products_filter(request):
     #     'products': pr,
     #
     # }
-    return render(request, "products.html", {"pr": pr})
+    return render(request, "products.html", {"pr": pr, "user_money": user_money})
 
 
 @login_required
@@ -254,39 +283,35 @@ def comment(request, slug):
     return HttpResponseRedirect(reverse('market:product', args=(product.slug,)))
 
 
-class OrderSummaryView(LoginRequiredMixin, View):
+class OrderSummaryView(View):
     def get(self, *args, **kwargs):
-        user_first_name = None
-        if self.request.user.is_authenticated:
-            user_first_name = get_user_first_name(self.request.user)
         try:
+            if not self.request.user.is_authenticated:
+                raise ObjectDoesNotExist
+            user_first_name = get_user_first_name(self.request.user)
+            user_money = get_user_money(self.request.user)
+
             order = Cart.objects.get(user=self.request.user, is_ordered=False)
             context = {
                 'object': order,
                 'DISPLAY_COUPON_FORM': True,
-                'user_first_name': user_first_name
+                'user_first_name': user_first_name,
+                'user_money': user_money
             }
             return render(self.request, 'shoppingCart.html', context)
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
             print("You do not have an active order")
-            return redirect("/")
-
-
-def get_coupon(request, code):
-    try:
-        coupon = Coupon.objects.get(code=code)
-        return coupon
-    except ObjectDoesNotExist:
-        messages.info(request, "This coupon does not exist")
-        return redirect("market:order-summary")
+            return redirect("/market")
 
 
 class PaymentView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
-        user_first_name = None
+        user_first_name = user_money = None
         if self.request.user.is_authenticated:
             user_first_name = get_user_first_name(self.request.user)
+            user_money = get_user_money(self.request.user)
+
         try:
             order = Cart.objects.get(user_id=self.request.user.id, is_ordered=False)
             order_items = order.items.all()
@@ -321,13 +346,13 @@ class PaymentView(LoginRequiredMixin, View):
                         else:
                             error_message = 'Not enough money !!'
                             messages.warning(self.request, error_message)
-                            return redirect("/market", {'user_first_name': user_first_name})
+                            return redirect("/market", {'user_first_name': user_first_name, 'user_money': user_money})
             messages.success(self.request, "Your order was successful!")
-            return redirect("/blockchain/block/transactions/new",
-                            {'user_first_name': user_first_name, 'market': purchase})
+            return redirect("/market",
+                            {'user_first_name': user_first_name, 'market': purchase, 'user_money': user_money})
         except():
             messages.warning(self.request, "Error")
-            return redirect("/", {'user_first_name': user_first_name})
+            return redirect("/", {'user_first_name': user_first_name, 'user_money': user_money})
 
 
 class AddCouponView(View):
@@ -337,13 +362,25 @@ class AddCouponView(View):
                 code = request.POST.get('code', '')
                 order = Cart.objects.get(
                     user=self.request.user, is_ordered=False)
-                order.coupon = get_coupon(self.request, code)
+                coupon = get_coupon(self.request, code)
+                if not coupon:
+                    return redirect("market:order-summary")
+                order.coupon = coupon
                 order.save()
                 messages.success(self.request, "Successfully added coupon")
                 return redirect("market:order-summary")
             except ObjectDoesNotExist:
                 messages.info(self.request, "You do not have an active order")
                 return redirect("market:order-summary")
+
+
+def get_coupon(request, code):
+    try:
+        coupon = Coupon.objects.get(code=code)
+        return coupon
+    except ObjectDoesNotExist:
+        messages.info(request, "This coupon does not exist")
+        return None
 
 
 class ItemDetailViewP(DetailView):

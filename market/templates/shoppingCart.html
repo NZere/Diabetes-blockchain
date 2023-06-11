@@ -38,28 +38,32 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="/">diabet</a>
             </li>
+            {% if not user.is_staff %}
             <li class="navbar__item">
-                <a
-                        class="navbar__link"
-                        aria-current="page"
-                        href="/appointment"
-                >appointment</a
-                >
+                <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="">products</a>
             </li>
             <li class="navbar__item">
                 <a class="navbar__link" href="">about</a>
             </li>
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/main/contact">contact</a>
             </li>
         </ul>
         <div class="icons">
+            {% if user_money != None %}
+            <a href="#" class="icon">
+                {{ user_money }} KZT
+            </a>
+            {% endif %}
             <a href="/market/order-summary" class="icon">
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>

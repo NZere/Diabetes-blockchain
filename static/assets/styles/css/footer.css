@@ -139,7 +139,7 @@ input:focus {
 
 /*=============== SUBSCRIBE ===============*/
 .subscribe {
-  background-image: url(../../img/info-bg.png);
+  background-image: url(../../../img/info-bg.png);
   background-size: cover;
   background-color: #b4dcec;
 }

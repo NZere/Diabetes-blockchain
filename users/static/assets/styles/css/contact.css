@@ -142,11 +142,11 @@ body {
 
 /*=============== CONTACT ===============*/
 .contact {
-  padding-top: 5.5rem;
+  padding-top: 10rem;
 }
 .contact__container {
   width: 100%;
-  padding-top: 5.5rem;
+  padding-top: 10rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

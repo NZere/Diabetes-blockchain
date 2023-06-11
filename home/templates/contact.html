@@ -33,12 +33,16 @@
         /></a>
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
+            {% if not user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/">doctors</a>
             </li>
@@ -97,8 +101,8 @@
                 <div class="contact__description">
                     <h2 class="contact__title">Contact Information</h2>
                     <p><span>Aisha:</span> +7 777 7777</p>
-                    <p><span>Aisha:</span> +7 777 7777</p>
-                    <p><span>Aisha:</span> +7 777 7777</p>
+                    <p><span>Farkhad:</span> +7 777 7777</p>
+                    <p><span>Nurgali:</span> +7 777 7777</p>
                 </div>
             </div>
             <div class="contact__map">

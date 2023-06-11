@@ -142,12 +142,12 @@ body {
 
 /*=============== WELCOME ===============*/
 .welcome {
-  padding-top: 5.5rem;
+  padding-top: 10rem;
   background-image: url(../../../img/welcome-bg.png);
 }
 .welcome__container {
   width: 100%;
-  padding-top: 5.5rem;
+  padding-top: 10rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -152,6 +152,7 @@ input:focus {
 
 header {
   width: 100%;
+  height: 10rem;
   top: 0;
   left: 0;
   position: fixed;
@@ -160,10 +161,10 @@ header {
   transition: background-color 0.3s, -webkit-box-shadow 0.3s;
   transition: background-color 0.3s, box-shadow 0.3s;
   transition: background-color 0.3s, box-shadow 0.3s, -webkit-box-shadow 0.3s;
-  z-index: 100;
+  z-index: 101;
 }
 header .navbar {
-  height: 5.5rem;
+  height: 10rem;
   padding: 1rem;
   position: relative;
   display: -webkit-box;

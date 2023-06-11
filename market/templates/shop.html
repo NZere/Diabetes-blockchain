@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Shop</title>
-{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">#}
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -14,9 +14,7 @@
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/headerShop.css" %}/>
@@ -35,25 +33,29 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="/">diabet</a>
             </li>
+            {% if not user.is_staff %}
             <li class="navbar__item">
-                <a
-                        class="navbar__link"
-                        aria-current="page"
-                        href="/appointment"
-                >appointment</a
-                >
+                <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/market/products">products</a>
             </li>
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/main/contact">contact</a>
             </li>
         </ul>
         <div class="icons">
+            {% if user_money != None %}
+            <a href="#" class="icon">
+                {{ user_money }} KZT
+            </a>
+            {% endif %}
             <a href="/market/order-summary" class="icon">
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>
@@ -68,18 +70,17 @@
             {% endif %}
         </div>
     </nav>
-    <div class="mt-5 pt-4">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+{% for message in messages %}
+<div class="container-fluid p-0" style="z-index: 101; position: absolute; top:0; left: 0" id="notif">
+
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="hiddenBtn">
+      <span aria-hidden="True">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
 </header>
 
 <main>
@@ -131,13 +132,17 @@
     <section class="category">
         <div class="category__container container">
             <div class="category__item item__first">
-                <div class="category__title">Medicine</div>
+                <div class="category__title" onclick="window.location.href = '/market/products/?type=medicine'">
+                    Medicine</div>
             </div>
             <div class="category__item item__second">
-                <div class="category__title">Glossary</div>
+                <div class="category__title" onclick="window.location.href = '/market/products/?type=food'">
+                    Glossary</div>
             </div>
-            <div class="category__item item__third">
-                <div class="category__title">Devices</div>
+
+                <div class="category__item item__third">
+                <div class="category__title" onclick="window.location.href = '/market/products/?type=device'">
+                    Devices</div>
             </div>
         </div>
     </section>
@@ -147,67 +152,34 @@
         <div class="products__container container">
             <div class="products__data">
                 <div class="products__title subtitle">
-                    <h2>new product</h2>
+                    <h2>new products</h2>
                 </div>
                 <div class="products__filter"></div>
             </div>
             <div class="product__cards">
+                {% for product in new_products %}
                 <div class="product__card">
-                    <a href="productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
+                    <a href="/market/product/{{ product.slug }}">
+                        <img src={{ product.image }} alt=""/>
                     </a>
                     <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
+                        <div class="product__card__name">{{ product.name_product }}</div>
+                        <div class="product__card__price">
+                            {% if product.prom != 0 %}
+                            <s>{{ product.price }}</s>
+                            {% endif %}
+                            {{ product.price_with_prom }} KZT
+                        </div>
                     </div>
                     <div class="product__card__selected">
                         <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_add_to_cart_url }}" class="icon">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
                         </a>
                     </div>
                 </div>
-                <div class="product__card">
-                    <a href="productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
-                    </a>
-                    <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
-                    </div>
-                    <div class="product__card__selected">
-                        <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="product__card">
-                    <a href="productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
-                    </a>
-                    <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
-                    </div>
-                    <div class="product__card__selected">
-                        <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="product__card">
-                    <a href="productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
-                    </a>
-                    <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
-                    </div>
-                    <div class="product__card__selected">
-                        <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -339,7 +311,6 @@
                 <h2 class="subscribe__info__title">Get an update every week</h2>
                 <p class="subscribe__info__text">
                     This website was created for diploma project. <br/>
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
                 </p>
             </div>
             <div class="subscribe__form">
@@ -361,9 +332,11 @@
                 <li class="footer__item">
                     <a class="footer__link" href="/static">diabet</a>
                 </li>
-                <li class="footer__item">
-                    <a class="footer__link" href="/static">appointment</a>
+                {% if not user.is_staff %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/appointment">appointment</a>
                 </li>
+                {% endif %}
                 <li class="footer__item">
                     <a class="footer__link" href="">products</a>
                 </li>
@@ -385,5 +358,15 @@
         All rights Reserved &copy; Diploma project, 2023
     </div>
 </div>
+
+<script>
+    const hiddenBtn = document.getElementById('hiddenBtn');
+    const notif = document.getElementById('notif');
+    hiddenBtn.addEventListener('click', () => {
+        console.log('notiffffff')
+      notif.remove();
+      {#notif.style = 'visibility: hidden'#}
+    });
+</script>
 </body>
 </html>

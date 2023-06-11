@@ -7,6 +7,7 @@ from users.models import Doctor
 from users.views import get_user_first_name, get_user_last_name, get_user_email
 from django.contrib.auth.models import User, auth
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 
 
 def index(request):
@@ -19,15 +20,20 @@ def index(request):
             doctor.last_name = get_user_first_name(doctor.doctor_user)
         data = {
             "all_doctors": all_doctors,
+            "user_first_name": get_user_first_name(request.user),
         }
         return render(request, 'appointment1.html', data)
 
 
 def doctor_selected(request, slug):
     # item = get_object_or_404(Doctor, slug=slug)
+    if not request.user.is_authenticated:
+        messages.warning(request, "You need to log in")
+        return redirect("/")
     print("doctor_selected")
     schedules = get_all_open_work_time_of_doctor(slug)
-    return render(request, 'appointment2.html', {"schedules": schedules})
+    return render(request, 'appointment2.html', {"schedules": schedules,
+                                                 "user_first_name": get_user_first_name(request.user)})
 
 
 def get_all_open_work_time_of_doctor(doctor_slug):
@@ -64,7 +70,8 @@ def date_selected(request, slug, date_schedule):
         time_data_ids.append(work_time.work_time_id)
     print(time_data)
     zipped_list = zip(time_data, time_data_ids)
-    return render(request, 'appointment2.html', {"zip": zipped_list, "doctor_slug": slug})
+    return render(request, 'appointment2.html', {"zip": zipped_list, "doctor_slug": slug,
+                                                 "user_first_name": get_user_first_name(request.user)})
 
 
 def get_work_time_of_date(doctor_slug, date_schedule):
@@ -75,13 +82,13 @@ def get_work_time_of_date(doctor_slug, date_schedule):
 
 @csrf_exempt
 def appointment_submit(request):
-    user_first_name = None
-    user_last_name = None
-    user_email = None
-    if request.user.is_authenticated:
-        user_first_name = get_user_first_name(request.user)
-        user_last_name = get_user_last_name(request.user)
-        user_email = get_user_email(request.user)
+    if not request.user.is_authenticated:
+        messages.warning(request, "You need to log in")
+        return redirect("/")
+
+    user_first_name = get_user_first_name(request.user)
+    user_last_name = get_user_last_name(request.user)
+    user_email = get_user_email(request.user)
     doctor_slug = request.POST.get("doctor_slug", '')
     time_sel = request.POST.get("time__select", '')
     data = {

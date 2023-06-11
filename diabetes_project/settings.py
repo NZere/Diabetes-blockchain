@@ -147,3 +147,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATIC_ROOT = 'users/face_recognition/'
 os.path.join(STATIC_ROOT, "users.json")
+

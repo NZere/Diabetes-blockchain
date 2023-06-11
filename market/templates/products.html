@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Products</title>
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -34,25 +35,29 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="/">diabet</a>
             </li>
+            {% if not user.is_staff %}
             <li class="navbar__item">
-                <a
-                        class="navbar__link"
-                        aria-current="page"
-                        href="/appointment"
-                >appointment</a
-                >
+                <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="">products</a>
             </li>
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/main/contact">contact</a>
             </li>
         </ul>
         <div class="icons">
+            {% if user_money != None %}
+            <a href="#" class="icon">
+                {{ user_money }} KZT
+            </a>
+            {% endif %}
             <a href="/market/order-summary" class="icon">
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>
@@ -228,9 +233,11 @@
                 <li class="footer__item">
                     <a class="footer__link" href="/">diabet</a>
                 </li>
-                <li class="footer__item">
-                    <a class="footer__link" href="/static">appointment</a>
+                {% if not user.is_staff %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/appointment">appointment</a>
                 </li>
+                {% endif %}
                 <li class="footer__item">
                     <a class="footer__link" href="">products</a>
                 </li>

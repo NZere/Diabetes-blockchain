@@ -95,9 +95,6 @@ class Blockchain(object):
         return guess_hash[:5] == "00000"
 
     def valid_chain(self, chain):
-        print(chain)
-
-        # last_block = Block.objects.order_by("id")[0]
         current_index = 2
         last_block = chain[0]  # id=1
         print(last_block)
@@ -106,20 +103,12 @@ class Blockchain(object):
                 for d in chain:  # d is dict
                     if d["id"] == current_index:
                         block = d  # block is dict
-                        print("\n")
-                        print(block)
-                        print(block["previous_hash"])
-
-                        print(last_block)
-                        print(self.hash_dict(last_block))
-                        print("\n")
                         if block["previous_hash"] != self.hash_dict(last_block):
                             mes = []
                             ss = "Hashes not equal!! error in block:" + str(current_index) + "\n"
                             ss += "it must be: " + block["previous_hash"] + ", not: " + self.hash_dict(last_block)
 
                             mes.append(ss)
-                            print(mes.__str__())
                             return False, mes
                         # Check that the Proof of Work is correct
                         if not self.valid_proof(last_block["proof"], block["proof"]):
@@ -130,112 +119,12 @@ class Blockchain(object):
                         last_block = block
                         current_index += 1
             except:
-                print("error in valid chain")
                 mes = []
                 ss = "error"
                 mes.append(ss)
                 return False, mes
         mes = []
         return True, mes
-
-    def resolve_conflicts(self):
-        neighbours = self.nodes
-        print("hereeee")
-        print(neighbours)
-        new_chain = None
-        max_length = len(Block.objects.all())
-        mes = []
-        is_replaced = False
-        try:
-            for node in neighbours:
-                response = requests.get('http://%s/main/block/chains' % node)
-                if response.status_code == 200:
-                    # for obj in serializers.deserialize("json", response):
-                    #     print(obj.object)
-                    # length = response.json()['length']
-                    # chain = response.json()['chain']
-                    # Check if the length is longer and the chain is valid
-                    data = response.json()
-                    # print(data)
-                    # print(data["length"])
-                    print(data["chain"])
-                    b, mes = self.valid_chain(data["chain"])
-
-                    print('LEEEEN')
-                    print(len(mes))
-                    for i in mes:
-                        print(i, end=" ")
-                    print("\n")
-                    print(b)
-                    print(type(mes))
-                    if not b:
-                        ss = "NOW WE DO NOT TRUST " + str(node)
-                        mes.append(ss)
-                        self.nodes.remove(node)
-
-                        print(''.join(mes))
-                        print(mes)
-
-                    if data["length"] >= max_length and b:
-                        print("in if" + str(b))
-                        max_length = data["length"]
-
-                        for d in data["chain"]:
-                            try:
-                                block = Block.objects.get(id=d["id"])
-                                change = 0
-
-                                if block.id != d["id"]:
-                                    block.id = d["id"]
-                                    change += 1
-                                if block.timestamp != d["timestamp"]:
-                                    block.timestamp = d["timestamp"]
-                                    change += 1
-                                if block.transactions != d["transactions"]:
-                                    block.transactions = d["transactions"]
-                                    change += 1
-                                if block.proof != d["proof"]:
-                                    block.proof = d["proof"]
-                                    change += 1
-                                if block.previous_hash != d["previous_hash"]:
-                                    block.previous_hash = d["previous_hash"]
-                                    change += 1
-                                block.save()
-                                print(change)
-                                if change > 0:
-                                    is_replaced = True
-
-
-                            except:
-                                block = Block.objects.get_or_create(
-                                    id=d["id"],
-                                    timestamp=d["timestamp"],
-                                    transactions=d["transactions"],
-                                    proof=d["proof"],
-                                    previous_hash=d["previous_hash"]
-                                )
-                                is_replaced = True
-
-        except:
-            print("in for")
-        # Replace our chain if we discovered a new, valid chain longer than ours
-        print("here is ok")
-
-        print(''.join(mes))
-        if is_replaced:
-            print("True")
-            ss = "Blockchain is updated!"
-            mes.append(ss)
-            print(''.join(mes))
-            return True, mes
-        if new_chain:
-            print(new_chain)
-            # Block.objects.all().delete()
-            self.chain = new_chain
-            print("true")
-            return True, mes
-        print("false")
-        return False, mes
 
 
 node_identifier = str(uuid4()).replace('-', '')
@@ -276,21 +165,6 @@ def mine(request, *args, **kwargs):
 
 @csrf_protect
 def new_transaction(request):
-    # values = json.loads(request.body.decode('utf-8'))
-    # required = ['sender', 'recipient', 'amount']
-    # if not all(k in values for k in required):
-    #     return 'Missing values'
-    # index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'])
-    # print(index)
-    # response = {'message': 'Transaction will be added to Block %s' % index}
-    # return HttpResponse(json.dumps(response))
-    # order = CartP.objects.get(user=self.request.user, is_ordered=False)
-    # shop_order = {}
-    # # shops= set()
-    # # for i in range order
-    # print(order)
-    # order_items = order.items.all()
-    # order_items.update(is_ordered=True)
     order = Cart.objects.get(user=request.user, is_ordered=False)
     order_items = order.items.all()
     final = 0

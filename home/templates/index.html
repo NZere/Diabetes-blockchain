@@ -14,9 +14,6 @@
             referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link rel="stylesheet" href={% static "/assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "/assets/styles/css/header.css" %}/>
@@ -29,14 +26,16 @@
 <!--==================== HEADER ====================-->
 <header id="header" class="bg-header">
     <nav class="navbar container">
-        <a class="navbar__brand" aria-current="page" href="./index.html"
+        <a class="navbar__brand" aria-current="page" href="/"
         ><img src="{% static "/assets/img/logo.png" %}" width="118" alt="logo"
         /></a>
         {#        <button class="navbar__toggler" id="navbar-toggler">X</button>#}
         <ul class="navbar__list" id="navbar-list">
+            {% if not user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
             {% if user.is_authenticated %}
                 <li class="navbar__item">
                     <a class="navbar__link" href="/appointment/account/">account</a>
@@ -65,18 +64,17 @@
             {% endif %}
         </ul>
     </nav>
-    <div class="mt-5 pt-4">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+    {% for message in messages %}
+        <div class="container-fluid p-0" style="z-index: 101; position: absolute; top:0; left: 0" id="notif">
+
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="hiddenBtn">
+                    <span aria-hidden="True">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
 </header>
 
 <main id="main">
@@ -135,12 +133,10 @@
             </div>
             <div class="info__data">
                 <h2 class="info__title">
-                    Lorem ipsum dolor sit amet consectetur adipisicing.
+                    Advanced Diabetes Testing and Monitoring Services
                 </h2>
                 <p class="info__description">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-                    accusantium praesentium dolores incidunt. Et, perspiciatis fuga
-                    reprehenderit provident quae asperiores.
+                    Our laboratory specializes in diabetes testing, diagnosis, and monitoring. We offer a comprehensive range of tests specifically designed to assess various aspects of diabetes management.
                 </p>
                 <a href="#" class="info__btn btn">
                     <span class="cover"></span> Make an appointment
@@ -159,12 +155,12 @@
             <div class="about__container">
                 <div class="about__data">
                     <h2 class="about__title">
-                        Lorem ipsum dolor sit amet consectetur adipisicing.
+                        Empowering Diabetes: Information, Resources, and Support
                     </h2>
                     <p class="about__description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-                        accusantium praesentium dolores incidunt. Et, perspiciatis fuga
-                        reprehenderit provident quae asperiores.
+                        We are dedicated to providing valuable information, resources, and support to individuals living with diabetes, their families, and healthcare professionals.
+                        Our mission is to empower and educate, enabling better management and understanding of this chronic condition.
+                        We understand the challenges that come with diabetes, and that's why we have created a platform that combines accurate information, practical tips, and a supportive community.
                     </p>
                     <a href="#" class="about__btn btn"
                     ><span class="cover"></span> Learn more</a
@@ -243,8 +239,8 @@
         <div class="footer__items list">
             <h4>online shop</h4>
             <ul>
-                <li><a href="#">Lorem</a></li>
-                <li><a href="#">Lorem</a></li>
+                <li><a href="/market">Diabetes Market</a></li>
+                <li><a href="#"></a></li>
                 <li><a href="#">Lorem</a></li>
                 <li><a href="#">Lorem</a></li>
             </ul>
@@ -272,5 +268,24 @@
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 <script src={% static "/assets/js/header.js" %}></script>
 <script src={% static "/assets/js/main.js" %}></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+<script>
+    const hiddenBtn = document.getElementById('hiddenBtn');
+    const notif = document.getElementById('notif');
+    hiddenBtn.addEventListener('click', () => {
+        console.log('notiffffff')
+        notif.remove();
+        {#notif.style = 'visibility: hidden'#}
+    });
+</script>
 </body>
 </html>

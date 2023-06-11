@@ -7,14 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Log In</title>
     <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
-        <link
+    <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
             integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <link rel="shortcut icon" href={% static "/assets/img/logo-bg.png" %} type="image/x-icon"/>
     <link rel="stylesheet" href={% static "assets/styles/css/nullstyle.css" %}/>
     <link rel="stylesheet" href={% static "assets/styles/css/header.css" %}/>
     <link rel="stylesheet" href={% static "assets/styles/css/login.css" %}/>
@@ -29,12 +31,16 @@
         /></a>
         <button class="navbar__toggler" id="navbar-toggler">X</button>
         <ul class="navbar__list" id="navbar-list">
+            {% if not user.is_staff %}
             <li class="navbar__item">
-                <a class="navbar__link" aria-current="page" href="/appointment">appointment</a>
+                <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/market">shop </a>
             </li>
@@ -54,18 +60,20 @@
             {% endif %}
         </ul>
     </nav>
-    <div class="mt-5 pt-4">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
+
+{% for message in messages %}
+<div class="container-fluid p-0" style="z-index: 101; position: absolute; top:0; left: 0" id="notif">
+
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="hiddenBtn">
+      <span aria-hidden="True">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+
+
 </header>
 
 <main>
@@ -151,9 +159,25 @@
     </section>
 </main>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 <script src={% static "/assets/js/login.js" %}></script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+<script>
+    const hiddenBtn = document.getElementById('hiddenBtn');
+    const notif = document.getElementById('notif');
+    hiddenBtn.addEventListener('click', () => {
+        console.log('notiffffff')
+      notif.remove();
+      {#notif.style = 'visibility: hidden'#}
+    });
+</script>
 </body>
 </html>

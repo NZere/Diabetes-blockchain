@@ -23,27 +23,9 @@ def run(video, face_id, user_name):
     users_keys = list(users_file_dict.keys())
     users_values = list(users_file_dict.values())
 
-    if users_keys.__contains__(str(face_id)):
-        print(json.dumps({"error": "ID exists"}))
-        return
-
-    # while face_id is None:
-    #     face_id_input = input('[INFO] Enter user id and press <return> ==>  \n')
-    #     if users_keys.__contains__(str(face_id_input)):
-    #         print('[INFO] ID EXISTS!!! try again')
-    #         face_id = None
-    #     else:
-    #         ok = True
-    #         face_id = face_id_input
-    #
-    # while user_name is None:
-    #     user_name_input = input('[INFO] Enter user name and press <return> ==>  \n')
-    #     if users_values.__contains__(str(user_name_input)):
-    #         print('[INFO] NAME EXISTS!!! try again')
-    #         user_name = None
-    #     else:
-    #         ok = True
-    #         user_name = user_name_input
+    # if users_keys.__contains__(str(face_id)):
+    #     print(json.dumps({"error": "ID exists"}))
+    #     return
 
     users_file_dict[face_id] = user_name
 

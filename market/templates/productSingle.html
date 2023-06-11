@@ -39,28 +39,34 @@
             <li class="navbar__item">
                 <a class="navbar__link" href="/">diabet</a>
             </li>
+            {% if not user.is_staff %}
             <li class="navbar__item">
-                <a
-                        class="navbar__link"
-                        aria-current="page"
-                        href="/appointment"
-                >appointment</a
-                >
+                <a class="navbar__link" href="/appointment">appointment</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="">products</a>
             </li>
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
+            {% if user.is_staff %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/blockchain/block/chain">blockchain</a>
             </li>
+            {% endif %}
             <li class="navbar__item">
                 <a class="navbar__link" href="/main/contact">contact</a>
             </li>
         </ul>
         <div class="icons">
+            {% if user_money != None %}
+            <a href="#" class="icon">
+                {{ user_money }} KZT
+            </a>
+            {% endif %}
             <a href="/market/order-summary" class="icon">
                 <i class="fa-solid fa-cart-shopping"></i>
             </a>
@@ -179,7 +185,7 @@
                 {% else %}
                     <div class="btn__container">
                         <a href="/users/login" class="product__btn">
-                            Log in to add to cart
+                            Log in to leave a comment
                             <i class="fa fa-solid fa-card-plus"></i>
                         </a>
                     </div>
@@ -213,65 +219,32 @@
     <section class="products">
         <div class="products__container container">
             <div class="products__data review__title">
-                <h3>new product</h3>
+                <h3>new products</h3>
             </div>
             <div class="product__cards">
+                {% for product in new_products %}
                 <div class="product__card">
-                    <a href="./productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
+                    <a href="/market/product/{{ product.slug }}">
+                        <img src={{ product.image }} alt=""/>
                     </a>
                     <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
+                        <div class="product__card__name">{{ product.name_product }}</div>
+                        <div class="product__card__price">
+                            {% if product.prom != 0 %}
+                            <s>{{ product.price }}</s>
+                            {% endif %}
+                            {{ product.price_with_prom }} KZT
+                        </div>
                     </div>
                     <div class="product__card__selected">
                         <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            <a href="{{ product.get_add_to_cart_url }}" class="icon">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </a>
                         </a>
                     </div>
                 </div>
-                <div class="product__card">
-                    <a href="./productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
-                    </a>
-                    <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
-                    </div>
-                    <div class="product__card__selected">
-                        <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="product__card">
-                    <a href="./productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
-                    </a>
-                    <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
-                    </div>
-                    <div class="product__card__selected">
-                        <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="product__card">
-                    <a href="./productSingle.html">
-                        <img src={% static "/assets/img/food.jpg" %} alt=""/>
-                    </a>
-                    <div class="product__card__info">
-                        <div class="product__card__name">Product Name</div>
-                        <div class="product__card__price">Product Price</div>
-                    </div>
-                    <div class="product__card__selected">
-                        <a href="/market/order-summary" class="icon">
-                            <i class="fa-solid fa-cart-shopping"></i>
-                        </a>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -305,9 +278,11 @@
                 <li class="footer__item">
                     <a class="footer__link" href="/static">diabet</a>
                 </li>
-                <li class="footer__item">
-                    <a class="footer__link" href="/static">appointment</a>
+                {% if not user.is_staff %}
+                <li class="navbar__item">
+                    <a class="navbar__link" href="/appointment">appointment</a>
                 </li>
+                {% endif %}
                 <li class="footer__item">
                     <a class="footer__link" href="">products</a>
                 </li>

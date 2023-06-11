@@ -3,7 +3,7 @@
 /*========== Font ==========*/
 @font-face {
   font-family: "Barlow";
-  src: url(../../fonts/Barlow/Barlow-Regular.ttf);
+  src: url(../../../fonts/Barlow/Barlow-Regular.ttf);
 }
 @font-face {
   font-family: "Muli", sans-serif;
@@ -144,7 +144,8 @@ body {
   /*=============== BLOCKCHAIN TABLE ===============*/
 }
 .blockchain__info .blockchain__container {
-  padding-top: 5.5rem;
+  /*margin-top: 5rem !important;*/
+  padding-top: 10rem;
 }
 .blockchain__data {
   height: 20vh;
